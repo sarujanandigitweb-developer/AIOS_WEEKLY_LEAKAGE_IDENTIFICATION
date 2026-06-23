@@ -16,6 +16,12 @@ It detects net-negative SKUs (via `vw_fbm_uk_sku_daily_nnr`), classifies them by
 surfaces the worst via `vw_top_10_leakage`. It is an **internal continuous monitor**, not a weekly,
 PH-facing, 7-day action protocol.
 
+> **Labelled as inference (C-3):** the framework's *purpose* above is **inferred** from observable signals
+> (run-id naming `detect_YYYY-MM-DD_amazon_fbm_UK`, daily cadence, and view structure) — no stored DB comment
+> states it. Likewise, the **pattern→analysis mapping** (PAID_MEDIA_RUNAWAY→L1/L3, SHIPPING_HIGH→L2,
+> RETURNS_ISSUE→L4) used here and in the architecture review is an **analyst inference from names/thresholds**,
+> not a mapping stored in the database.
+
 ---
 
 ## 2. Pattern registry findings (`leakage_pattern_registry`, 7 rows)
@@ -45,7 +51,7 @@ live engine.
 | Status | **404 OPEN / 0 CLOSED** | `08_detection_summary.sql` |
 | Channel / marketplace | 100% `amazon_fbm` / `UK` | `08_detection_summary.sql` |
 | Distinct PHs flagged | 14 | `08_detection_summary.sql` |
-| Total cumulative loss (open) | £96,301.55 | `09_detection_by_pattern.sql` |
+| Total cumulative loss (open) | £96,301.55 ⚠ **caveat: mixes two incompatible `daily_loss_gbp` formulas (06-15→06-16) — treat as indicative only, do not quote as exact** | `09_detection_by_pattern.sql` |
 | Oldest red date | 2025-10-17 (243 days) | `13_daily_loss_anomaly.sql` |
 
 **Run history shows a formula change.** Runs 2026-06-02 → 06-15 show max `daily_loss_gbp` ≈ £0.67/SKU

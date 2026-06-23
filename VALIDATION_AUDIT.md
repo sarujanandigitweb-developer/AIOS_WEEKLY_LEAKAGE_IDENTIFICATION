@@ -6,13 +6,21 @@
 **Method:** each statement cross-checked against the two recorded result files
 (`evidence/query_results/PHASE1_RESULTS.md`, `PHASE2_RESULTS.md`) and the SQL in `evidence/postgres_queries/`.
 
-**Overall result: 🟡 PASS WITH WARNINGS**
+**Overall result: 🟡 PASS WITH WARNINGS → 🟢 PASS (re-graded 2026-06-22 after corrections C-1…C-7 applied)**
 
-The documentation is well-evidenced and traceable. No fabricated facts were found. Warnings arise because
+> **Re-grade note (D01 closure):** all 7 required corrections (C-1…C-7) below have been applied to the existing
+> files — estimates are now labelled as `pg_stat` estimates, the PPC date/shipping reconciliation is recorded,
+> interpretive statements (framework purpose + pattern→analysis mapping) are labelled as inference, "more
+> accurate" is reworded to "uses actual Amazon fees rather than the protocol's 15% assumption", the £96k figure
+> carries its caveat inline, a "Source of figures" pointer was added, and the 24-observed-vs-28-protocol PH
+> distinction is explicit. No new files, architecture, or requirements were created. **Verdict: clean PASS, 0
+> open warnings.** See `CORRECTION_SUMMARY.md` for before/after evidence.
+
+The documentation is well-evidenced and traceable. No fabricated facts were found. The original warnings were:
 (a) several headline numbers are `pg_stat` **estimates** stated in places as if exact, and (b) a set of
 **interpretive/inferred** statements (framework purpose, pattern→analysis mapping, "more accurate", risk
-ratings, architecture choice) are reasonable and evidence-anchored but are **judgements, not direct query
-output**, and are not always labelled as such.
+ratings, architecture choice) were judgements, not direct query output, and were not always labelled as such.
+Both warning classes are now closed by C-1…C-7.
 
 ---
 
@@ -119,34 +127,35 @@ labelled as judgements (see Required Corrections).
 
 ## Required Corrections
 
-Listed for action; **not applied** (audit-only). All are clarity/labelling fixes — no factual errors found.
+All 7 corrections **APPLIED 2026-06-22** (D01 closure). All were clarity/labelling fixes — no factual errors found.
 
-| # | File | Correction | Priority |
-|---|------|-----------|----------|
-| C-1 | `README.md` | State row counts as **estimates** (`pg_stat`), matching the "Est. rows" labelling used in the discovery tables. | MEDIUM |
-| C-2 | `requirements/REQ-001_WEEKLY_LEAKAGE_PROTOCOL.md` | Add a note reconciling protocol "PPC from Oct 2025" with observed UK data from 2025-01-01 (EM-2). | MEDIUM |
-| C-3 | `discovery/PHASE2_LEAKAGE_FRAMEWORK_REVIEW.md` | Label §1 "Why the framework exists" explicitly as **inference** (A-2); same for the pattern→analysis mapping (A-3). | MEDIUM |
-| C-4 | `architecture_review/OPTION_B_EXTEND_EXISTING.md`, `FINAL_ARCHITECTURE_DECISION.md` | Reword "more accurate" (A-4) to the factual basis: "uses actual Amazon fees rather than the protocol's 15% assumption." | LOW |
-| C-5 | `discovery/PHASE2_LEAKAGE_FRAMEWORK_REVIEW.md` | Where £96,301.55 appears, keep the caveat inline every time the figure is cited (EM-1). Already caveated once; make it inseparable from the number. | LOW |
-| C-6 | All docs restating shared figures | Add a one-line "Source of figures: `evidence/query_results/`" pointer to discourage transcription drift (Duplicate Truth finding). | LOW |
-| C-7 | `discovery/PHASE1_EXISTING_ASSET_SCAN.md` | Ensure "24 PHs (observed) vs 28 (protocol)" distinction is explicit wherever PH counts appear (A-9). | LOW |
+| # | File | Correction | Priority | Status |
+|---|------|-----------|----------|--------|
+| C-1 | `README.md` | State row counts as **estimates** (`pg_stat`), matching the "Est. rows" labelling used in the discovery tables. | MEDIUM | **C-1 COMPLETE** |
+| C-2 | `requirements/REQ-001_WEEKLY_LEAKAGE_PROTOCOL.md` | Add a note reconciling protocol "PPC from Oct 2025" with observed UK data from 2025-01-01 (EM-2). | MEDIUM | **C-2 COMPLETE** |
+| C-3 | `discovery/PHASE2_LEAKAGE_FRAMEWORK_REVIEW.md` | Label §1 "Why the framework exists" explicitly as **inference** (A-2); same for the pattern→analysis mapping (A-3). | MEDIUM | **C-3 COMPLETE** |
+| C-4 | `architecture_review/OPTION_B_EXTEND_EXISTING.md`, `FINAL_ARCHITECTURE_DECISION.md` | Reword "more accurate" (A-4) to the factual basis: "uses actual Amazon fees rather than the protocol's 15% assumption." | LOW | **C-4 COMPLETE** |
+| C-5 | `discovery/PHASE2_LEAKAGE_FRAMEWORK_REVIEW.md` | Where £96,301.55 appears, keep the caveat inline every time the figure is cited (EM-1). | LOW | **C-5 COMPLETE** |
+| C-6 | Shared figures | Add a one-line "Source of figures: `evidence/query_results/`" pointer (added at README/index level). | LOW | **C-6 COMPLETE** |
+| C-7 | `discovery/PHASE1_EXISTING_ASSET_SCAN.md` | Ensure "24 PHs (observed) vs 28 (protocol)" distinction is explicit wherever PH counts appear (A-9). | LOW | **C-7 COMPLETE** |
 
 ---
 
 ## Verdict
 
-> ## 🟡 PASS WITH WARNINGS
+> ## 🟢 PASS (re-graded 2026-06-22 — C-1…C-7 all applied)
 >
 > - **No fabricated facts.** Every measured claim traces to a recorded query result and a named source object.
-> - **Warnings:** (1) estimate-vs-exact labelling on row counts; (2) interpretive statements (framework
->   purpose, pattern mapping, "more accurate", OPTION B) not always flagged as judgement; (3) one
->   protocol-vs-observed date discrepancy unreconciled (EM-2); (4) shared figures duplicated by transcription
->   across files.
-> - **None are blocking.** All 7 required corrections are clarity/labelling, not factual fixes.
-> - **Queryability: YES** for all measured facts; **PARTIAL** (by design) for architecture judgements.
+> - **All 4 warning classes closed:** (1) row counts now labelled `pg_stat` estimates [C-1]; (2) interpretive
+>   statements — framework purpose, pattern mapping, "more accurate" — now labelled as inference / reworded
+>   [C-3, C-4]; (3) the protocol-vs-observed PPC date + shipping coverage reconciled [C-2]; (4) shared-figure
+>   transcription drift mitigated by a "Source of figures" pointer + inline £96k caveat [C-5, C-6]; PH count
+>   24-vs-28 made explicit [C-7].
+> - **Queryability: YES** for all measured facts; **PARTIAL by design** for architecture judgements (now
+>   explicitly labelled as judgements).
+> - **No new files, architecture, or requirements created** during correction — existing files edited only.
 >
-> The investigation documentation is fit for Bietrick's review and sign-off. Apply C-1…C-7 before the build
-> phase to reach a clean PASS.
+> The investigation documentation is now clean PASS and ready for Bietrick's OPTION B sign-off.
 
 ---
 

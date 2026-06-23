@@ -51,6 +51,13 @@ sidebar, tabs, tick system, ASIN colour tags, equations shown; each PH sees only
 Protocol explicitly accepts that absolute net carries a margin of error but **relative comparisons remain
 directionally accurate**.
 
+> **Observed vs stated (C-2):** the table above transcribes the protocol's stated values. Live discovery found
+> two divergences — (a) PPC: protocol says "from Oct 2025", but UK `ppc_performance` actually holds data from
+> **2025-01-01** (`evidence/query_results/PHASE1_RESULTS.md` §07) — i.e. *more* history than stated; (b) shipping:
+> protocol states 77% coverage, but measured coverage is **99.8% on completed orders** / 73.5% across all
+> statuses (`PHASE1_RESULTS.md` §05, `POSTGRES_DATA_GAP_ANALYSIS.md` §0). These are reconciliations, not errors
+> in the protocol.
+
 ---
 
 ## 5. Explicit non-goals (protocol §9)

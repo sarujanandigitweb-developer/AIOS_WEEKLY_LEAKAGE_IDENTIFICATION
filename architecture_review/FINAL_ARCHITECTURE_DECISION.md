@@ -15,9 +15,10 @@
 
 ## 2. Why B (evidence trace)
 
-1. **The foundation already exists and is more accurate.** `vw_fbm_uk_order_profitability` joins the four
-   needed tables and uses **ACTUAL Amazon fees** (Commission/DigitalServicesFee/RefundCommission) plus actual
-   postage — better than the protocol's assumed 15%. Reuse it for L2/L3/L5. *(Evidence: view definition,
+1. **The foundation already exists and uses actual Amazon fees rather than the protocol's 15% assumption.**
+   `vw_fbm_uk_order_profitability` joins the four needed tables and uses **ACTUAL Amazon fees**
+   (Commission/DigitalServicesFee/RefundCommission) plus actual postage — instead of the protocol's assumed 15%.
+   Reuse it for L2/L3/L5. *(Evidence: view definition,
    `PHASE2_RESULTS.md`.)*
 2. **3 of 5 analyses already have a pattern class.** PAID_MEDIA_RUNAWAY→L1/L3, SHIPPING_HIGH→L2,
    RETURNS_ISSUE→L4 in `leakage_pattern_registry`. The taxonomy is reusable as report labels. *(7-row registry.)*

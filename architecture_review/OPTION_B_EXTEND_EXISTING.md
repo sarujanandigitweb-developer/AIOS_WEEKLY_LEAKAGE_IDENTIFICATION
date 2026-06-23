@@ -21,7 +21,7 @@ record.
 
 | Strength | Evidence |
 |----------|----------|
-| Foundation already exists and is **more accurate** than the protocol's assumptions (actual fees) | `vw_fbm_uk_order_profitability` definition |
+| Foundation already exists and **uses actual Amazon fees rather than the protocol's 15% assumption** | `vw_fbm_uk_order_profitability` definition |
 | 3 of 5 analyses map to **existing pattern classes** | `leakage_pattern_registry` (7 rows) |
 | Avoids duplicate truth on L2/L3 by sharing one status of record | `DUPLICATE_TRUTH_ASSESSMENT.md` |
 | Adds the **closure loop** the engine lacks | 404 OPEN / 0 CLOSED |

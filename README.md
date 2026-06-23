@@ -85,6 +85,11 @@ AIOS_Weekly_Leakage_Identification/
   framework** (reuse the profitability views, reuse the pattern taxonomy, add the 3 missing analyses and the
   weekly closure loop).
 
+> **Note on figures (C-1, C-6):** All table/row counts cited across this workspace are PostgreSQL `pg_stat`
+> **estimates** (`n_live_tup`), not exact `COUNT(*)`. **Source of figures:** the recorded outputs in
+> `evidence/query_results/` are the single source of truth; any figure restated in other documents is a
+> transcription of those results.
+
 ---
 
 ## Document control

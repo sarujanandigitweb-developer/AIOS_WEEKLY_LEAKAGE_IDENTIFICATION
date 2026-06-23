@@ -58,6 +58,7 @@
 | `shipping_template_price` largely empty | `05_shipping_template_check` → only 358 / 9,766 rows populated (3.7%) | Protocol's "additional shipping template" has near-zero data |
 | Shipping coverage < stated | `05_shipping_coverage` → 73.5% (protocol stated 77%) | 26.5% of orders have no carrier charge |
 | PH mapping incomplete | `04_ph_mapping` → 83.4% mapped in last 30d | ~1 in 6 UK FBM orders unattributed |
+| PH count: observed vs protocol | `04_ph_mapping` → **24 distinct PHs observed** (last-30d Amazon UK FBM) vs **28 PHs listed in the protocol** | The 4-PH gap is **observed-vs-protocol**, not missing data — likely PHs with no orders in the window. Do not conflate the measured 24 with the protocol's 28 |
 | No PostgreSQL views in `public` | `list_objects(public, view)` returned `[]` | All reusable views live in `development`/`staging_ai` |
 
 ---
