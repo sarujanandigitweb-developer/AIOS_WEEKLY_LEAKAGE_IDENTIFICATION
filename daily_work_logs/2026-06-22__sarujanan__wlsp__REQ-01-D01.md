@@ -12,7 +12,7 @@
 | project | AIOS Weekly Leakage Identification |
 | project_code | WLSP |
 | phase | DISCOVERY |
-| requirement_id | DP-WLSP-REQ-01 |
+| requirement_id | REQ-01 |
 | deliverable_id | D01 |
 | status | COMPLETE |
 | evidence_location | daily_task.tbl_wlsp_sarujanan + daily_work_logs/2026_06_22_wlsp_work_log.csv |

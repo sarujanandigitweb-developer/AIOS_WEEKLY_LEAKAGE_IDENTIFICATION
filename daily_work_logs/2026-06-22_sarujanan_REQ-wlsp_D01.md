@@ -9,7 +9,7 @@
 | Field | Value |
 | ----- | ----- |
 | daily_requirement_submitted_date | 2026-06-22 (Monday — execution date of D01; protocol PDF dated June 2026) |
-| expected_deadline_date | Not specified as a date in source evidence. Protocol states "first execution the Monday following receipt"; management status estimates ≈8 working days for the OPTION B build after sign-off |
+| expected_deadline_date | 2026-06-26  |
 | end_user | Bietrick (TL) — Protocol Owner & Executor (PH team are downstream consumers) |
 | expected_roi | £800–£1,500 per week of identifiable leakage prevented across the PH team (protocol §Purpose) |
 | developer | sarujanan |

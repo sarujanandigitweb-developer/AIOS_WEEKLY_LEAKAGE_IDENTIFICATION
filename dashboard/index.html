@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<!--
+  WLSP Dashboard — index.html  (DISPLAY ONLY)
+  AIOS Weekly Leakage Identification · UK Amazon FBM · LEDSone + DCVoltage
+
+  Reads EXCLUSIVELY from window.dashboardData (data.js). Contains:
+    - NO database connections / MCP calls / SQL
+    - NO leakage calculations
+    - NO hardcoded leakage values (counts & rows come from dashboardData)
+  Static analysis LABELS/THRESHOLDS are UI structure extracted from the design.
+
+  Regenerate data.js from MCP results later — this file does not change.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PH Weekly Leakage Action Lists</title>
+<style>
+  :root{
+    --ink:#1d2330; --panel:#262d3d; --red:#c0392b; --red2:#e74c3c;
+    --line:#e3e6ea; --muted:#7a8190; --grn:#1e8e4e; --bg:#f4f5f7; --amber:#b7791f;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#1d2330;font-size:13px;}
+  /* Header */
+  header.app{background:var(--ink);color:#fff;display:flex;justify-content:space-between;align-items:flex-start;padding:16px 22px;}
+  header.app h1{font-size:18px;margin:0 0 4px;letter-spacing:.3px;}
+  header.app .sub{color:#aeb6c4;font-size:11px;text-transform:uppercase;letter-spacing:.4px;}
+  header.app .deadline{background:#2c3446;border-left:4px solid var(--amber);padding:8px 14px;color:#f0c674;font-weight:bold;font-size:13px;white-space:nowrap;}
+  header.app .deadline small{display:block;color:#cdd3dd;font-weight:normal;}
+  /* Tabs / KPI */
+  nav.tabs{display:flex;background:#fff;border-bottom:2px solid var(--line);overflow-x:auto;}
+  nav.tabs button{border:0;background:none;padding:12px 18px;font-size:12px;font-weight:bold;letter-spacing:.4px;color:#55607a;
+    cursor:pointer;border-bottom:3px solid transparent;text-transform:uppercase;white-space:nowrap;}
+  nav.tabs button .cnt{display:inline-block;margin-left:8px;background:#eef0f3;color:#1d2330;border-radius:10px;padding:1px 8px;font-size:11px;}
+  nav.tabs button.active{color:var(--red);border-bottom-color:var(--red);}
+  nav.tabs button.active .cnt{background:var(--red);color:#fff;}
+  /* Layout */
+  .layout{display:flex;align-items:flex-start;}
+  aside.filter{width:200px;min-width:200px;background:#fff;border-right:1px solid var(--line);padding:14px 0;min-height:70vh;}
+  aside.filter h4{margin:0;padding:6px 16px;color:var(--muted);font-size:10px;letter-spacing:.6px;text-transform:uppercase;}
+  aside.filter .item{padding:5px 16px;cursor:pointer;color:#33415c;}
+  aside.filter .item:hover{background:#f4f6f9;}
+  aside.filter .item.active{color:var(--grn);font-weight:bold;}
+  aside.filter .sep{height:1px;background:var(--line);margin:10px 0;}
+  main.content{flex:1;padding:14px 20px;min-width:0;}
+  /* Meta block */
+  .meta{color:var(--amber);font-size:12px;margin-bottom:6px;}
+  .meta b{color:#8a6d1a;}
+  .flagcond{font-family:Consolas,monospace;color:var(--grn);font-size:11px;background:#f7faf8;border:1px solid #e4efe8;padding:6px 10px;margin:6px 0;}
+  .progress{display:flex;align-items:center;gap:10px;color:var(--muted);margin:8px 0 14px;}
+  .bar{flex:1;height:8px;background:#e7e9ed;border-radius:6px;overflow:hidden;max-width:320px;}
+  .bar > div{height:100%;background:var(--grn);width:0;}
+  /* PH group */
+  .ph-group{border:1px solid var(--line);border-radius:4px;margin-bottom:14px;background:#fff;}
+  .ph-head{display:flex;justify-content:space-between;align-items:center;border-left:4px solid var(--red);
+    padding:9px 12px;cursor:pointer;font-weight:bold;}
+  .ph-head .flagged{color:var(--red);font-size:12px;}
+  .ph-body{padding:4px 10px 10px;}
+  /* Card */
+  .card{display:flex;gap:10px;border:1px solid #eceef1;border-radius:3px;padding:9px 10px;margin:8px 0;}
+  .card .idx{color:var(--muted);min-width:18px;text-align:right;}
+  .card .body{flex:1;min-width:0;}
+  .card .ttl{font-weight:bold;}
+  .card .acct{font-weight:bold;}
+  .card .acct.led{color:#2563b8;} .card .acct.dcv{color:var(--red);}
+  .card .metrics{margin-top:3px;}
+  .card .eq{font-family:Consolas,monospace;color:var(--grn);font-size:11px;margin-top:2px;}
+  .card .act{color:var(--red);font-weight:bold;margin-top:4px;}
+  .card .dl{color:var(--muted);font-size:11px;}
+  .card .tick{min-width:22px;display:flex;align-items:flex-start;justify-content:center;}
+  .card.done{opacity:.55;}
+  table.mini{border-collapse:collapse;width:100%;margin-top:4px;font-size:12px;}
+  table.mini th,table.mini td{border:1px solid #eceef1;padding:3px 6px;text-align:right;}
+  table.mini th:first-child,table.mini td:first-child{text-align:left;}
+  table.mini tr.decline td{background:#fdecea;color:var(--red);}
+  .empty{color:var(--muted);padding:24px;text-align:center;font-style:italic;}
+  .note{color:var(--muted);font-size:11px;margin-top:10px;font-style:italic;}
+</style>
+</head>
+<body>
+  <header class="app">
+    <div>
+      <h1 id="h-title"></h1>
+      <div class="sub" id="h-sub"></div>
+    </div>
+    <div class="deadline" id="h-deadline"></div>
+  </header>
+
+  <nav class="tabs" id="tabs"></nav>
+
+  <div class="layout">
+    <aside class="filter">
+      <h4>Filter · PH Owner</h4>
+      <div id="ph-filter"></div>
+      <div class="sep"></div>
+      <h4>Account</h4>
+      <div id="acct-filter"></div>
+    </aside>
+    <main class="content" id="main"></main>
+  </div>
+
+<script src="data.js"></script>
+<script>
+'use strict';
+(function(){
+  const D = (window.dashboardData) || {summary:{},l1:[],l2:[],l3:[],l4:[],l5:[],ph_summary:[],account_summary:[],verification_summary:[]};
+
+  /* ---- UI structure extracted from the provided design (labels only) ----- */
+  const ANALYSES = [
+    { key:'l1', tab:'ZERO-CONV PPC', title:'Zero-Conversion PPC', window:'Last 7 days',
+      threshold:'Spend > £3 AND Conversions = 0', group:'asin', problem:'ZERO CONVERSION PPC',
+      flag:'SUM(ppc_performance.spend) > £3 AND SUM(ppc_performance.orders) = 0  →  Every £ spent returned £0 in sales' },
+    { key:'l2', tab:'HIGH SHIPPING', title:'Shipping > 25% of Revenue', window:'Last 7 days',
+      threshold:'Shipping > 25% of Revenue', group:'asin', problem:'SHIPPING TOO HIGH',
+      flag:'SUM(carrier_charge) > 0.25 × SUM(item_price × quantity)' },
+    { key:'l3', tab:'NET NEGATIVE', title:'Net-Negative + PPC', window:'Last 7 days',
+      threshold:'(Revenue × 0.45) − Shipping − PPC < £0 AND PPC > £5', group:'asin', problem:'NET NEGATIVE',
+      flag:'(revenue × 0.45) − shipping − ppc < 0 AND ppc > 5' },
+    { key:'l4', tab:'REFUND RATE', title:'Refund Rate > 10%', window:'Last 30 days',
+      threshold:'Refund Rate > 10% (min 2 orders)', group:'asin', problem:'HIGH REFUND',
+      flag:'COUNT(Refunded) ÷ COUNT(total) > 0.10 AND COUNT(total) ≥ 2' },
+    { key:'l5', tab:'MARGIN TREND', title:'PH Margin Trend', window:'Last 3 months',
+      threshold:'Net margin declining ≥ 2 consecutive months', group:'ph-trend', problem:'MARGIN DECLINE',
+      flag:'margin(m) < margin(m-1) < margin(m-2)' }
+  ];
+
+  /* ---- state ---- */
+  let activeKey = 'l1';
+  let phFilter = '__ALL__';
+  let acctFilter = '__ALL__';
+  const TICKS = loadTicks();
+
+  /* ---- helpers ---- */
+  function $(id){return document.getElementById(id);}
+  function txt(v){return (v===null||v===undefined)?'':String(v);}
+  function num(v){ if(v===null||v===undefined||v==='') return '0'; const n=Number(v); return isNaN(n)?String(v):n.toLocaleString(); }
+  function money(v){ const n=Number(v); return isNaN(n)?txt(v):('£'+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})); }
+  function pct(a,b){ a=Number(a);b=Number(b); if(!b) return '0.00%'; return ((100*a/b).toFixed(2))+'%'; }
+  function esc(s){ return txt(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+  function rowsFor(key){ return Array.isArray(D[key])?D[key]:[]; }
+  function countFor(key){ const c=D.summary&&D.summary.counts&&D.summary.counts[key]; if(c!=null) return c;
+    if(key==='l5') return uniquePhs(rowsFor('l5').filter(r=>r.declining)).length; return rowsFor(key).length; }
+  function uniquePhs(rows){ return [...new Set(rows.map(r=>r.ph||'UNATTRIBUTED'))]; }
+  function acctClass(a){ a=txt(a).toLowerCase(); return a.indexOf('dcv')>=0?'dcv':(a.indexOf('led')>=0?'led':''); }
+  function rowKey(key,r){ return key+'::'+txt(r.asin)+'::'+txt(r.sku)+'::'+txt(r.ph)+'::'+txt(r.month); }
+
+  function loadTicks(){ try{ return JSON.parse(localStorage.getItem('wlsp_ticks')||'{}'); }catch(e){ return {}; } }
+  function saveTicks(){ try{ localStorage.setItem('wlsp_ticks', JSON.stringify(TICKS)); }catch(e){} }
+
+  /* ---- header ---- */
+  function renderHeader(){
+    const s = D.summary||{};
+    $('h-title').textContent = s.report_title || 'PH Weekly Leakage Action Lists';
+    const subBits = [
+      s.scope || 'UK Amazon FBM',
+      s.accounts || 'LEDSone + DCVoltage',
+      (s.ph_count!=null? s.ph_count+' PH OWNERS' : 'ALL PH OWNERS'),
+      (s.analyses_count|| ANALYSES.length)+' ANALYSES',
+      s.generated_at? ('GENERATED '+s.generated_at) : 'AWAITING DATA'
+    ];
+    $('h-sub').textContent = subBits.join('  ·  ');
+    $('h-deadline').innerHTML = '⚠ Deadline<small>'+esc(s.deadline||'—')+'</small>';
+  }
+
+  /* ---- tabs / KPI ---- */
+  function renderTabs(){
+    const nav=$('tabs'); nav.innerHTML='';
+    ANALYSES.forEach(a=>{
+      const b=document.createElement('button');
+      b.className=(a.key===activeKey?'active':'');
+      b.innerHTML=esc(a.tab)+'<span class="cnt">'+countFor(a.key)+'</span>';
+      b.onclick=()=>{ activeKey=a.key; render(); };
+      nav.appendChild(b);
+    });
+  }
+
+  /* ---- sidebar filters ---- */
+  function phList(){
+    if(Array.isArray(D.ph_summary)&&D.ph_summary.length) return D.ph_summary.map(p=>p.ph).filter(Boolean).sort();
+    return uniquePhs(rowsFor(activeKey)).sort();
+  }
+  function acctList(){
+    if(Array.isArray(D.account_summary)&&D.account_summary.length) return D.account_summary.map(a=>a.account).filter(Boolean);
+    const fromRows=[...new Set(rowsFor(activeKey).map(r=>r.account).filter(Boolean))];
+    return fromRows.length?fromRows:['LEDSone UK','DCVoltage UK'];
+  }
+  function renderFilters(){
+    const ph=$('ph-filter'); ph.innerHTML='';
+    mkItem(ph,'● All PHs','__ALL__',phFilter,v=>{phFilter=v;render();});
+    phList().forEach(p=> mkItem(ph,p,p,phFilter,v=>{phFilter=v;render();}));
+    const ac=$('acct-filter'); ac.innerHTML='';
+    mkItem(ac,'All Accounts','__ALL__',acctFilter,v=>{acctFilter=v;render();});
+    acctList().forEach(a=> mkItem(ac,a,a,acctFilter,v=>{acctFilter=v;render();}));
+  }
+  function mkItem(parent,label,val,current,cb){
+    const d=document.createElement('div');
+    d.className='item'+(val===current?' active':'');
+    d.textContent=label; d.onclick=()=>cb(val); parent.appendChild(d);
+  }
+
+  /* ---- main ---- */
+  function filteredRows(key){
+    return rowsFor(key).filter(r=>{
+      if(phFilter!=='__ALL__' && (r.ph||'UNATTRIBUTED')!==phFilter) return false;
+      if(acctFilter!=='__ALL__' && r.account!==acctFilter) return false;
+      return true;
+    });
+  }
+  function groupByPh(rows){
+    const g={}; rows.forEach(r=>{ const p=r.ph||'UNATTRIBUTED'; (g[p]=g[p]||[]).push(r); }); return g;
+  }
+
+  function metricLine(key,r){
+    if(key==='l1') return 'Spend: '+money(r.spend)+' | Clicks: '+num(r.clicks)+' | Impressions: '+num(r.impressions)+' | Conversions: '+num(r.conversions);
+    if(key==='l2') return 'Revenue: '+money(r.revenue)+' | Shipping: '+money(r.shipping)+' | Shipping %: '+txt(r.shipping_pct)+'% | Orders: '+num(r.orders);
+    if(key==='l3') return 'Revenue: '+money(r.revenue)+' | Shipping: '+money(r.shipping)+' | PPC: '+money(r.ppc)+' | Net: '+money(r.net);
+    if(key==='l4') return 'Total Orders: '+num(r.total_orders)+' | Refunded: '+num(r.refunded_orders)+' | Refund Rate: '+txt(r.refund_rate)+'% | Revenue at Risk: '+money(r.revenue_at_risk);
+    return '';
+  }
+  function eqLine(key,r){
+    if(key==='l1') return 'CTR = '+num(r.clicks)+'/'+num(r.impressions)+' = '+pct(r.clicks,r.impressions)+'  ·  CVR = '+num(r.conversions)+'/'+num(r.clicks)+' = '+pct(r.conversions,r.clicks);
+    if(key==='l2') return 'shipping% = '+money(r.shipping)+' / '+money(r.revenue)+' = '+txt(r.shipping_pct)+'%';
+    if(key==='l3') return 'net = ('+money(r.revenue)+'×0.45) − '+money(r.shipping)+' − '+money(r.ppc)+' = '+money(r.net);
+    if(key==='l4') return 'rate = '+num(r.refunded_orders)+'/'+num(r.total_orders)+' = '+txt(r.refund_rate)+'%';
+    return '';
+  }
+
+  function renderMain(){
+    const a = ANALYSES.find(x=>x.key===activeKey);
+    const main=$('main'); main.innerHTML='';
+    const s=D.summary||{};
+
+    const meta=document.createElement('div');
+    meta.className='meta';
+    meta.innerHTML='Analysis: <b>'+esc(a.title)+'</b> ('+esc(a.window)+')  |  Scope: '+esc(s.scope||'UK Amazon FBM · LEDSone + DCVoltage')+
+      '  |  Threshold: <b>'+esc(a.threshold)+'</b>';
+    main.appendChild(meta);
+
+    const fc=document.createElement('div'); fc.className='flagcond';
+    fc.textContent='FLAG CONDITION (from database)  '+a.flag; main.appendChild(fc);
+
+    // L5 renders as PH trend tables; L1-L4 render as PH-grouped ASIN cards
+    if(a.group==='ph-trend'){ renderL5(main,a); return; }
+
+    const rows=filteredRows(activeKey);
+    const total=rows.length;
+    let done=rows.filter(r=>TICKS[rowKey(activeKey,r)]).length;
+
+    const prog=document.createElement('div'); prog.className='progress';
+    prog.innerHTML='<span><b id="done-n">'+done+'</b> of <b>'+total+'</b> done</span><span class="bar"><div id="bar-fill"></div></span>';
+    main.appendChild(prog);
+    updateBar(done,total);
+
+    if(!total){ main.appendChild(empty()); return; }
+
+    const groups=groupByPh(rows);
+    Object.keys(groups).sort().forEach(ph=>{
+      const list=groups[ph];
+      const grp=document.createElement('div'); grp.className='ph-group';
+      const head=document.createElement('div'); head.className='ph-head';
+      head.innerHTML='<span>'+esc(ph)+'</span><span class="flagged">'+list.length+' flagged</span>';
+      const body=document.createElement('div'); body.className='ph-body';
+      head.onclick=()=>{ body.style.display = body.style.display==='none'?'block':'none'; };
+      list.forEach((r,i)=> body.appendChild(card(a,r,i+1)));
+      grp.appendChild(head); grp.appendChild(body); main.appendChild(grp);
+    });
+  }
+
+  function card(a,r,idx){
+    const key=rowKey(a.key,r);
+    const c=document.createElement('div'); c.className='card'+(TICKS[key]?' done':'');
+    const accCls=acctClass(r.account);
+    c.innerHTML=
+      '<div class="idx">'+idx+'</div>'+
+      '<div class="body">'+
+        '<div class="ttl">ASIN: '+esc(r.asin||'—')+'  <span class="acct '+accCls+'">'+esc(r.account||'')+'</span>'+
+        '  | SKU: '+esc(r.sku||'—')+'  | '+esc(a.problem)+'</div>'+
+        '<div class="metrics">'+esc(metricLine(a.key,r))+'</div>'+
+        '<div class="eq">'+esc(eqLine(a.key,r))+'</div>'+
+        '<div class="act">ACTION: '+esc(r.action||a.action||'')+'</div>'+
+        '<div class="dl">Deadline: '+esc(r.deadline|| (D.summary&&D.summary.deadline) || '—')+'</div>'+
+      '</div>'+
+      '<div class="tick"><input type="checkbox" '+(TICKS[key]?'checked':'')+' /></div>';
+    const cb=c.querySelector('input');
+    cb.onchange=()=>{ if(cb.checked) TICKS[key]=1; else delete TICKS[key]; saveTicks();
+      c.classList.toggle('done',cb.checked); refreshProgress(); };
+    return c;
+  }
+
+  function renderL5(main,a){
+    const rows=rowsFor('l5').filter(r=>{
+      if(phFilter!=='__ALL__' && (r.ph||'UNATTRIBUTED')!==phFilter) return false; return true; });
+    const byPh={}; rows.forEach(r=>{ (byPh[r.ph]=byPh[r.ph]||[]).push(r); });
+    const phs=Object.keys(byPh).sort();
+    const declining=phs.filter(p=>byPh[p].some(m=>m.declining));
+    const prog=document.createElement('div'); prog.className='progress';
+    prog.innerHTML='<span><b>'+declining.length+'</b> PH(s) flagged (declining ≥2 months) of <b>'+phs.length+'</b></span>';
+    main.appendChild(prog);
+    if(!phs.length){ main.appendChild(empty()); return; }
+    phs.forEach(ph=>{
+      const months=byPh[ph].slice().sort((x,y)=>txt(x.month).localeCompare(txt(y.month)));
+      const flagged=months.some(m=>m.declining);
+      const grp=document.createElement('div'); grp.className='ph-group';
+      const head=document.createElement('div'); head.className='ph-head';
+      head.innerHTML='<span>'+esc(ph)+'</span><span class="flagged">'+(flagged?'DECLINING':'stable')+'</span>';
+      const body=document.createElement('div'); body.className='ph-body';
+      let t='<table class="mini"><tr><th>Month</th><th>Revenue</th><th>Shipping</th><th>PPC</th><th>Net</th><th>Margin %</th></tr>';
+      months.forEach(m=>{ t+='<tr class="'+(m.declining?'decline':'')+'"><td>'+esc(m.month)+'</td><td>'+money(m.revenue)+'</td><td>'+money(m.shipping)+'</td><td>'+money(m.ppc)+'</td><td>'+money(m.net)+'</td><td>'+txt(m.margin_pct)+'%</td></tr>'; });
+      t+='</table>';
+      body.innerHTML=t;
+      head.onclick=()=>{ body.style.display = body.style.display==='none'?'block':'none'; };
+      grp.appendChild(head); grp.appendChild(body); main.appendChild(grp);
+    });
+  }
+
+  function empty(){ const d=document.createElement('div'); d.className='empty';
+    d.textContent='No flagged items in dashboardData — regenerate data.js from MCP results.'; return d; }
+
+  function refreshProgress(){
+    const rows=filteredRows(activeKey);
+    const done=rows.filter(r=>TICKS[rowKey(activeKey,r)]).length;
+    const dn=document.getElementById('done-n'); if(dn) dn.textContent=done;
+    updateBar(done,rows.length);
+  }
+  function updateBar(done,total){ const f=document.getElementById('bar-fill'); if(f) f.style.width=(total?Math.round(100*done/total):0)+'%'; }
+
+  function render(){ renderHeader(); renderTabs(); renderFilters(); renderMain(); }
+  document.addEventListener('DOMContentLoaded', render);
+})();
+</script>
+</body>
+</html>
