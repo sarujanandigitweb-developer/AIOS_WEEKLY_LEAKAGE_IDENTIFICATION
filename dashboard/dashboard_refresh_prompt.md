@@ -69,6 +69,7 @@ ppc AS (SELECT sku, SUM(spend) ppc FROM public.ppc_performance
 ### Q_L2 — shipping > 25% of revenue (7d, ASIN grain)
 ```sql
 SELECT l.asin, COALESCE(NULLIF(MAX(l.user_name),''),'UNATTRIBUTED') AS ph,
+       MAX(l.sku) AS sku,   -- representative SKU (L2 is ASIN-grain); REQUIRED for the dashboard SKU column
        CASE WHEN MAX(l.ss_name) ILIKE '%dcvoltage%' THEN 'DCVoltage UK'
             WHEN MAX(l.ss_name) ILIKE '%ledsone%' OR MAX(l.ss_name) ILIKE '%led_sone%'
               OR MAX(l.ss_name) ILIKE '%srm%' THEN 'LEDSone UK' ELSE MAX(l.ss_name) END AS account,
