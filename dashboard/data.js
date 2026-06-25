@@ -1,268 +1,2291 @@
-/* ============================================================================
- * WLSP Dashboard — data.js  (REAL MCP RESULTS — no mock values)
- * AIOS Weekly Leakage Identification · UK Amazon FBM · LEDSone + DCVoltage
- *
- * Generated from live PostgreSQL source tables on 2026-06-24 via MCP:
- *   public.ppc_performance, public.order_transaction,
- *   public.order_shipping_billing_detail, public.amazon_returns
- * NO development.leakage_* or ph_action_board.* used for calculations.
- * index.html reads ONLY from dashboardData; this file changes, the HTML does not.
- *
- * COMPLETENESS: L3/L4/L5 = COMPLETE. L1 (total 144) and L2 (total 214) detail
- * arrays carry the TOP 40 by severity; summary.counts holds the TRUE totals so
- * the KPI tabs show 144/214. Each analysis records displayed vs total. Raising
- * the SQL LIMIT regenerates the full arrays with no HTML change.
- * ==========================================================================*/
-
+/* WLSP Dashboard data.js — real MCP results (2026-06-24). Sidebar aggregates now
+   carry FULL-dataset totals (account_summary / ph_summary); ph_status tags
+   UNATTRIBUTED rows. L1-L5 calculations, KPI counts and detail rows unchanged. */
 const dashboardData = {
-  summary: {
-    report_title: "PH Weekly Leakage Action Lists",
-    report_date: "2026-06-24",
-    generated_at: "2026-06-24",
-    scope: "UK Amazon FBM",
-    accounts: "LEDSone + DCVoltage",
-    deadline: "Wednesday 2026-06-24 EOD",
-    ph_count: 24,
-    analyses_count: 5,
-    counts: { l1: 144, l2: 214, l3: 15, l4: 31, l5: 9 },
-    displayed: { l1: 40, l2: 40, l3: 15, l4: 31, l5: 24 }
+  "summary": {
+    "report_title": "PH Weekly Leakage Action Lists",
+    "report_date": "2026-06-24",
+    "generated_at": "2026-06-24",
+    "scope": "UK Amazon FBM",
+    "accounts": "LEDSone + DCVoltage",
+    "deadline": "Wednesday 2026-06-24 EOD",
+    "ph_count": 24,
+    "analyses_count": 5,
+    "counts": {
+      "l1": 144,
+      "l2": 214,
+      "l3": 15,
+      "l4": 31,
+      "l5": 9
+    },
+    "displayed": {
+      "l1": 40,
+      "l2": 40,
+      "l3": 15,
+      "l4": 31,
+      "l5": 24
+    }
   },
-
-  /* L1 — Zero-Conversion PPC (7d) — showing top 40 of 144 by spend */
-  l1: [
-    {ph:"Theepana",asin:"B09YYSLDWP",sku:"PLADBM+LSDO210BG3PK+ICST64E273PK",account:"DCVoltage UK",spend:18.50,clicks:46,impressions:3712,conversions:0},
-    {ph:"UNATTRIBUTED",asin:"B0FNWFF268",sku:"LSWD360BG+RPR44WH",account:"LEDSone UK",spend:16.79,clicks:37,impressions:5573,conversions:0},
-    {ph:"UNATTRIBUTED",asin:"B08WC68BFR",sku:"WCBKHE+RPR44WH",account:"DCVoltage UK",spend:12.76,clicks:40,impressions:7600,conversions:0},
-    {ph:"Jasmini",asin:"B07LFF7MM6",sku:"3CRBK10 M",account:"DCVoltage UK",spend:12.46,clicks:16,impressions:3915,conversions:0},
-    {ph:"paulr",asin:"B0DMF2KF74",sku:"WCCYSP160BM2PK",account:"LEDSone UK",spend:12.26,clicks:57,impressions:3771,conversions:0},
-    {ph:"utharsika",asin:"B0CS9PS8J3",sku:"LSCY210BG3PK+RPR44WH3PK-WW",account:"DCVoltage UK",spend:11.20,clicks:23,impressions:6456,conversions:0},
-    {ph:"shimee",asin:"162823715743",sku:"0",account:"LEDSone UK",spend:11.09,clicks:59,impressions:37130,conversions:0},
-    {ph:"utharsika",asin:"B08XNPKHZX",sku:"LSSS300YE+RPR44WH",account:"DCVoltage UK",spend:10.92,clicks:22,impressions:3573,conversions:0},
-    {ph:"utharsika",asin:"B08TX216Y4",sku:"LSMS320BD+RPR44WH-AMD",account:"DCVoltage UK",spend:8.61,clicks:18,impressions:1693,conversions:0},
-    {ph:"UNATTRIBUTED",asin:"B097YR1WKC",sku:"CRFF500BM+PHHT1PBRRO3PK+WCWDRO3PK",account:"LEDSone UK",spend:8.45,clicks:26,impressions:773,conversions:0},
-    {ph:"Poovitha",asin:"B0F7Q77D8Q",sku:"ENC7472_AB",account:"LEDSone UK",spend:8.42,clicks:17,impressions:3809,conversions:0},
-    {ph:"UNATTRIBUTED",asin:"162276028284",sku:"0",account:"LEDSone UK",spend:8.40,clicks:42,impressions:22482,conversions:0},
-    {ph:"Jubista",asin:"B08XB9VQZ3",sku:"PSDS2BMRBU",account:"DCVoltage UK",spend:8.27,clicks:35,impressions:4115,conversions:0},
-    {ph:"Poovitha",asin:"B0G646NX1V",sku:"CRSF100BM+LHNSE27BM+SCRN70BM+LSWD360BM",account:"LEDSone UK",spend:7.75,clicks:20,impressions:2110,conversions:0},
-    {ph:"utharsika",asin:"B0C7H3C8L8",sku:"LSFT220BS+RPR44WH A",account:"DCVoltage UK",spend:7.66,clicks:26,impressions:3091,conversions:0},
-    {ph:"shimee",asin:"B0CG3GTY9C",sku:"WSOSBDBM+icu",account:"LEDSone UK",spend:7.56,clicks:30,impressions:2121,conversions:0},
-    {ph:"Theepana",asin:"B08X74ZL7L",sku:"PLWCBM",account:"DCVoltage UK",spend:7.54,clicks:11,impressions:1927,conversions:0},
-    {ph:"utharsika",asin:"B0CJCF5PCD",sku:"LSSS300CH2PK+RPR44WH2PK",account:"DCVoltage UK",spend:7.39,clicks:12,impressions:1531,conversions:0},
-    {ph:"paulr",asin:"B08NDBQLMZ",sku:"WCDTBM+RPR44WH A",account:"DCVoltage UK",spend:7.15,clicks:17,impressions:3175,conversions:0},
-    {ph:"Renuha",asin:"B0CHF49HKL",sku:"CRSF100BM+PHUH1HETBM+LSHM400HE-AMZ",account:"LEDSone UK",spend:7.13,clicks:18,impressions:1819,conversions:0},
-    {ph:"Tharsiga(nelli)",asin:"B0CCHYSJWC",sku:"SPSDP2YB",account:"LEDSone UK",spend:7.00,clicks:20,impressions:4070,conversions:0},
-    {ph:"UNATTRIBUTED",asin:"B094D9PTHN",sku:"CRFF500BM+PHMU1PBRSN3PK+LSDM220SN3PK",account:"LEDSone UK",spend:6.71,clicks:16,impressions:2260,conversions:0},
-    {ph:"Renuha",asin:"167862493949",sku:"0",account:"LEDSone UK",spend:6.69,clicks:31,impressions:6531,conversions:0},
-    {ph:"Theepana",asin:"B0GLPHBN8D",sku:"PL4HRR",account:"DCVoltage UK",spend:6.66,clicks:16,impressions:1272,conversions:0},
-    {ph:"Theepana",asin:"B09YYRTJWR",sku:"PLADBC+LSDO210BC3PK",account:"DCVoltage UK",spend:6.51,clicks:15,impressions:2557,conversions:0},
-    {ph:"UNATTRIBUTED",asin:"B09MQR9Z4Q",sku:"WCB5WH+RPR44WH_A",account:"LEDSone UK",spend:6.47,clicks:18,impressions:4309,conversions:0},
-    {ph:"Theepana",asin:"B0CQNKMFJH",sku:"PLTTRR+LSFT220RR T",account:"DCVoltage UK",spend:6.45,clicks:22,impressions:2954,conversions:0},
-    {ph:"Thojika",asin:"314148529895",sku:"0",account:"so_926407",spend:6.38,clicks:39,impressions:8485,conversions:0},
-    {ph:"Theepana",asin:"B0FXGSY978",sku:"PLADBC2PK",account:"DCVoltage UK",spend:6.34,clicks:12,impressions:4807,conversions:0},
-    {ph:"utharsika",asin:"B0C7H1M3JD",sku:"LSFT220BG+RPR44WH A",account:"DCVoltage UK",spend:6.27,clicks:17,impressions:2339,conversions:0},
-    {ph:"Abinayaa",asin:"B0FL7BRGF4",sku:"PHSF2GDTYB2PK+ICST64E272PK",account:"DCVoltage UK",spend:6.23,clicks:15,impressions:1329,conversions:0},
-    {ph:"UNATTRIBUTED",asin:"B09HV6YPCH",sku:"CRFF500BM+PHHT1PBRBM3PK+WCDTBM3PK-M",account:"LEDSone UK",spend:5.97,clicks:16,impressions:2356,conversions:0},
-    {ph:"Renuha",asin:"B08X4TCVN8",sku:"CRFF4503BM+WCRNBM3PK",account:"DCVoltage UK",spend:5.96,clicks:17,impressions:1406,conversions:0},
-    {ph:"Tharsika(jaffna)",asin:"166849248974",sku:"0",account:"LEDSone UK",spend:5.80,clicks:30,impressions:7629,conversions:0},
-    {ph:"mothajini",asin:"B09643CJ5N",sku:"CRFF500BM+PHCH1BMRBM3PK+LSDO210BG3PK-AMD",account:"DCVoltage UK",spend:5.77,clicks:22,impressions:2908,conversions:0},
-    {ph:"utharsika",asin:"B0CBBYF5QX",sku:"LSMS320BD+RPR44WH KR",account:"DCVoltage UK",spend:5.73,clicks:15,impressions:2869,conversions:0},
-    {ph:"utharsika",asin:"B0GSFB5MT6",sku:"LSGLULCL+RPM40WH_",account:"DCVoltage UK",spend:5.68,clicks:23,impressions:1163,conversions:0},
-    {ph:"Renuha",asin:"164980506176",sku:"0",account:"LEDSone UK",spend:5.67,clicks:26,impressions:3888,conversions:0},
-    {ph:"UNATTRIBUTED",asin:"B09KNTHHN1",sku:"CRSF2003BM+PHRB1PBR40BM3PK+LSBS160OR3PKD",account:"LEDSone UK",spend:5.54,clicks:13,impressions:1625,conversions:0},
-    {ph:"Abinayaa",asin:"B0CGRQ5Z4T",sku:"CRSF100BM2PK+PHRYWP1RBM2PK",account:"LEDSone UK",spend:5.47,clicks:31,impressions:5163,conversions:0}
+  "l1": [
+    {
+      "ph": "Theepana",
+      "asin": "B09YYSLDWP",
+      "sku": "PLADBM+LSDO210BG3PK+ICST64E273PK",
+      "account": "DCVoltage UK",
+      "spend": 18.5,
+      "clicks": 46,
+      "impressions": 3712,
+      "conversions": 0
+    },
+    {
+      "ph": "UNATTRIBUTED",
+      "asin": "B0FNWFF268",
+      "sku": "LSWD360BG+RPR44WH",
+      "account": "LEDSone UK",
+      "spend": 16.79,
+      "clicks": 37,
+      "impressions": 5573,
+      "conversions": 0,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "ph": "UNATTRIBUTED",
+      "asin": "B08WC68BFR",
+      "sku": "WCBKHE+RPR44WH",
+      "account": "DCVoltage UK",
+      "spend": 12.76,
+      "clicks": 40,
+      "impressions": 7600,
+      "conversions": 0,
+      "ph_status": "RECOVERABLE"
+    },
+    {
+      "ph": "Jasmini",
+      "asin": "B07LFF7MM6",
+      "sku": "3CRBK10 M",
+      "account": "DCVoltage UK",
+      "spend": 12.46,
+      "clicks": 16,
+      "impressions": 3915,
+      "conversions": 0
+    },
+    {
+      "ph": "paulr",
+      "asin": "B0DMF2KF74",
+      "sku": "WCCYSP160BM2PK",
+      "account": "LEDSone UK",
+      "spend": 12.26,
+      "clicks": 57,
+      "impressions": 3771,
+      "conversions": 0
+    },
+    {
+      "ph": "utharsika",
+      "asin": "B0CS9PS8J3",
+      "sku": "LSCY210BG3PK+RPR44WH3PK-WW",
+      "account": "DCVoltage UK",
+      "spend": 11.2,
+      "clicks": 23,
+      "impressions": 6456,
+      "conversions": 0
+    },
+    {
+      "ph": "shimee",
+      "asin": "162823715743",
+      "sku": "0",
+      "account": "LEDSone UK",
+      "spend": 11.09,
+      "clicks": 59,
+      "impressions": 37130,
+      "conversions": 0
+    },
+    {
+      "ph": "utharsika",
+      "asin": "B08XNPKHZX",
+      "sku": "LSSS300YE+RPR44WH",
+      "account": "DCVoltage UK",
+      "spend": 10.92,
+      "clicks": 22,
+      "impressions": 3573,
+      "conversions": 0
+    },
+    {
+      "ph": "utharsika",
+      "asin": "B08TX216Y4",
+      "sku": "LSMS320BD+RPR44WH-AMD",
+      "account": "DCVoltage UK",
+      "spend": 8.61,
+      "clicks": 18,
+      "impressions": 1693,
+      "conversions": 0
+    },
+    {
+      "ph": "UNATTRIBUTED",
+      "asin": "B097YR1WKC",
+      "sku": "CRFF500BM+PHHT1PBRRO3PK+WCWDRO3PK",
+      "account": "LEDSone UK",
+      "spend": 8.45,
+      "clicks": 26,
+      "impressions": 773,
+      "conversions": 0,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "ph": "Poovitha",
+      "asin": "B0F7Q77D8Q",
+      "sku": "ENC7472_AB",
+      "account": "LEDSone UK",
+      "spend": 8.42,
+      "clicks": 17,
+      "impressions": 3809,
+      "conversions": 0
+    },
+    {
+      "ph": "UNATTRIBUTED",
+      "asin": "162276028284",
+      "sku": "0",
+      "account": "LEDSone UK",
+      "spend": 8.4,
+      "clicks": 42,
+      "impressions": 22482,
+      "conversions": 0,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "ph": "Jubista",
+      "asin": "B08XB9VQZ3",
+      "sku": "PSDS2BMRBU",
+      "account": "DCVoltage UK",
+      "spend": 8.27,
+      "clicks": 35,
+      "impressions": 4115,
+      "conversions": 0
+    },
+    {
+      "ph": "Poovitha",
+      "asin": "B0G646NX1V",
+      "sku": "CRSF100BM+LHNSE27BM+SCRN70BM+LSWD360BM",
+      "account": "LEDSone UK",
+      "spend": 7.75,
+      "clicks": 20,
+      "impressions": 2110,
+      "conversions": 0
+    },
+    {
+      "ph": "utharsika",
+      "asin": "B0C7H3C8L8",
+      "sku": "LSFT220BS+RPR44WH A",
+      "account": "DCVoltage UK",
+      "spend": 7.66,
+      "clicks": 26,
+      "impressions": 3091,
+      "conversions": 0
+    },
+    {
+      "ph": "shimee",
+      "asin": "B0CG3GTY9C",
+      "sku": "WSOSBDBM+icu",
+      "account": "LEDSone UK",
+      "spend": 7.56,
+      "clicks": 30,
+      "impressions": 2121,
+      "conversions": 0
+    },
+    {
+      "ph": "Theepana",
+      "asin": "B08X74ZL7L",
+      "sku": "PLWCBM",
+      "account": "DCVoltage UK",
+      "spend": 7.54,
+      "clicks": 11,
+      "impressions": 1927,
+      "conversions": 0
+    },
+    {
+      "ph": "utharsika",
+      "asin": "B0CJCF5PCD",
+      "sku": "LSSS300CH2PK+RPR44WH2PK",
+      "account": "DCVoltage UK",
+      "spend": 7.39,
+      "clicks": 12,
+      "impressions": 1531,
+      "conversions": 0
+    },
+    {
+      "ph": "paulr",
+      "asin": "B08NDBQLMZ",
+      "sku": "WCDTBM+RPR44WH A",
+      "account": "DCVoltage UK",
+      "spend": 7.15,
+      "clicks": 17,
+      "impressions": 3175,
+      "conversions": 0
+    },
+    {
+      "ph": "Renuha",
+      "asin": "B0CHF49HKL",
+      "sku": "CRSF100BM+PHUH1HETBM+LSHM400HE-AMZ",
+      "account": "LEDSone UK",
+      "spend": 7.13,
+      "clicks": 18,
+      "impressions": 1819,
+      "conversions": 0
+    },
+    {
+      "ph": "Tharsiga(nelli)",
+      "asin": "B0CCHYSJWC",
+      "sku": "SPSDP2YB",
+      "account": "LEDSone UK",
+      "spend": 7,
+      "clicks": 20,
+      "impressions": 4070,
+      "conversions": 0
+    },
+    {
+      "ph": "UNATTRIBUTED",
+      "asin": "B094D9PTHN",
+      "sku": "CRFF500BM+PHMU1PBRSN3PK+LSDM220SN3PK",
+      "account": "LEDSone UK",
+      "spend": 6.71,
+      "clicks": 16,
+      "impressions": 2260,
+      "conversions": 0,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "ph": "Renuha",
+      "asin": "167862493949",
+      "sku": "0",
+      "account": "LEDSone UK",
+      "spend": 6.69,
+      "clicks": 31,
+      "impressions": 6531,
+      "conversions": 0
+    },
+    {
+      "ph": "Theepana",
+      "asin": "B0GLPHBN8D",
+      "sku": "PL4HRR",
+      "account": "DCVoltage UK",
+      "spend": 6.66,
+      "clicks": 16,
+      "impressions": 1272,
+      "conversions": 0
+    },
+    {
+      "ph": "Theepana",
+      "asin": "B09YYRTJWR",
+      "sku": "PLADBC+LSDO210BC3PK",
+      "account": "DCVoltage UK",
+      "spend": 6.51,
+      "clicks": 15,
+      "impressions": 2557,
+      "conversions": 0
+    },
+    {
+      "ph": "UNATTRIBUTED",
+      "asin": "B09MQR9Z4Q",
+      "sku": "WCB5WH+RPR44WH_A",
+      "account": "LEDSone UK",
+      "spend": 6.47,
+      "clicks": 18,
+      "impressions": 4309,
+      "conversions": 0,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "ph": "Theepana",
+      "asin": "B0CQNKMFJH",
+      "sku": "PLTTRR+LSFT220RR T",
+      "account": "DCVoltage UK",
+      "spend": 6.45,
+      "clicks": 22,
+      "impressions": 2954,
+      "conversions": 0
+    },
+    {
+      "ph": "Thojika",
+      "asin": "314148529895",
+      "sku": "0",
+      "account": "so_926407",
+      "spend": 6.38,
+      "clicks": 39,
+      "impressions": 8485,
+      "conversions": 0
+    },
+    {
+      "ph": "Theepana",
+      "asin": "B0FXGSY978",
+      "sku": "PLADBC2PK",
+      "account": "DCVoltage UK",
+      "spend": 6.34,
+      "clicks": 12,
+      "impressions": 4807,
+      "conversions": 0
+    },
+    {
+      "ph": "utharsika",
+      "asin": "B0C7H1M3JD",
+      "sku": "LSFT220BG+RPR44WH A",
+      "account": "DCVoltage UK",
+      "spend": 6.27,
+      "clicks": 17,
+      "impressions": 2339,
+      "conversions": 0
+    },
+    {
+      "ph": "Abinayaa",
+      "asin": "B0FL7BRGF4",
+      "sku": "PHSF2GDTYB2PK+ICST64E272PK",
+      "account": "DCVoltage UK",
+      "spend": 6.23,
+      "clicks": 15,
+      "impressions": 1329,
+      "conversions": 0
+    },
+    {
+      "ph": "UNATTRIBUTED",
+      "asin": "B09HV6YPCH",
+      "sku": "CRFF500BM+PHHT1PBRBM3PK+WCDTBM3PK-M",
+      "account": "LEDSone UK",
+      "spend": 5.97,
+      "clicks": 16,
+      "impressions": 2356,
+      "conversions": 0,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "ph": "Renuha",
+      "asin": "B08X4TCVN8",
+      "sku": "CRFF4503BM+WCRNBM3PK",
+      "account": "DCVoltage UK",
+      "spend": 5.96,
+      "clicks": 17,
+      "impressions": 1406,
+      "conversions": 0
+    },
+    {
+      "ph": "Tharsika(jaffna)",
+      "asin": "166849248974",
+      "sku": "0",
+      "account": "LEDSone UK",
+      "spend": 5.8,
+      "clicks": 30,
+      "impressions": 7629,
+      "conversions": 0
+    },
+    {
+      "ph": "mothajini",
+      "asin": "B09643CJ5N",
+      "sku": "CRFF500BM+PHCH1BMRBM3PK+LSDO210BG3PK-AMD",
+      "account": "DCVoltage UK",
+      "spend": 5.77,
+      "clicks": 22,
+      "impressions": 2908,
+      "conversions": 0
+    },
+    {
+      "ph": "utharsika",
+      "asin": "B0CBBYF5QX",
+      "sku": "LSMS320BD+RPR44WH KR",
+      "account": "DCVoltage UK",
+      "spend": 5.73,
+      "clicks": 15,
+      "impressions": 2869,
+      "conversions": 0
+    },
+    {
+      "ph": "utharsika",
+      "asin": "B0GSFB5MT6",
+      "sku": "LSGLULCL+RPM40WH_",
+      "account": "DCVoltage UK",
+      "spend": 5.68,
+      "clicks": 23,
+      "impressions": 1163,
+      "conversions": 0
+    },
+    {
+      "ph": "Renuha",
+      "asin": "164980506176",
+      "sku": "0",
+      "account": "LEDSone UK",
+      "spend": 5.67,
+      "clicks": 26,
+      "impressions": 3888,
+      "conversions": 0
+    },
+    {
+      "ph": "UNATTRIBUTED",
+      "asin": "B09KNTHHN1",
+      "sku": "CRSF2003BM+PHRB1PBR40BM3PK+LSBS160OR3PKD",
+      "account": "LEDSone UK",
+      "spend": 5.54,
+      "clicks": 13,
+      "impressions": 1625,
+      "conversions": 0,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "ph": "Abinayaa",
+      "asin": "B0CGRQ5Z4T",
+      "sku": "CRSF100BM2PK+PHRYWP1RBM2PK",
+      "account": "LEDSone UK",
+      "spend": 5.47,
+      "clicks": 31,
+      "impressions": 5163,
+      "conversions": 0
+    }
   ],
-
-  /* L2 — Shipping > 25% of Revenue (7d) — showing top 40 of 214 by shipping_pct */
-  l2: [
-    {asin:"B0F4XTTV54",ph:"shimee",account:"DCVoltage UK",revenue:0.68,shipping:2.72,orders:1,shipping_pct:400.0},
-    {asin:"B08RYTP5WV",ph:"UNATTRIBUTED",account:"LEDSone UK",revenue:1.82,shipping:4.88,orders:2,shipping_pct:268.1},
-    {asin:"B0F6NLP99K",ph:"UNATTRIBUTED",account:"LEDSone UK",revenue:1.15,shipping:2.44,orders:1,shipping_pct:212.2},
-    {asin:"B0DX6NBT9P",ph:"Jasmini",account:"LEDSone UK",revenue:7.22,shipping:14.92,orders:6,shipping_pct:206.6},
-    {asin:"B0F2T68CNP",ph:"utharsika",account:"DCVoltage UK",revenue:1.29,shipping:2.44,orders:1,shipping_pct:189.1},
-    {asin:"B0F4XY3MHC",ph:"shimee",account:"DCVoltage UK",revenue:1.29,shipping:2.44,orders:1,shipping_pct:189.1},
-    {asin:"B0F29P1SH6",ph:"Jasmini",account:"LEDSone UK",revenue:2.82,shipping:4.88,orders:2,shipping_pct:173.0},
-    {asin:"B0F1TMC6HP",ph:"Jasmini",account:"DCVoltage UK",revenue:1.49,shipping:2.44,orders:1,shipping_pct:163.8},
-    {asin:"B0FDQYNDNH",ph:"Jasmini",account:"LEDSone UK",revenue:1.66,shipping:2.44,orders:1,shipping_pct:147.0},
-    {asin:"B0CVN3GCBM",ph:"utharsika",account:"LEDSone UK",revenue:3.32,shipping:4.88,orders:2,shipping_pct:147.0},
-    {asin:"B0F8Q7QDMV",ph:"Jasmini",account:"LEDSone UK",revenue:1.66,shipping:2.44,orders:1,shipping_pct:147.0},
-    {asin:"B0F2YNX9P7",ph:"utharsika",account:"DCVoltage UK",revenue:1.69,shipping:2.44,orders:1,shipping_pct:144.4},
-    {asin:"B0CVB98VVG",ph:"utharsika",account:"DCVoltage UK",revenue:1.89,shipping:2.44,orders:1,shipping_pct:129.1},
-    {asin:"B0DX6TP9TZ",ph:"Jasmini",account:"LEDSone UK",revenue:4.14,shipping:5.16,orders:2,shipping_pct:124.6},
-    {asin:"B0F28X88QJ",ph:"Jasmini",account:"DCVoltage UK",revenue:1.99,shipping:2.44,orders:1,shipping_pct:122.6},
-    {asin:"B0CVB98NSX",ph:"utharsika",account:"DCVoltage UK",revenue:1.99,shipping:2.44,orders:1,shipping_pct:122.6},
-    {asin:"B0CSDPYCLM",ph:"UNATTRIBUTED",account:"LEDSone UK",revenue:2.30,shipping:2.72,orders:1,shipping_pct:118.3},
-    {asin:"B0DCDB1TLJ",ph:"prasath",account:"LEDSone UK",revenue:2.12,shipping:2.44,orders:1,shipping_pct:115.1},
-    {asin:"B0DCHM8TH7",ph:"UNATTRIBUTED",account:"LEDSone UK",revenue:2.24,shipping:2.44,orders:1,shipping_pct:108.9},
-    {asin:"B0DYT8NSY9",ph:"utharsika",account:"LEDSone UK",revenue:9.64,shipping:9.76,orders:4,shipping_pct:101.2},
-    {asin:"B0743GYD52",ph:"Thojika",account:"LEDSone UK",revenue:2.41,shipping:2.44,orders:1,shipping_pct:101.2},
-    {asin:"B0CW1TB57F",ph:"utharsika",account:"LEDSone UK",revenue:2.41,shipping:2.44,orders:1,shipping_pct:101.2},
-    {asin:"B0CVMX2MY5",ph:"utharsika",account:"DCVoltage UK",revenue:2.49,shipping:2.44,orders:1,shipping_pct:98.0},
-    {asin:"B0CVB8N9HV",ph:"utharsika",account:"DCVoltage UK",revenue:2.49,shipping:2.44,orders:1,shipping_pct:98.0},
-    {asin:"B0F1D3YQPG",ph:"utharsika",account:"DCVoltage UK",revenue:2.49,shipping:2.44,orders:1,shipping_pct:98.0},
-    {asin:"B0DZNJDHCQ",ph:"utharsika",account:"LEDSone UK",revenue:3.48,shipping:3.32,orders:2,shipping_pct:95.4},
-    {asin:"B0D8PBMLB7",ph:"UNATTRIBUTED",account:"LEDSone UK",revenue:2.75,shipping:2.44,orders:1,shipping_pct:88.7},
-    {asin:"B0GSRFYV81",ph:"Tharsika(jaffna)",account:"DCVoltage UK",revenue:3.09,shipping:2.72,orders:1,shipping_pct:88.0},
-    {asin:"B0F1TNP4JB",ph:"Jasmini",account:"DCVoltage UK",revenue:3.09,shipping:2.72,orders:1,shipping_pct:88.0},
-    {asin:"B0F1MM438G",ph:"utharsika",account:"DCVoltage UK",revenue:2.89,shipping:2.44,orders:1,shipping_pct:84.4},
-    {asin:"B0F4432H4K",ph:"UNATTRIBUTED",account:"DCVoltage UK",revenue:2.89,shipping:2.44,orders:1,shipping_pct:84.4},
-    {asin:"B0DX6BP7GV",ph:"Jasmini",account:"LEDSone UK",revenue:12.96,shipping:10.88,orders:4,shipping_pct:84.0},
-    {asin:"B0847NWD8P",ph:"Tharsiga(nelli)",account:"LEDSone UK",revenue:2.91,shipping:2.44,orders:1,shipping_pct:83.8},
-    {asin:"B0F441RQ1Q",ph:"UNATTRIBUTED",account:"DCVoltage UK",revenue:2.99,shipping:2.44,orders:1,shipping_pct:81.6},
-    {asin:"B08DHZG9VQ",ph:"Tharsiga(nelli)",account:"DCVoltage UK",revenue:2.99,shipping:2.44,orders:1,shipping_pct:81.6},
-    {asin:"B0CPDPWLV4",ph:"Thojika",account:"DCVoltage UK",revenue:3.00,shipping:2.44,orders:1,shipping_pct:81.3},
-    {asin:"B0B18NDGCQ",ph:"UNATTRIBUTED",account:"DCVoltage UK",revenue:3.09,shipping:2.44,orders:1,shipping_pct:79.0},
-    {asin:"B0CT5PY35Z",ph:"prasath",account:"DCVoltage UK",revenue:3.49,shipping:2.72,orders:1,shipping_pct:77.9},
-    {asin:"B0DZ1Z169M",ph:"utharsika",account:"LEDSone UK",revenue:3.49,shipping:2.44,orders:1,shipping_pct:69.9},
-    {asin:"B0F8Q9RWCH",ph:"Jasmini",account:"LEDSone UK",revenue:8.32,shipping:5.44,orders:2,shipping_pct:65.4}
+  "l2": [
+    {
+      "asin": "B0F4XTTV54",
+      "ph": "shimee",
+      "account": "DCVoltage UK",
+      "revenue": 0.68,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 400
+    },
+    {
+      "asin": "B08RYTP5WV",
+      "ph": "UNATTRIBUTED",
+      "account": "LEDSone UK",
+      "revenue": 1.82,
+      "shipping": 4.88,
+      "orders": 2,
+      "shipping_pct": 268.1,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "asin": "B0F6NLP99K",
+      "ph": "UNATTRIBUTED",
+      "account": "LEDSone UK",
+      "revenue": 1.15,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 212.2,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "asin": "B0DX6NBT9P",
+      "ph": "Jasmini",
+      "account": "LEDSone UK",
+      "revenue": 7.22,
+      "shipping": 14.92,
+      "orders": 6,
+      "shipping_pct": 206.6
+    },
+    {
+      "asin": "B0F2T68CNP",
+      "ph": "utharsika",
+      "account": "DCVoltage UK",
+      "revenue": 1.29,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 189.1
+    },
+    {
+      "asin": "B0F4XY3MHC",
+      "ph": "shimee",
+      "account": "DCVoltage UK",
+      "revenue": 1.29,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 189.1
+    },
+    {
+      "asin": "B0F29P1SH6",
+      "ph": "Jasmini",
+      "account": "LEDSone UK",
+      "revenue": 2.82,
+      "shipping": 4.88,
+      "orders": 2,
+      "shipping_pct": 173
+    },
+    {
+      "asin": "B0F1TMC6HP",
+      "ph": "Jasmini",
+      "account": "DCVoltage UK",
+      "revenue": 1.49,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 163.8
+    },
+    {
+      "asin": "B0FDQYNDNH",
+      "ph": "Jasmini",
+      "account": "LEDSone UK",
+      "revenue": 1.66,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 147
+    },
+    {
+      "asin": "B0CVN3GCBM",
+      "ph": "utharsika",
+      "account": "LEDSone UK",
+      "revenue": 3.32,
+      "shipping": 4.88,
+      "orders": 2,
+      "shipping_pct": 147
+    },
+    {
+      "asin": "B0F8Q7QDMV",
+      "ph": "Jasmini",
+      "account": "LEDSone UK",
+      "revenue": 1.66,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 147
+    },
+    {
+      "asin": "B0F2YNX9P7",
+      "ph": "utharsika",
+      "account": "DCVoltage UK",
+      "revenue": 1.69,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 144.4
+    },
+    {
+      "asin": "B0CVB98VVG",
+      "ph": "utharsika",
+      "account": "DCVoltage UK",
+      "revenue": 1.89,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 129.1
+    },
+    {
+      "asin": "B0DX6TP9TZ",
+      "ph": "Jasmini",
+      "account": "LEDSone UK",
+      "revenue": 4.14,
+      "shipping": 5.16,
+      "orders": 2,
+      "shipping_pct": 124.6
+    },
+    {
+      "asin": "B0F28X88QJ",
+      "ph": "Jasmini",
+      "account": "DCVoltage UK",
+      "revenue": 1.99,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 122.6
+    },
+    {
+      "asin": "B0CVB98NSX",
+      "ph": "utharsika",
+      "account": "DCVoltage UK",
+      "revenue": 1.99,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 122.6
+    },
+    {
+      "asin": "B0CSDPYCLM",
+      "ph": "UNATTRIBUTED",
+      "account": "LEDSone UK",
+      "revenue": 2.3,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 118.3,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "asin": "B0DCDB1TLJ",
+      "ph": "prasath",
+      "account": "LEDSone UK",
+      "revenue": 2.12,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 115.1
+    },
+    {
+      "asin": "B0DCHM8TH7",
+      "ph": "UNATTRIBUTED",
+      "account": "LEDSone UK",
+      "revenue": 2.24,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 108.9,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "asin": "B0DYT8NSY9",
+      "ph": "utharsika",
+      "account": "LEDSone UK",
+      "revenue": 9.64,
+      "shipping": 9.76,
+      "orders": 4,
+      "shipping_pct": 101.2
+    },
+    {
+      "asin": "B0743GYD52",
+      "ph": "Thojika",
+      "account": "LEDSone UK",
+      "revenue": 2.41,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 101.2
+    },
+    {
+      "asin": "B0CW1TB57F",
+      "ph": "utharsika",
+      "account": "LEDSone UK",
+      "revenue": 2.41,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 101.2
+    },
+    {
+      "asin": "B0CVMX2MY5",
+      "ph": "utharsika",
+      "account": "DCVoltage UK",
+      "revenue": 2.49,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 98
+    },
+    {
+      "asin": "B0CVB8N9HV",
+      "ph": "utharsika",
+      "account": "DCVoltage UK",
+      "revenue": 2.49,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 98
+    },
+    {
+      "asin": "B0F1D3YQPG",
+      "ph": "utharsika",
+      "account": "DCVoltage UK",
+      "revenue": 2.49,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 98
+    },
+    {
+      "asin": "B0DZNJDHCQ",
+      "ph": "utharsika",
+      "account": "LEDSone UK",
+      "revenue": 3.48,
+      "shipping": 3.32,
+      "orders": 2,
+      "shipping_pct": 95.4
+    },
+    {
+      "asin": "B0D8PBMLB7",
+      "ph": "UNATTRIBUTED",
+      "account": "LEDSone UK",
+      "revenue": 2.75,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 88.7,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "asin": "B0GSRFYV81",
+      "ph": "Tharsika(jaffna)",
+      "account": "DCVoltage UK",
+      "revenue": 3.09,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 88
+    },
+    {
+      "asin": "B0F1TNP4JB",
+      "ph": "Jasmini",
+      "account": "DCVoltage UK",
+      "revenue": 3.09,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 88
+    },
+    {
+      "asin": "B0F1MM438G",
+      "ph": "utharsika",
+      "account": "DCVoltage UK",
+      "revenue": 2.89,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 84.4
+    },
+    {
+      "asin": "B0F4432H4K",
+      "ph": "UNATTRIBUTED",
+      "account": "DCVoltage UK",
+      "revenue": 2.89,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 84.4,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "asin": "B0DX6BP7GV",
+      "ph": "Jasmini",
+      "account": "LEDSone UK",
+      "revenue": 12.96,
+      "shipping": 10.88,
+      "orders": 4,
+      "shipping_pct": 84
+    },
+    {
+      "asin": "B0847NWD8P",
+      "ph": "Tharsiga(nelli)",
+      "account": "LEDSone UK",
+      "revenue": 2.91,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 83.8
+    },
+    {
+      "asin": "B0F441RQ1Q",
+      "ph": "UNATTRIBUTED",
+      "account": "DCVoltage UK",
+      "revenue": 2.99,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 81.6,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "asin": "B08DHZG9VQ",
+      "ph": "Tharsiga(nelli)",
+      "account": "DCVoltage UK",
+      "revenue": 2.99,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 81.6
+    },
+    {
+      "asin": "B0CPDPWLV4",
+      "ph": "Thojika",
+      "account": "DCVoltage UK",
+      "revenue": 3,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 81.3
+    },
+    {
+      "asin": "B0B18NDGCQ",
+      "ph": "UNATTRIBUTED",
+      "account": "DCVoltage UK",
+      "revenue": 3.09,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 79,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "asin": "B0CT5PY35Z",
+      "ph": "prasath",
+      "account": "DCVoltage UK",
+      "revenue": 3.49,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 77.9
+    },
+    {
+      "asin": "B0DZ1Z169M",
+      "ph": "utharsika",
+      "account": "LEDSone UK",
+      "revenue": 3.49,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 69.9
+    },
+    {
+      "asin": "B0F8Q9RWCH",
+      "ph": "Jasmini",
+      "account": "LEDSone UK",
+      "revenue": 8.32,
+      "shipping": 5.44,
+      "orders": 2,
+      "shipping_pct": 65.4
+    }
   ],
-
-  /* L3 — Net-Negative + PPC > £5 (7d) — COMPLETE (15 of 15) */
-  l3: [
-    {sku:"CL3TGD5PK",asin:"B0B9Y5MRSK",ph:"Jasmini",account:"LEDSone UK",revenue:57.45,shipping:12.20,ppc:66.19,net:-52.54},
-    {sku:"PHSF1BMTYB3PK",asin:"B0DQD74HVG",ph:"Abinayaa",account:"LEDSone UK",revenue:47.85,shipping:8.70,ppc:21.98,net:-9.15},
-    {sku:"SPSDP2YB",asin:"B0CCHYSJWC",ph:"Tharsiga(nelli)",account:"LEDSone UK",revenue:28.07,shipping:12.20,ppc:7.00,net:-6.57},
-    {sku:"WCCYSP180BM2PK+RPR44WH2PK",asin:"B0G49CBSQ3",ph:"paulr",account:"LEDSone UK",revenue:59.73,shipping:13.05,ppc:20.37,net:-6.54},
-    {sku:"CRFF108GB+HK10GB",asin:"B0B7799FKL",ph:"prasath",account:"LEDSone UK",revenue:21.21,shipping:6.08,ppc:8.92,net:-5.46},
-    {sku:"PCBM20DS5PK",asin:"B0DLBFH747",ph:"Arudchelvi",account:"LEDSone UK",revenue:4.91,shipping:2.44,ppc:5.05,net:-5.28},
-    {sku:"LSMS320BU+RPR44WH",asin:"B0CC62QM7Y",ph:"UNATTRIBUTED",account:"DCVoltage UK",revenue:29.98,shipping:5.44,ppc:13.24,net:-5.19},
-    {sku:"LSCYRO120BM2PK+RPR44WH2PK",asin:"B0FX2SHBL5",ph:"utharsika",account:"DCVoltage UK",revenue:43.78,shipping:5.96,ppc:18.44,net:-4.70},
-    {sku:"PL4HRR",asin:"B0GLPHBN8D",ph:"Theepana",account:"LEDSone UK",revenue:69.33,shipping:8.35,ppc:27.19,net:-4.34},
-    {sku:"LDMG95B228",asin:"B0CNPV5SC5",ph:"thuwaraga",account:"DCVoltage UK",revenue:20.37,shipping:6.33,ppc:6.67,net:-3.83},
-    {sku:"PHSF1ROTRO3PK",asin:"B0DQDBNJQ8",ph:"Abinayaa",account:"LEDSone UK",revenue:19.07,shipping:4.35,ppc:8.05,net:-3.82},
-    {sku:"WCWDRO+RPR44WH",asin:"B0DCS4YCFW",ph:"paulr",account:"LEDSone UK",revenue:16.82,shipping:5.44,ppc:5.49,net:-3.36},
-    {sku:"CRSF100BM+PHRYWP2RBM",asin:"B0CGRPTT6W",ph:"Abinayaa",account:"LEDSone UK",revenue:37.64,shipping:6.94,ppc:12.76,net:-2.76},
-    {sku:"LSCYRO120WH2PK+RPR44WH2PK",asin:"B0FX2TFPZM",ph:"utharsika",account:"DCVoltage UK",revenue:91.56,shipping:10.04,ppc:33.66,net:-2.50},
-    {sku:"CRSF100WH+LHTTE27WH",asin:"B08XBXG4DR",ph:"UNATTRIBUTED",account:"DCVoltage UK",revenue:76.23,shipping:19.04,ppc:17.56,net:-2.30}
+  "l3": [
+    {
+      "sku": "CL3TGD5PK",
+      "asin": "B0B9Y5MRSK",
+      "ph": "Jasmini",
+      "account": "LEDSone UK",
+      "revenue": 57.45,
+      "shipping": 12.2,
+      "ppc": 66.19,
+      "net": -52.54
+    },
+    {
+      "sku": "PHSF1BMTYB3PK",
+      "asin": "B0DQD74HVG",
+      "ph": "Abinayaa",
+      "account": "LEDSone UK",
+      "revenue": 47.85,
+      "shipping": 8.7,
+      "ppc": 21.98,
+      "net": -9.15
+    },
+    {
+      "sku": "SPSDP2YB",
+      "asin": "B0CCHYSJWC",
+      "ph": "Tharsiga(nelli)",
+      "account": "LEDSone UK",
+      "revenue": 28.07,
+      "shipping": 12.2,
+      "ppc": 7,
+      "net": -6.57
+    },
+    {
+      "sku": "WCCYSP180BM2PK+RPR44WH2PK",
+      "asin": "B0G49CBSQ3",
+      "ph": "paulr",
+      "account": "LEDSone UK",
+      "revenue": 59.73,
+      "shipping": 13.05,
+      "ppc": 20.37,
+      "net": -6.54
+    },
+    {
+      "sku": "CRFF108GB+HK10GB",
+      "asin": "B0B7799FKL",
+      "ph": "prasath",
+      "account": "LEDSone UK",
+      "revenue": 21.21,
+      "shipping": 6.08,
+      "ppc": 8.92,
+      "net": -5.46
+    },
+    {
+      "sku": "PCBM20DS5PK",
+      "asin": "B0DLBFH747",
+      "ph": "Arudchelvi",
+      "account": "LEDSone UK",
+      "revenue": 4.91,
+      "shipping": 2.44,
+      "ppc": 5.05,
+      "net": -5.28
+    },
+    {
+      "sku": "LSMS320BU+RPR44WH",
+      "asin": "B0CC62QM7Y",
+      "ph": "UNATTRIBUTED",
+      "account": "DCVoltage UK",
+      "revenue": 29.98,
+      "shipping": 5.44,
+      "ppc": 13.24,
+      "net": -5.19,
+      "ph_status": "RECOVERABLE"
+    },
+    {
+      "sku": "LSCYRO120BM2PK+RPR44WH2PK",
+      "asin": "B0FX2SHBL5",
+      "ph": "utharsika",
+      "account": "DCVoltage UK",
+      "revenue": 43.78,
+      "shipping": 5.96,
+      "ppc": 18.44,
+      "net": -4.7
+    },
+    {
+      "sku": "PL4HRR",
+      "asin": "B0GLPHBN8D",
+      "ph": "Theepana",
+      "account": "LEDSone UK",
+      "revenue": 69.33,
+      "shipping": 8.35,
+      "ppc": 27.19,
+      "net": -4.34
+    },
+    {
+      "sku": "LDMG95B228",
+      "asin": "B0CNPV5SC5",
+      "ph": "thuwaraga",
+      "account": "DCVoltage UK",
+      "revenue": 20.37,
+      "shipping": 6.33,
+      "ppc": 6.67,
+      "net": -3.83
+    },
+    {
+      "sku": "PHSF1ROTRO3PK",
+      "asin": "B0DQDBNJQ8",
+      "ph": "Abinayaa",
+      "account": "LEDSone UK",
+      "revenue": 19.07,
+      "shipping": 4.35,
+      "ppc": 8.05,
+      "net": -3.82
+    },
+    {
+      "sku": "WCWDRO+RPR44WH",
+      "asin": "B0DCS4YCFW",
+      "ph": "paulr",
+      "account": "LEDSone UK",
+      "revenue": 16.82,
+      "shipping": 5.44,
+      "ppc": 5.49,
+      "net": -3.36
+    },
+    {
+      "sku": "CRSF100BM+PHRYWP2RBM",
+      "asin": "B0CGRPTT6W",
+      "ph": "Abinayaa",
+      "account": "LEDSone UK",
+      "revenue": 37.64,
+      "shipping": 6.94,
+      "ppc": 12.76,
+      "net": -2.76
+    },
+    {
+      "sku": "LSCYRO120WH2PK+RPR44WH2PK",
+      "asin": "B0FX2TFPZM",
+      "ph": "utharsika",
+      "account": "DCVoltage UK",
+      "revenue": 91.56,
+      "shipping": 10.04,
+      "ppc": 33.66,
+      "net": -2.5
+    },
+    {
+      "sku": "CRSF100WH+LHTTE27WH",
+      "asin": "B08XBXG4DR",
+      "ph": "UNATTRIBUTED",
+      "account": "DCVoltage UK",
+      "revenue": 76.23,
+      "shipping": 19.04,
+      "ppc": 17.56,
+      "net": -2.3,
+      "ph_status": "MISSING_SOURCE"
+    }
   ],
-
-  /* L4 — Refund Rate > 10% (30d) — COMPLETE (31 of 31) */
-  l4: [
-    {asin:"B0CWRR4CWX",ph:"UNATTRIBUTED",account:"LEDSone UK",sku:"TPHTTF2PBRBM+WCB7BC+ICST64E27",total_orders:2,refunded_orders:1,refund_rate:50.0,revenue_at_risk:41.98},
-    {asin:"B0G5Y4HV1T",ph:"UNATTRIBUTED",account:"DCVoltage UK",sku:"CRSF2003BM+PHNW1RBM3PK",total_orders:2,refunded_orders:1,refund_rate:50.0,revenue_at_risk:22.89},
-    {asin:"B0GLH4GJMZ",ph:"thuwaraga",account:"DCVoltage UK",sku:"LDMT185E2735PK",total_orders:2,refunded_orders:1,refund_rate:50.0,revenue_at_risk:17.99},
-    {asin:"B0BX4GWZK3",ph:"utharsika",account:"DCVoltage UK",sku:"LSMS320GY+RPR44WH",total_orders:2,refunded_orders:1,refund_rate:50.0,revenue_at_risk:14.99},
-    {asin:"B0GLXHL585",ph:"Theepana",account:"LEDSone UK",sku:"PLHNBM",total_orders:2,refunded_orders:1,refund_rate:50.0,revenue_at_risk:12.41},
-    {asin:"B0979CLWN9",ph:"Thojika",account:"LEDSone UK",sku:"CNP1000BM",total_orders:2,refunded_orders:1,refund_rate:50.0,revenue_at_risk:3.82},
-    {asin:"B0GVT5JPGR",ph:"UNATTRIBUTED",account:"LEDSone UK",sku:"WCBTC100FG2PK+RPR44WH2PK",total_orders:5,refunded_orders:2,refund_rate:40.0,revenue_at_risk:29.82},
-    {asin:"B0FY5PN96J",ph:"Renuha",account:"LEDSone UK",sku:"PHUH2HETBM",total_orders:3,refunded_orders:1,refund_rate:33.3,revenue_at_risk:99.96},
-    {asin:"B09YYSLDWP",ph:"Theepana",account:"DCVoltage UK",sku:"PLADBM+LSDO210BG3PK+ICST64E273PK",total_orders:3,refunded_orders:1,refund_rate:33.3,revenue_at_risk:56.89},
-    {asin:"B0CVKZP3W2",ph:"utharsika",account:"DCVoltage UK",sku:"LSTF400BM+RPR44WH",total_orders:3,refunded_orders:1,refund_rate:33.3,revenue_at_risk:16.39},
-    {asin:"B0FN7JRXT5",ph:"UNATTRIBUTED",account:"LEDSone UK",sku:"CRSF100SN+LHNSE27SN+ICST64E27",total_orders:3,refunded_orders:1,refund_rate:33.3,revenue_at_risk:15.99},
-    {asin:"B0D8Y6WH46",ph:"utharsika",account:"LEDSone UK",sku:"LSRP260CO+RPR44WH",total_orders:3,refunded_orders:1,refund_rate:33.3,revenue_at_risk:15.82},
-    {asin:"B0GMHQTBSQ",ph:"Tharsika(jaffna)",account:"LEDSone UK",sku:"LHXSHE27BM2PK",total_orders:3,refunded_orders:1,refund_rate:33.3,revenue_at_risk:12.24},
-    {asin:"B0F946K2LJ",ph:"Jasmini",account:"LEDSone UK",sku:"CL3TLB3PK",total_orders:3,refunded_orders:1,refund_rate:33.3,revenue_at_risk:6.66},
-    {asin:"B0CHW3Q9VG",ph:"UNATTRIBUTED",account:"LEDSone UK",sku:"CRSF100YB+PHRI1PBRYB+LSDO300YB",total_orders:4,refunded_orders:1,refund_rate:25.0,revenue_at_risk:62.22},
-    {asin:"B0CP933MXR",ph:"UNATTRIBUTED",account:"DCVoltage UK",sku:"CRSF100BC2PK+PHCH1PBRBC2PK+LSCY290BC2PK",total_orders:4,refunded_orders:1,refund_rate:25.0,revenue_at_risk:36.89},
-    {asin:"B0F7X3BPQB",ph:"Poovitha",account:"LEDSone UK",sku:"ENC8625",total_orders:4,refunded_orders:1,refund_rate:25.0,revenue_at_risk:25.74},
-    {asin:"B0DXQ7YWGJ",ph:"utharsika",account:"LEDSone UK",sku:"LSCY290YB2PK+RPR44WH2PK",total_orders:4,refunded_orders:1,refund_rate:25.0,revenue_at_risk:23.24},
-    {asin:"B091B7NP2G",ph:"utharsika",account:"DCVoltage UK",sku:"LSMCSPDRFL+RPM40WH",total_orders:5,refunded_orders:1,refund_rate:20.0,revenue_at_risk:74.97},
-    {asin:"B0DPMQZ1WP",ph:"utharsika",account:"LEDSone UK",sku:"LSCYRO120GD+RPR44WH",total_orders:5,refunded_orders:1,refund_rate:20.0,revenue_at_risk:12.49},
-    {asin:"B0CS3LSTMS",ph:"paulr",account:"DCVoltage UK",sku:"WCB7BS+RPR44WH",total_orders:5,refunded_orders:1,refund_rate:20.0,revenue_at_risk:10.89},
-    {asin:"B07S8CCS1Q",ph:"prasath",account:"LEDSone UK",sku:"CRSF100YB",total_orders:5,refunded_orders:1,refund_rate:20.0,revenue_at_risk:6.57},
-    {asin:"B083H3BRWZ",ph:"prasath",account:"LEDSone UK",sku:"CRSF100CO",total_orders:5,refunded_orders:1,refund_rate:20.0,revenue_at_risk:4.32},
-    {asin:"B0DMF2KF74",ph:"paulr",account:"LEDSone UK",sku:"ENC9307",total_orders:16,refunded_orders:3,refund_rate:18.8,revenue_at_risk:68.22},
-    {asin:"B0DMDVX4S7",ph:"paulr",account:"LEDSone UK",sku:"ENC9313",total_orders:6,refunded_orders:1,refund_rate:16.7,revenue_at_risk:46.48},
-    {asin:"B0CKFD2MTJ",ph:"Theepana",account:"LEDSone UK",sku:"PLTYBM+ICST64E27",total_orders:6,refunded_orders:1,refund_rate:16.7,revenue_at_risk:15.74},
-    {asin:"B07PM5KN1T",ph:"Jasmini",account:"DCVoltage UK",sku:"CL3TGL5PK",total_orders:6,refunded_orders:1,refund_rate:16.7,revenue_at_risk:13.09},
-    {asin:"B0DNK2H74S",ph:"shimee",account:"LEDSone UK",sku:"ENC10078",total_orders:7,refunded_orders:1,refund_rate:14.3,revenue_at_risk:24.91},
-    {asin:"B083XHSX6F",ph:"Jasmini",account:"LEDSone UK",sku:"CL2TGD3PK",total_orders:7,refunded_orders:1,refund_rate:14.3,revenue_at_risk:4.24},
-    {asin:"B0DQD74HVG",ph:"Abinayaa",account:"LEDSone UK",sku:"PHSF1BMTYB3PK",total_orders:9,refunded_orders:1,refund_rate:11.1,revenue_at_risk:23.09},
-    {asin:"B0FX2TFPZM",ph:"utharsika",account:"DCVoltage UK",sku:"LSCYRO120WH2PK+RPR44WH2PK",total_orders:9,refunded_orders:1,refund_rate:11.1,revenue_at_risk:22.89}
+  "l4": [
+    {
+      "asin": "B0CWRR4CWX",
+      "ph": "UNATTRIBUTED",
+      "account": "LEDSone UK",
+      "sku": "TPHTTF2PBRBM+WCB7BC+ICST64E27",
+      "total_orders": 2,
+      "refunded_orders": 1,
+      "refund_rate": 50,
+      "revenue_at_risk": 41.98,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "asin": "B0G5Y4HV1T",
+      "ph": "UNATTRIBUTED",
+      "account": "DCVoltage UK",
+      "sku": "CRSF2003BM+PHNW1RBM3PK",
+      "total_orders": 2,
+      "refunded_orders": 1,
+      "refund_rate": 50,
+      "revenue_at_risk": 22.89,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "asin": "B0GLH4GJMZ",
+      "ph": "thuwaraga",
+      "account": "DCVoltage UK",
+      "sku": "LDMT185E2735PK",
+      "total_orders": 2,
+      "refunded_orders": 1,
+      "refund_rate": 50,
+      "revenue_at_risk": 17.99
+    },
+    {
+      "asin": "B0BX4GWZK3",
+      "ph": "utharsika",
+      "account": "DCVoltage UK",
+      "sku": "LSMS320GY+RPR44WH",
+      "total_orders": 2,
+      "refunded_orders": 1,
+      "refund_rate": 50,
+      "revenue_at_risk": 14.99
+    },
+    {
+      "asin": "B0GLXHL585",
+      "ph": "Theepana",
+      "account": "LEDSone UK",
+      "sku": "PLHNBM",
+      "total_orders": 2,
+      "refunded_orders": 1,
+      "refund_rate": 50,
+      "revenue_at_risk": 12.41
+    },
+    {
+      "asin": "B0979CLWN9",
+      "ph": "Thojika",
+      "account": "LEDSone UK",
+      "sku": "CNP1000BM",
+      "total_orders": 2,
+      "refunded_orders": 1,
+      "refund_rate": 50,
+      "revenue_at_risk": 3.82
+    },
+    {
+      "asin": "B0GVT5JPGR",
+      "ph": "UNATTRIBUTED",
+      "account": "LEDSone UK",
+      "sku": "WCBTC100FG2PK+RPR44WH2PK",
+      "total_orders": 5,
+      "refunded_orders": 2,
+      "refund_rate": 40,
+      "revenue_at_risk": 29.82,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "asin": "B0FY5PN96J",
+      "ph": "Renuha",
+      "account": "LEDSone UK",
+      "sku": "PHUH2HETBM",
+      "total_orders": 3,
+      "refunded_orders": 1,
+      "refund_rate": 33.3,
+      "revenue_at_risk": 99.96
+    },
+    {
+      "asin": "B09YYSLDWP",
+      "ph": "Theepana",
+      "account": "DCVoltage UK",
+      "sku": "PLADBM+LSDO210BG3PK+ICST64E273PK",
+      "total_orders": 3,
+      "refunded_orders": 1,
+      "refund_rate": 33.3,
+      "revenue_at_risk": 56.89
+    },
+    {
+      "asin": "B0CVKZP3W2",
+      "ph": "utharsika",
+      "account": "DCVoltage UK",
+      "sku": "LSTF400BM+RPR44WH",
+      "total_orders": 3,
+      "refunded_orders": 1,
+      "refund_rate": 33.3,
+      "revenue_at_risk": 16.39
+    },
+    {
+      "asin": "B0FN7JRXT5",
+      "ph": "UNATTRIBUTED",
+      "account": "LEDSone UK",
+      "sku": "CRSF100SN+LHNSE27SN+ICST64E27",
+      "total_orders": 3,
+      "refunded_orders": 1,
+      "refund_rate": 33.3,
+      "revenue_at_risk": 15.99,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "asin": "B0D8Y6WH46",
+      "ph": "utharsika",
+      "account": "LEDSone UK",
+      "sku": "LSRP260CO+RPR44WH",
+      "total_orders": 3,
+      "refunded_orders": 1,
+      "refund_rate": 33.3,
+      "revenue_at_risk": 15.82
+    },
+    {
+      "asin": "B0GMHQTBSQ",
+      "ph": "Tharsika(jaffna)",
+      "account": "LEDSone UK",
+      "sku": "LHXSHE27BM2PK",
+      "total_orders": 3,
+      "refunded_orders": 1,
+      "refund_rate": 33.3,
+      "revenue_at_risk": 12.24
+    },
+    {
+      "asin": "B0F946K2LJ",
+      "ph": "Jasmini",
+      "account": "LEDSone UK",
+      "sku": "CL3TLB3PK",
+      "total_orders": 3,
+      "refunded_orders": 1,
+      "refund_rate": 33.3,
+      "revenue_at_risk": 6.66
+    },
+    {
+      "asin": "B0CHW3Q9VG",
+      "ph": "UNATTRIBUTED",
+      "account": "LEDSone UK",
+      "sku": "CRSF100YB+PHRI1PBRYB+LSDO300YB",
+      "total_orders": 4,
+      "refunded_orders": 1,
+      "refund_rate": 25,
+      "revenue_at_risk": 62.22,
+      "ph_status": "MISSING_SOURCE"
+    },
+    {
+      "asin": "B0CP933MXR",
+      "ph": "UNATTRIBUTED",
+      "account": "DCVoltage UK",
+      "sku": "CRSF100BC2PK+PHCH1PBRBC2PK+LSCY290BC2PK",
+      "total_orders": 4,
+      "refunded_orders": 1,
+      "refund_rate": 25,
+      "revenue_at_risk": 36.89,
+      "ph_status": "RECOVERABLE"
+    },
+    {
+      "asin": "B0F7X3BPQB",
+      "ph": "Poovitha",
+      "account": "LEDSone UK",
+      "sku": "ENC8625",
+      "total_orders": 4,
+      "refunded_orders": 1,
+      "refund_rate": 25,
+      "revenue_at_risk": 25.74
+    },
+    {
+      "asin": "B0DXQ7YWGJ",
+      "ph": "utharsika",
+      "account": "LEDSone UK",
+      "sku": "LSCY290YB2PK+RPR44WH2PK",
+      "total_orders": 4,
+      "refunded_orders": 1,
+      "refund_rate": 25,
+      "revenue_at_risk": 23.24
+    },
+    {
+      "asin": "B091B7NP2G",
+      "ph": "utharsika",
+      "account": "DCVoltage UK",
+      "sku": "LSMCSPDRFL+RPM40WH",
+      "total_orders": 5,
+      "refunded_orders": 1,
+      "refund_rate": 20,
+      "revenue_at_risk": 74.97
+    },
+    {
+      "asin": "B0DPMQZ1WP",
+      "ph": "utharsika",
+      "account": "LEDSone UK",
+      "sku": "LSCYRO120GD+RPR44WH",
+      "total_orders": 5,
+      "refunded_orders": 1,
+      "refund_rate": 20,
+      "revenue_at_risk": 12.49
+    },
+    {
+      "asin": "B0CS3LSTMS",
+      "ph": "paulr",
+      "account": "DCVoltage UK",
+      "sku": "WCB7BS+RPR44WH",
+      "total_orders": 5,
+      "refunded_orders": 1,
+      "refund_rate": 20,
+      "revenue_at_risk": 10.89
+    },
+    {
+      "asin": "B07S8CCS1Q",
+      "ph": "prasath",
+      "account": "LEDSone UK",
+      "sku": "CRSF100YB",
+      "total_orders": 5,
+      "refunded_orders": 1,
+      "refund_rate": 20,
+      "revenue_at_risk": 6.57
+    },
+    {
+      "asin": "B083H3BRWZ",
+      "ph": "prasath",
+      "account": "LEDSone UK",
+      "sku": "CRSF100CO",
+      "total_orders": 5,
+      "refunded_orders": 1,
+      "refund_rate": 20,
+      "revenue_at_risk": 4.32
+    },
+    {
+      "asin": "B0DMF2KF74",
+      "ph": "paulr",
+      "account": "LEDSone UK",
+      "sku": "ENC9307",
+      "total_orders": 16,
+      "refunded_orders": 3,
+      "refund_rate": 18.8,
+      "revenue_at_risk": 68.22
+    },
+    {
+      "asin": "B0DMDVX4S7",
+      "ph": "paulr",
+      "account": "LEDSone UK",
+      "sku": "ENC9313",
+      "total_orders": 6,
+      "refunded_orders": 1,
+      "refund_rate": 16.7,
+      "revenue_at_risk": 46.48
+    },
+    {
+      "asin": "B0CKFD2MTJ",
+      "ph": "Theepana",
+      "account": "LEDSone UK",
+      "sku": "PLTYBM+ICST64E27",
+      "total_orders": 6,
+      "refunded_orders": 1,
+      "refund_rate": 16.7,
+      "revenue_at_risk": 15.74
+    },
+    {
+      "asin": "B07PM5KN1T",
+      "ph": "Jasmini",
+      "account": "DCVoltage UK",
+      "sku": "CL3TGL5PK",
+      "total_orders": 6,
+      "refunded_orders": 1,
+      "refund_rate": 16.7,
+      "revenue_at_risk": 13.09
+    },
+    {
+      "asin": "B0DNK2H74S",
+      "ph": "shimee",
+      "account": "LEDSone UK",
+      "sku": "ENC10078",
+      "total_orders": 7,
+      "refunded_orders": 1,
+      "refund_rate": 14.3,
+      "revenue_at_risk": 24.91
+    },
+    {
+      "asin": "B083XHSX6F",
+      "ph": "Jasmini",
+      "account": "LEDSone UK",
+      "sku": "CL2TGD3PK",
+      "total_orders": 7,
+      "refunded_orders": 1,
+      "refund_rate": 14.3,
+      "revenue_at_risk": 4.24
+    },
+    {
+      "asin": "B0DQD74HVG",
+      "ph": "Abinayaa",
+      "account": "LEDSone UK",
+      "sku": "PHSF1BMTYB3PK",
+      "total_orders": 9,
+      "refunded_orders": 1,
+      "refund_rate": 11.1,
+      "revenue_at_risk": 23.09
+    },
+    {
+      "asin": "B0FX2TFPZM",
+      "ph": "utharsika",
+      "account": "DCVoltage UK",
+      "sku": "LSCYRO120WH2PK+RPR44WH2PK",
+      "total_orders": 9,
+      "refunded_orders": 1,
+      "refund_rate": 11.1,
+      "revenue_at_risk": 22.89
+    }
   ],
-
-  /* L5 — PH Monthly Margin Trend (Mar/Apr/May 2026) — COMPLETE (24 PHs × 3 months).
-     declining=true marks a PH whose margin fell for 2 consecutive months. */
-  l5: [
-    {ph:"Abinayaa",month:"2026-03",revenue:4697.35,shipping:662.85,ppc:651.87,net:799.09,margin_pct:17.0,declining:null},
-    {ph:"Abinayaa",month:"2026-04",revenue:3395.13,shipping:500.46,ppc:611.99,net:415.36,margin_pct:12.2,declining:null},
-    {ph:"Abinayaa",month:"2026-05",revenue:3251.16,shipping:494.93,ppc:635.85,net:332.24,margin_pct:10.2,declining:true},
-    {ph:"Arudchelvi",month:"2026-03",revenue:2110.80,shipping:204.73,ppc:284.80,net:460.33,margin_pct:21.8,declining:null},
-    {ph:"Arudchelvi",month:"2026-04",revenue:1690.59,shipping:204.87,ppc:191.97,net:363.93,margin_pct:21.5,declining:null},
-    {ph:"Arudchelvi",month:"2026-05",revenue:1068.05,shipping:171.80,ppc:168.28,net:140.54,margin_pct:13.2,declining:true},
-    {ph:"Dilani",month:"2026-03",revenue:3425.28,shipping:488.58,ppc:957.13,net:95.67,margin_pct:2.8,declining:null},
-    {ph:"Dilani",month:"2026-04",revenue:2077.32,shipping:356.88,ppc:733.93,net:-156.02,margin_pct:-7.5,declining:null},
-    {ph:"Dilani",month:"2026-05",revenue:1664.25,shipping:325.33,ppc:705.00,net:-281.42,margin_pct:-16.9,declining:true},
-    {ph:"Illakkiya",month:"2026-03",revenue:1213.85,shipping:207.63,ppc:281.19,net:57.41,margin_pct:4.7,declining:null},
-    {ph:"Illakkiya",month:"2026-04",revenue:1014.52,shipping:199.42,ppc:294.29,net:-37.18,margin_pct:-3.7,declining:null},
-    {ph:"Illakkiya",month:"2026-05",revenue:2043.42,shipping:366.32,ppc:566.66,net:-13.44,margin_pct:-0.7,declining:false},
-    {ph:"Jasmini",month:"2026-03",revenue:9340.61,shipping:1992.17,ppc:2470.55,net:-259.45,margin_pct:-2.8,declining:null},
-    {ph:"Jasmini",month:"2026-04",revenue:7822.02,shipping:1923.91,ppc:2276.44,net:-680.44,margin_pct:-8.7,declining:null},
-    {ph:"Jasmini",month:"2026-05",revenue:6636.49,shipping:1719.89,ppc:2222.03,net:-955.50,margin_pct:-14.4,declining:true},
-    {ph:"Jubista",month:"2026-03",revenue:1020.05,shipping:150.57,ppc:401.39,net:-92.94,margin_pct:-9.1,declining:null},
-    {ph:"Jubista",month:"2026-04",revenue:751.99,shipping:127.19,ppc:271.42,net:-60.21,margin_pct:-8.0,declining:false},
-    {ph:"Jubista",month:"2026-05",revenue:1300.27,shipping:126.72,ppc:301.51,net:156.89,margin_pct:12.1,declining:false},
-    {ph:"mothajini",month:"2026-03",revenue:1968.98,shipping:209.29,ppc:720.97,net:-44.22,margin_pct:-2.2,declining:null},
-    {ph:"mothajini",month:"2026-04",revenue:1795.22,shipping:192.65,ppc:794.71,net:-179.51,margin_pct:-10.0,declining:null},
-    {ph:"mothajini",month:"2026-05",revenue:2431.12,shipping:262.98,ppc:752.61,net:78.41,margin_pct:3.2,declining:false},
-    {ph:"Nithushana",month:"2026-03",revenue:1096.07,shipping:116.30,ppc:495.78,net:-118.85,margin_pct:-10.8,declining:null},
-    {ph:"Nithushana",month:"2026-04",revenue:983.74,shipping:152.53,ppc:409.38,net:-119.23,margin_pct:-12.1,declining:null},
-    {ph:"Nithushana",month:"2026-05",revenue:1386.99,shipping:138.43,ppc:291.63,net:194.09,margin_pct:14.0,declining:false},
-    {ph:"paulr",month:"2026-03",revenue:8464.27,shipping:1568.88,ppc:2118.23,net:121.81,margin_pct:1.4,declining:null},
-    {ph:"paulr",month:"2026-04",revenue:8471.46,shipping:1638.32,ppc:2026.90,net:146.94,margin_pct:1.7,declining:false},
-    {ph:"paulr",month:"2026-05",revenue:10716.88,shipping:1971.63,ppc:2146.56,net:704.41,margin_pct:6.6,declining:false},
-    {ph:"Poovitha",month:"2026-03",revenue:3137.91,shipping:313.44,ppc:643.36,net:455.26,margin_pct:14.5,declining:null},
-    {ph:"Poovitha",month:"2026-04",revenue:3099.65,shipping:394.78,ppc:867.64,net:132.42,margin_pct:4.3,declining:null},
-    {ph:"Poovitha",month:"2026-05",revenue:2363.66,shipping:273.93,ppc:658.90,net:130.82,margin_pct:5.5,declining:false},
-    {ph:"prasath",month:"2026-03",revenue:2086.66,shipping:603.62,ppc:361.23,net:-25.85,margin_pct:-1.2,declining:null},
-    {ph:"prasath",month:"2026-04",revenue:1698.38,shipping:481.64,ppc:474.31,net:-191.68,margin_pct:-11.3,declining:null},
-    {ph:"prasath",month:"2026-05",revenue:1736.24,shipping:507.71,ppc:432.28,net:-158.68,margin_pct:-9.1,declining:false},
-    {ph:"preethi",month:"2026-03",revenue:3426.75,shipping:310.97,ppc:517.13,net:713.94,margin_pct:20.8,declining:null},
-    {ph:"preethi",month:"2026-04",revenue:3678.23,shipping:277.44,ppc:569.50,net:808.26,margin_pct:22.0,declining:false},
-    {ph:"preethi",month:"2026-05",revenue:1887.24,shipping:158.07,ppc:433.16,net:258.03,margin_pct:13.7,declining:false},
-    {ph:"Renuha",month:"2026-03",revenue:4135.44,shipping:377.22,ppc:1013.05,net:470.68,margin_pct:11.4,declining:null},
-    {ph:"Renuha",month:"2026-04",revenue:2607.30,shipping:295.46,ppc:861.56,net:16.27,margin_pct:0.6,declining:null},
-    {ph:"Renuha",month:"2026-05",revenue:2836.03,shipping:311.56,ppc:732.81,net:231.84,margin_pct:8.2,declining:false},
-    {ph:"Saranya",month:"2026-03",revenue:188.65,shipping:54.00,ppc:8.30,net:22.59,margin_pct:12.0,declining:null},
-    {ph:"Saranya",month:"2026-04",revenue:160.45,shipping:43.24,ppc:9.61,net:19.35,margin_pct:12.1,declining:false},
-    {ph:"Saranya",month:"2026-05",revenue:242.45,shipping:38.00,ppc:18.23,net:52.87,margin_pct:21.8,declining:false},
-    {ph:"Shanthini",month:"2026-03",revenue:1248.93,shipping:157.33,ppc:249.25,net:155.44,margin_pct:12.4,declining:null},
-    {ph:"Shanthini",month:"2026-04",revenue:698.10,shipping:116.81,ppc:206.68,net:-9.35,margin_pct:-1.3,declining:null},
-    {ph:"Shanthini",month:"2026-05",revenue:1017.80,shipping:130.60,ppc:252.37,net:75.04,margin_pct:7.4,declining:false},
-    {ph:"shimee",month:"2026-03",revenue:5730.02,shipping:599.26,ppc:808.96,net:1170.29,margin_pct:20.4,declining:null},
-    {ph:"shimee",month:"2026-04",revenue:4264.73,shipping:504.57,ppc:889.60,net:524.96,margin_pct:12.3,declining:null},
-    {ph:"shimee",month:"2026-05",revenue:3263.50,shipping:468.30,ppc:800.60,net:199.68,margin_pct:6.1,declining:true},
-    {ph:"thanucha",month:"2026-03",revenue:40.30,shipping:8.53,ppc:0.95,net:8.66,margin_pct:21.5,declining:null},
-    {ph:"thanucha",month:"2026-04",revenue:50.94,shipping:12.51,ppc:0.61,net:9.80,margin_pct:19.2,declining:null},
-    {ph:"thanucha",month:"2026-05",revenue:67.29,shipping:20.76,ppc:0.00,net:9.52,margin_pct:14.1,declining:true},
-    {ph:"Tharshana",month:"2026-03",revenue:1733.48,shipping:185.57,ppc:322.59,net:271.91,margin_pct:15.7,declining:null},
-    {ph:"Tharshana",month:"2026-04",revenue:2382.70,shipping:225.45,ppc:336.76,net:510.01,margin_pct:21.4,declining:false},
-    {ph:"Tharshana",month:"2026-05",revenue:1963.99,shipping:196.67,ppc:347.85,net:339.28,margin_pct:17.3,declining:false},
-    {ph:"Tharsiga(nelli)",month:"2026-03",revenue:1230.61,shipping:383.37,ppc:424.94,net:-254.54,margin_pct:-20.7,declining:null},
-    {ph:"Tharsiga(nelli)",month:"2026-04",revenue:889.75,shipping:325.01,ppc:360.07,net:-284.69,margin_pct:-32.0,declining:null},
-    {ph:"Tharsiga(nelli)",month:"2026-05",revenue:948.79,shipping:409.43,ppc:364.93,net:-347.40,margin_pct:-36.6,declining:true},
-    {ph:"Tharsika(jaffna)",month:"2026-03",revenue:940.23,shipping:199.89,ppc:717.51,net:-494.30,margin_pct:-52.6,declining:null},
-    {ph:"Tharsika(jaffna)",month:"2026-04",revenue:1476.65,shipping:338.93,ppc:693.31,net:-367.75,margin_pct:-24.9,declining:false},
-    {ph:"Tharsika(jaffna)",month:"2026-05",revenue:1846.62,shipping:477.71,ppc:764.27,net:-411.00,margin_pct:-22.3,declining:false},
-    {ph:"Theepana",month:"2026-03",revenue:4871.42,shipping:484.13,ppc:951.89,net:756.12,margin_pct:15.5,declining:null},
-    {ph:"Theepana",month:"2026-04",revenue:4364.88,shipping:472.71,ppc:1086.58,net:404.91,margin_pct:9.3,declining:null},
-    {ph:"Theepana",month:"2026-05",revenue:4839.64,shipping:494.28,ppc:915.44,net:768.12,margin_pct:15.9,declining:false},
-    {ph:"Thojika",month:"2026-03",revenue:1131.95,shipping:178.69,ppc:232.40,net:98.29,margin_pct:8.7,declining:null},
-    {ph:"Thojika",month:"2026-04",revenue:1057.41,shipping:211.18,ppc:379.65,net:-115.00,margin_pct:-10.9,declining:null},
-    {ph:"Thojika",month:"2026-05",revenue:967.38,shipping:208.99,ppc:372.19,net:-145.86,margin_pct:-15.1,declining:true},
-    {ph:"thuwaraga",month:"2026-03",revenue:8899.19,shipping:1432.15,ppc:1638.28,net:934.21,margin_pct:10.5,declining:null},
-    {ph:"thuwaraga",month:"2026-04",revenue:6267.99,shipping:1074.85,ppc:1545.20,net:200.55,margin_pct:3.2,declining:null},
-    {ph:"thuwaraga",month:"2026-05",revenue:6118.44,shipping:1150.97,ppc:1288.74,net:313.59,margin_pct:5.1,declining:false},
-    {ph:"utharsika",month:"2026-03",revenue:18099.25,shipping:2850.24,ppc:5098.95,net:195.47,margin_pct:1.1,declining:null},
-    {ph:"utharsika",month:"2026-04",revenue:15904.63,shipping:2545.61,ppc:4467.57,net:143.90,margin_pct:0.9,declining:null},
-    {ph:"utharsika",month:"2026-05",revenue:16957.04,shipping:2713.34,ppc:4853.04,net:64.29,margin_pct:0.4,declining:true}
+  "l5": [
+    {
+      "ph": "Abinayaa",
+      "month": "2026-03",
+      "revenue": 4697.35,
+      "shipping": 662.85,
+      "ppc": 651.87,
+      "net": 799.09,
+      "margin_pct": 17,
+      "declining": null
+    },
+    {
+      "ph": "Abinayaa",
+      "month": "2026-04",
+      "revenue": 3395.13,
+      "shipping": 500.46,
+      "ppc": 611.99,
+      "net": 415.36,
+      "margin_pct": 12.2,
+      "declining": null
+    },
+    {
+      "ph": "Abinayaa",
+      "month": "2026-05",
+      "revenue": 3251.16,
+      "shipping": 494.93,
+      "ppc": 635.85,
+      "net": 332.24,
+      "margin_pct": 10.2,
+      "declining": true
+    },
+    {
+      "ph": "Arudchelvi",
+      "month": "2026-03",
+      "revenue": 2110.8,
+      "shipping": 204.73,
+      "ppc": 284.8,
+      "net": 460.33,
+      "margin_pct": 21.8,
+      "declining": null
+    },
+    {
+      "ph": "Arudchelvi",
+      "month": "2026-04",
+      "revenue": 1690.59,
+      "shipping": 204.87,
+      "ppc": 191.97,
+      "net": 363.93,
+      "margin_pct": 21.5,
+      "declining": null
+    },
+    {
+      "ph": "Arudchelvi",
+      "month": "2026-05",
+      "revenue": 1068.05,
+      "shipping": 171.8,
+      "ppc": 168.28,
+      "net": 140.54,
+      "margin_pct": 13.2,
+      "declining": true
+    },
+    {
+      "ph": "Dilani",
+      "month": "2026-03",
+      "revenue": 3425.28,
+      "shipping": 488.58,
+      "ppc": 957.13,
+      "net": 95.67,
+      "margin_pct": 2.8,
+      "declining": null
+    },
+    {
+      "ph": "Dilani",
+      "month": "2026-04",
+      "revenue": 2077.32,
+      "shipping": 356.88,
+      "ppc": 733.93,
+      "net": -156.02,
+      "margin_pct": -7.5,
+      "declining": null
+    },
+    {
+      "ph": "Dilani",
+      "month": "2026-05",
+      "revenue": 1664.25,
+      "shipping": 325.33,
+      "ppc": 705,
+      "net": -281.42,
+      "margin_pct": -16.9,
+      "declining": true
+    },
+    {
+      "ph": "Illakkiya",
+      "month": "2026-03",
+      "revenue": 1213.85,
+      "shipping": 207.63,
+      "ppc": 281.19,
+      "net": 57.41,
+      "margin_pct": 4.7,
+      "declining": null
+    },
+    {
+      "ph": "Illakkiya",
+      "month": "2026-04",
+      "revenue": 1014.52,
+      "shipping": 199.42,
+      "ppc": 294.29,
+      "net": -37.18,
+      "margin_pct": -3.7,
+      "declining": null
+    },
+    {
+      "ph": "Illakkiya",
+      "month": "2026-05",
+      "revenue": 2043.42,
+      "shipping": 366.32,
+      "ppc": 566.66,
+      "net": -13.44,
+      "margin_pct": -0.7,
+      "declining": false
+    },
+    {
+      "ph": "Jasmini",
+      "month": "2026-03",
+      "revenue": 9340.61,
+      "shipping": 1992.17,
+      "ppc": 2470.55,
+      "net": -259.45,
+      "margin_pct": -2.8,
+      "declining": null
+    },
+    {
+      "ph": "Jasmini",
+      "month": "2026-04",
+      "revenue": 7822.02,
+      "shipping": 1923.91,
+      "ppc": 2276.44,
+      "net": -680.44,
+      "margin_pct": -8.7,
+      "declining": null
+    },
+    {
+      "ph": "Jasmini",
+      "month": "2026-05",
+      "revenue": 6636.49,
+      "shipping": 1719.89,
+      "ppc": 2222.03,
+      "net": -955.5,
+      "margin_pct": -14.4,
+      "declining": true
+    },
+    {
+      "ph": "Jubista",
+      "month": "2026-03",
+      "revenue": 1020.05,
+      "shipping": 150.57,
+      "ppc": 401.39,
+      "net": -92.94,
+      "margin_pct": -9.1,
+      "declining": null
+    },
+    {
+      "ph": "Jubista",
+      "month": "2026-04",
+      "revenue": 751.99,
+      "shipping": 127.19,
+      "ppc": 271.42,
+      "net": -60.21,
+      "margin_pct": -8,
+      "declining": false
+    },
+    {
+      "ph": "Jubista",
+      "month": "2026-05",
+      "revenue": 1300.27,
+      "shipping": 126.72,
+      "ppc": 301.51,
+      "net": 156.89,
+      "margin_pct": 12.1,
+      "declining": false
+    },
+    {
+      "ph": "mothajini",
+      "month": "2026-03",
+      "revenue": 1968.98,
+      "shipping": 209.29,
+      "ppc": 720.97,
+      "net": -44.22,
+      "margin_pct": -2.2,
+      "declining": null
+    },
+    {
+      "ph": "mothajini",
+      "month": "2026-04",
+      "revenue": 1795.22,
+      "shipping": 192.65,
+      "ppc": 794.71,
+      "net": -179.51,
+      "margin_pct": -10,
+      "declining": null
+    },
+    {
+      "ph": "mothajini",
+      "month": "2026-05",
+      "revenue": 2431.12,
+      "shipping": 262.98,
+      "ppc": 752.61,
+      "net": 78.41,
+      "margin_pct": 3.2,
+      "declining": false
+    },
+    {
+      "ph": "Nithushana",
+      "month": "2026-03",
+      "revenue": 1096.07,
+      "shipping": 116.3,
+      "ppc": 495.78,
+      "net": -118.85,
+      "margin_pct": -10.8,
+      "declining": null
+    },
+    {
+      "ph": "Nithushana",
+      "month": "2026-04",
+      "revenue": 983.74,
+      "shipping": 152.53,
+      "ppc": 409.38,
+      "net": -119.23,
+      "margin_pct": -12.1,
+      "declining": null
+    },
+    {
+      "ph": "Nithushana",
+      "month": "2026-05",
+      "revenue": 1386.99,
+      "shipping": 138.43,
+      "ppc": 291.63,
+      "net": 194.09,
+      "margin_pct": 14,
+      "declining": false
+    },
+    {
+      "ph": "paulr",
+      "month": "2026-03",
+      "revenue": 8464.27,
+      "shipping": 1568.88,
+      "ppc": 2118.23,
+      "net": 121.81,
+      "margin_pct": 1.4,
+      "declining": null
+    },
+    {
+      "ph": "paulr",
+      "month": "2026-04",
+      "revenue": 8471.46,
+      "shipping": 1638.32,
+      "ppc": 2026.9,
+      "net": 146.94,
+      "margin_pct": 1.7,
+      "declining": false
+    },
+    {
+      "ph": "paulr",
+      "month": "2026-05",
+      "revenue": 10716.88,
+      "shipping": 1971.63,
+      "ppc": 2146.56,
+      "net": 704.41,
+      "margin_pct": 6.6,
+      "declining": false
+    },
+    {
+      "ph": "Poovitha",
+      "month": "2026-03",
+      "revenue": 3137.91,
+      "shipping": 313.44,
+      "ppc": 643.36,
+      "net": 455.26,
+      "margin_pct": 14.5,
+      "declining": null
+    },
+    {
+      "ph": "Poovitha",
+      "month": "2026-04",
+      "revenue": 3099.65,
+      "shipping": 394.78,
+      "ppc": 867.64,
+      "net": 132.42,
+      "margin_pct": 4.3,
+      "declining": null
+    },
+    {
+      "ph": "Poovitha",
+      "month": "2026-05",
+      "revenue": 2363.66,
+      "shipping": 273.93,
+      "ppc": 658.9,
+      "net": 130.82,
+      "margin_pct": 5.5,
+      "declining": false
+    },
+    {
+      "ph": "prasath",
+      "month": "2026-03",
+      "revenue": 2086.66,
+      "shipping": 603.62,
+      "ppc": 361.23,
+      "net": -25.85,
+      "margin_pct": -1.2,
+      "declining": null
+    },
+    {
+      "ph": "prasath",
+      "month": "2026-04",
+      "revenue": 1698.38,
+      "shipping": 481.64,
+      "ppc": 474.31,
+      "net": -191.68,
+      "margin_pct": -11.3,
+      "declining": null
+    },
+    {
+      "ph": "prasath",
+      "month": "2026-05",
+      "revenue": 1736.24,
+      "shipping": 507.71,
+      "ppc": 432.28,
+      "net": -158.68,
+      "margin_pct": -9.1,
+      "declining": false
+    },
+    {
+      "ph": "preethi",
+      "month": "2026-03",
+      "revenue": 3426.75,
+      "shipping": 310.97,
+      "ppc": 517.13,
+      "net": 713.94,
+      "margin_pct": 20.8,
+      "declining": null
+    },
+    {
+      "ph": "preethi",
+      "month": "2026-04",
+      "revenue": 3678.23,
+      "shipping": 277.44,
+      "ppc": 569.5,
+      "net": 808.26,
+      "margin_pct": 22,
+      "declining": false
+    },
+    {
+      "ph": "preethi",
+      "month": "2026-05",
+      "revenue": 1887.24,
+      "shipping": 158.07,
+      "ppc": 433.16,
+      "net": 258.03,
+      "margin_pct": 13.7,
+      "declining": false
+    },
+    {
+      "ph": "Renuha",
+      "month": "2026-03",
+      "revenue": 4135.44,
+      "shipping": 377.22,
+      "ppc": 1013.05,
+      "net": 470.68,
+      "margin_pct": 11.4,
+      "declining": null
+    },
+    {
+      "ph": "Renuha",
+      "month": "2026-04",
+      "revenue": 2607.3,
+      "shipping": 295.46,
+      "ppc": 861.56,
+      "net": 16.27,
+      "margin_pct": 0.6,
+      "declining": null
+    },
+    {
+      "ph": "Renuha",
+      "month": "2026-05",
+      "revenue": 2836.03,
+      "shipping": 311.56,
+      "ppc": 732.81,
+      "net": 231.84,
+      "margin_pct": 8.2,
+      "declining": false
+    },
+    {
+      "ph": "Saranya",
+      "month": "2026-03",
+      "revenue": 188.65,
+      "shipping": 54,
+      "ppc": 8.3,
+      "net": 22.59,
+      "margin_pct": 12,
+      "declining": null
+    },
+    {
+      "ph": "Saranya",
+      "month": "2026-04",
+      "revenue": 160.45,
+      "shipping": 43.24,
+      "ppc": 9.61,
+      "net": 19.35,
+      "margin_pct": 12.1,
+      "declining": false
+    },
+    {
+      "ph": "Saranya",
+      "month": "2026-05",
+      "revenue": 242.45,
+      "shipping": 38,
+      "ppc": 18.23,
+      "net": 52.87,
+      "margin_pct": 21.8,
+      "declining": false
+    },
+    {
+      "ph": "Shanthini",
+      "month": "2026-03",
+      "revenue": 1248.93,
+      "shipping": 157.33,
+      "ppc": 249.25,
+      "net": 155.44,
+      "margin_pct": 12.4,
+      "declining": null
+    },
+    {
+      "ph": "Shanthini",
+      "month": "2026-04",
+      "revenue": 698.1,
+      "shipping": 116.81,
+      "ppc": 206.68,
+      "net": -9.35,
+      "margin_pct": -1.3,
+      "declining": null
+    },
+    {
+      "ph": "Shanthini",
+      "month": "2026-05",
+      "revenue": 1017.8,
+      "shipping": 130.6,
+      "ppc": 252.37,
+      "net": 75.04,
+      "margin_pct": 7.4,
+      "declining": false
+    },
+    {
+      "ph": "shimee",
+      "month": "2026-03",
+      "revenue": 5730.02,
+      "shipping": 599.26,
+      "ppc": 808.96,
+      "net": 1170.29,
+      "margin_pct": 20.4,
+      "declining": null
+    },
+    {
+      "ph": "shimee",
+      "month": "2026-04",
+      "revenue": 4264.73,
+      "shipping": 504.57,
+      "ppc": 889.6,
+      "net": 524.96,
+      "margin_pct": 12.3,
+      "declining": null
+    },
+    {
+      "ph": "shimee",
+      "month": "2026-05",
+      "revenue": 3263.5,
+      "shipping": 468.3,
+      "ppc": 800.6,
+      "net": 199.68,
+      "margin_pct": 6.1,
+      "declining": true
+    },
+    {
+      "ph": "thanucha",
+      "month": "2026-03",
+      "revenue": 40.3,
+      "shipping": 8.53,
+      "ppc": 0.95,
+      "net": 8.66,
+      "margin_pct": 21.5,
+      "declining": null
+    },
+    {
+      "ph": "thanucha",
+      "month": "2026-04",
+      "revenue": 50.94,
+      "shipping": 12.51,
+      "ppc": 0.61,
+      "net": 9.8,
+      "margin_pct": 19.2,
+      "declining": null
+    },
+    {
+      "ph": "thanucha",
+      "month": "2026-05",
+      "revenue": 67.29,
+      "shipping": 20.76,
+      "ppc": 0,
+      "net": 9.52,
+      "margin_pct": 14.1,
+      "declining": true
+    },
+    {
+      "ph": "Tharshana",
+      "month": "2026-03",
+      "revenue": 1733.48,
+      "shipping": 185.57,
+      "ppc": 322.59,
+      "net": 271.91,
+      "margin_pct": 15.7,
+      "declining": null
+    },
+    {
+      "ph": "Tharshana",
+      "month": "2026-04",
+      "revenue": 2382.7,
+      "shipping": 225.45,
+      "ppc": 336.76,
+      "net": 510.01,
+      "margin_pct": 21.4,
+      "declining": false
+    },
+    {
+      "ph": "Tharshana",
+      "month": "2026-05",
+      "revenue": 1963.99,
+      "shipping": 196.67,
+      "ppc": 347.85,
+      "net": 339.28,
+      "margin_pct": 17.3,
+      "declining": false
+    },
+    {
+      "ph": "Tharsiga(nelli)",
+      "month": "2026-03",
+      "revenue": 1230.61,
+      "shipping": 383.37,
+      "ppc": 424.94,
+      "net": -254.54,
+      "margin_pct": -20.7,
+      "declining": null
+    },
+    {
+      "ph": "Tharsiga(nelli)",
+      "month": "2026-04",
+      "revenue": 889.75,
+      "shipping": 325.01,
+      "ppc": 360.07,
+      "net": -284.69,
+      "margin_pct": -32,
+      "declining": null
+    },
+    {
+      "ph": "Tharsiga(nelli)",
+      "month": "2026-05",
+      "revenue": 948.79,
+      "shipping": 409.43,
+      "ppc": 364.93,
+      "net": -347.4,
+      "margin_pct": -36.6,
+      "declining": true
+    },
+    {
+      "ph": "Tharsika(jaffna)",
+      "month": "2026-03",
+      "revenue": 940.23,
+      "shipping": 199.89,
+      "ppc": 717.51,
+      "net": -494.3,
+      "margin_pct": -52.6,
+      "declining": null
+    },
+    {
+      "ph": "Tharsika(jaffna)",
+      "month": "2026-04",
+      "revenue": 1476.65,
+      "shipping": 338.93,
+      "ppc": 693.31,
+      "net": -367.75,
+      "margin_pct": -24.9,
+      "declining": false
+    },
+    {
+      "ph": "Tharsika(jaffna)",
+      "month": "2026-05",
+      "revenue": 1846.62,
+      "shipping": 477.71,
+      "ppc": 764.27,
+      "net": -411,
+      "margin_pct": -22.3,
+      "declining": false
+    },
+    {
+      "ph": "Theepana",
+      "month": "2026-03",
+      "revenue": 4871.42,
+      "shipping": 484.13,
+      "ppc": 951.89,
+      "net": 756.12,
+      "margin_pct": 15.5,
+      "declining": null
+    },
+    {
+      "ph": "Theepana",
+      "month": "2026-04",
+      "revenue": 4364.88,
+      "shipping": 472.71,
+      "ppc": 1086.58,
+      "net": 404.91,
+      "margin_pct": 9.3,
+      "declining": null
+    },
+    {
+      "ph": "Theepana",
+      "month": "2026-05",
+      "revenue": 4839.64,
+      "shipping": 494.28,
+      "ppc": 915.44,
+      "net": 768.12,
+      "margin_pct": 15.9,
+      "declining": false
+    },
+    {
+      "ph": "Thojika",
+      "month": "2026-03",
+      "revenue": 1131.95,
+      "shipping": 178.69,
+      "ppc": 232.4,
+      "net": 98.29,
+      "margin_pct": 8.7,
+      "declining": null
+    },
+    {
+      "ph": "Thojika",
+      "month": "2026-04",
+      "revenue": 1057.41,
+      "shipping": 211.18,
+      "ppc": 379.65,
+      "net": -115,
+      "margin_pct": -10.9,
+      "declining": null
+    },
+    {
+      "ph": "Thojika",
+      "month": "2026-05",
+      "revenue": 967.38,
+      "shipping": 208.99,
+      "ppc": 372.19,
+      "net": -145.86,
+      "margin_pct": -15.1,
+      "declining": true
+    },
+    {
+      "ph": "thuwaraga",
+      "month": "2026-03",
+      "revenue": 8899.19,
+      "shipping": 1432.15,
+      "ppc": 1638.28,
+      "net": 934.21,
+      "margin_pct": 10.5,
+      "declining": null
+    },
+    {
+      "ph": "thuwaraga",
+      "month": "2026-04",
+      "revenue": 6267.99,
+      "shipping": 1074.85,
+      "ppc": 1545.2,
+      "net": 200.55,
+      "margin_pct": 3.2,
+      "declining": null
+    },
+    {
+      "ph": "thuwaraga",
+      "month": "2026-05",
+      "revenue": 6118.44,
+      "shipping": 1150.97,
+      "ppc": 1288.74,
+      "net": 313.59,
+      "margin_pct": 5.1,
+      "declining": false
+    },
+    {
+      "ph": "utharsika",
+      "month": "2026-03",
+      "revenue": 18099.25,
+      "shipping": 2850.24,
+      "ppc": 5098.95,
+      "net": 195.47,
+      "margin_pct": 1.1,
+      "declining": null
+    },
+    {
+      "ph": "utharsika",
+      "month": "2026-04",
+      "revenue": 15904.63,
+      "shipping": 2545.61,
+      "ppc": 4467.57,
+      "net": 143.9,
+      "margin_pct": 0.9,
+      "declining": null
+    },
+    {
+      "ph": "utharsika",
+      "month": "2026-05",
+      "revenue": 16957.04,
+      "shipping": 2713.34,
+      "ppc": 4853.04,
+      "net": 64.29,
+      "margin_pct": 0.4,
+      "declining": true
+    }
   ],
-
-  /* Derived live by index.html from the l1..l5 arrays (kept empty to avoid a
-     second, divergent source of the same counts). */
-  ph_summary: [],
-  account_summary: [],
-
-  /* Verification / source-readiness metrics (real, from MCP validation run) */
-  verification_summary: [
-    { metric: "Generated (live MCP)", value: "2026-06-24" },
-    { metric: "PPC ad-rows (UK, 7d)", value: "113,212" },
-    { metric: "PPC PH-null % (DQ-1)", value: "40.5%  → L1 by-PH degraded; run ASIN-level" },
-    { metric: "Order PH-null % (30d)", value: "20.0%" },
-    { metric: "Shipping coverage (7d completed)", value: "99.6%" },
-    { metric: "Refund source (DQ-2)", value: "order_transaction is the L4 rate spine; amazon_returns £ enrichment only" },
-    { metric: "Source tables", value: "ppc_performance, order_transaction, order_shipping_billing_detail, amazon_returns" },
-    { metric: "Excluded from calc", value: "development.leakage_detection / leakage_classification / ph_action_board.ph_daily_actions" }
+  "ph_summary": [
+    {
+      "ph": "UNATTRIBUTED",
+      "l1": 29,
+      "l2": 37,
+      "l3": 2,
+      "l4": 6,
+      "l5": 0,
+      "total": 74
+    },
+    {
+      "ph": "utharsika",
+      "l1": 17,
+      "l2": 30,
+      "l3": 2,
+      "l4": 7,
+      "l5": 1,
+      "total": 57
+    },
+    {
+      "ph": "Jasmini",
+      "l1": 7,
+      "l2": 32,
+      "l3": 1,
+      "l4": 4,
+      "l5": 1,
+      "total": 45
+    },
+    {
+      "ph": "thuwaraga",
+      "l1": 6,
+      "l2": 23,
+      "l3": 2,
+      "l4": 1,
+      "l5": 0,
+      "total": 32
+    },
+    {
+      "ph": "paulr",
+      "l1": 10,
+      "l2": 14,
+      "l3": 2,
+      "l4": 3,
+      "l5": 0,
+      "total": 29
+    },
+    {
+      "ph": "prasath",
+      "l1": 1,
+      "l2": 18,
+      "l3": 1,
+      "l4": 2,
+      "l5": 0,
+      "total": 22
+    },
+    {
+      "ph": "Tharsika(jaffna)",
+      "l1": 3,
+      "l2": 15,
+      "l3": 2,
+      "l4": 1,
+      "l5": 0,
+      "total": 21
+    },
+    {
+      "ph": "Theepana",
+      "l1": 12,
+      "l2": 2,
+      "l3": 1,
+      "l4": 3,
+      "l5": 0,
+      "total": 18
+    },
+    {
+      "ph": "Tharsiga(nelli)",
+      "l1": 1,
+      "l2": 13,
+      "l3": 1,
+      "l4": 0,
+      "l5": 1,
+      "total": 16
+    },
+    {
+      "ph": "Abinayaa",
+      "l1": 5,
+      "l2": 4,
+      "l3": 2,
+      "l4": 2,
+      "l5": 1,
+      "total": 14
+    },
+    {
+      "ph": "shimee",
+      "l1": 9,
+      "l2": 1,
+      "l3": 0,
+      "l4": 1,
+      "l5": 1,
+      "total": 12
+    },
+    {
+      "ph": "Dilani",
+      "l1": 1,
+      "l2": 8,
+      "l3": 0,
+      "l4": 0,
+      "l5": 1,
+      "total": 10
+    },
+    {
+      "ph": "Renuha",
+      "l1": 9,
+      "l2": 1,
+      "l3": 0,
+      "l4": 0,
+      "l5": 0,
+      "total": 10
+    },
+    {
+      "ph": "Thojika",
+      "l1": 1,
+      "l2": 6,
+      "l3": 0,
+      "l4": 1,
+      "l5": 1,
+      "total": 9
+    },
+    {
+      "ph": "mothajini",
+      "l1": 8,
+      "l2": 0,
+      "l3": 0,
+      "l4": 0,
+      "l5": 0,
+      "total": 8
+    },
+    {
+      "ph": "Arudchelvi",
+      "l1": 2,
+      "l2": 3,
+      "l3": 0,
+      "l4": 0,
+      "l5": 1,
+      "total": 6
+    },
+    {
+      "ph": "preethi",
+      "l1": 5,
+      "l2": 0,
+      "l3": 0,
+      "l4": 1,
+      "l5": 0,
+      "total": 6
+    },
+    {
+      "ph": "Jubista",
+      "l1": 3,
+      "l2": 2,
+      "l3": 1,
+      "l4": 0,
+      "l5": 0,
+      "total": 6
+    },
+    {
+      "ph": "Poovitha",
+      "l1": 4,
+      "l2": 0,
+      "l3": 0,
+      "l4": 1,
+      "l5": 0,
+      "total": 5
+    },
+    {
+      "ph": "Illakkiya",
+      "l1": 4,
+      "l2": 0,
+      "l3": 0,
+      "l4": 0,
+      "l5": 0,
+      "total": 4
+    },
+    {
+      "ph": "Shanthini",
+      "l1": 4,
+      "l2": 0,
+      "l3": 0,
+      "l4": 0,
+      "l5": 0,
+      "total": 4
+    },
+    {
+      "ph": "Nithushana",
+      "l1": 2,
+      "l2": 1,
+      "l3": 0,
+      "l4": 0,
+      "l5": 0,
+      "total": 3
+    },
+    {
+      "ph": "Tharshana",
+      "l1": 2,
+      "l2": 0,
+      "l3": 0,
+      "l4": 0,
+      "l5": 0,
+      "total": 2
+    },
+    {
+      "ph": "thanucha",
+      "l1": 0,
+      "l2": 1,
+      "l3": 0,
+      "l4": 0,
+      "l5": 1,
+      "total": 2
+    },
+    {
+      "ph": "Saranya",
+      "l1": 0,
+      "l2": 1,
+      "l3": 0,
+      "l4": 0,
+      "l5": 0,
+      "total": 1
+    }
+  ],
+  "account_summary": [
+    {
+      "account": "LEDSone UK",
+      "l1": 64,
+      "l2": 141,
+      "l3": 11,
+      "l4": 23,
+      "total": 239
+    },
+    {
+      "account": "DCVoltage UK",
+      "l1": 79,
+      "l2": 71,
+      "l3": 6,
+      "l4": 10,
+      "total": 166
+    },
+    {
+      "account": "so_926407",
+      "l1": 2,
+      "l2": 0,
+      "l3": 0,
+      "l4": 0,
+      "total": 2
+    }
+  ],
+  "verification_summary": [
+    {
+      "metric": "Generated (live MCP)",
+      "value": "2026-06-24"
+    },
+    {
+      "metric": "PPC ad-rows (UK, 7d)",
+      "value": "113,212"
+    },
+    {
+      "metric": "PPC PH-null % (DQ-1)",
+      "value": "40.5%  → L1 by-PH degraded; run ASIN-level"
+    },
+    {
+      "metric": "Order PH-null % (30d)",
+      "value": "20.0%"
+    },
+    {
+      "metric": "Shipping coverage (7d completed)",
+      "value": "99.6%"
+    },
+    {
+      "metric": "Refund source (DQ-2)",
+      "value": "order_transaction is the L4 rate spine; amazon_returns £ enrichment only"
+    },
+    {
+      "metric": "Source tables",
+      "value": "ppc_performance, order_transaction, order_shipping_billing_detail, amazon_returns"
+    },
+    {
+      "metric": "Excluded from calc",
+      "value": "development.leakage_detection / leakage_classification / ph_action_board.ph_daily_actions"
+    }
   ]
 };
-
 if (typeof window !== 'undefined') { window.dashboardData = dashboardData; }
