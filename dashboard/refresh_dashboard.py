@@ -26,7 +26,7 @@ HTML        = os.path.join(HERE, "leakage_dashboard.html")
 PROMPT      = os.path.join(HERE, "dashboard_refresh_prompt.md")
 LOG         = os.path.join(HERE, "refresh.log")
 CLAUDE_BIN  = os.environ.get("CLAUDE_BIN", "claude")
-TIMEOUT_SEC = int(os.environ.get("WLSP_REFRESH_TIMEOUT", "900"))     # 15 min hard cap
+TIMEOUT_SEC = int(os.environ.get("WLSP_REFRESH_TIMEOUT", "1500"))     # 15 min hard cap
 START, END  = "<!-- WLSP_DATA_START -->", "<!-- WLSP_DATA_END -->"
 ALLOWED     = "mcp__claude_ai_postgres__execute_sql Read Edit Write"
 

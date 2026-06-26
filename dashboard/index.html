@@ -157,7 +157,7 @@
   .acct-opt:hover:not(.on){background:var(--bg2);}
   .acct-opt.on{background:linear-gradient(135deg,#3b62d6,#4f9cf9);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),var(--shadow-sm);}
   .acct-opt.on .ao-name{color:#fff;font-weight:750;}
-  .acct-opt.on .ao-ct{color:#fff;}
+  .acct-opt.on .ao-ct,.acct-opt.on .ao-ct.led,.acct-opt.on .ao-ct.dcv,.acct-opt.on .ao-ct.oth{color:#fff;}
   .acct-opt .ao-name{font-weight:650;}
   .acct-opt .ao-ct{font-weight:800;font-size:13px;}
   .acct-opt .ao-ct.led{color:var(--blue);} .acct-opt .ao-ct.dcv{color:var(--red);} .acct-opt .ao-ct.oth{color:var(--muted);}
@@ -404,7 +404,10 @@
   function acctMatch(r){return acctFilter==='__ALL__'||r.account===acctFilter;}
   function countFor(k){
     if(acctFilter==='__ALL__'){const c=D.summary&&D.summary.counts&&D.summary.counts[k];if(c!=null)return c;}
-    if(k==='l5')return uniquePhs(rowsFor('l5').filter(r=>r.declining&&acctMatch(r))).length;
+    /* Phase 1: L5 is PH-grain — always GLOBAL, never account-filtered (l5 rows have no account) */
+    if(k==='l5'){const g=D.summary&&D.summary.counts&&D.summary.counts.l5;return g!=null?Number(g):uniquePhs(rowsFor('l5').filter(r=>r.declining)).length;}
+    /* Phase 1: account-filtered KPI reads the authoritative account_summary, NOT the capped detail arrays */
+    if(acctFilter!=='__ALL__'&&Array.isArray(D.account_summary)){const row=D.account_summary.find(a=>a.account===acctFilter);if(row&&row[k]!=null)return Number(row[k]);}
     return rowsFor(k).filter(acctMatch).length;}
   function acctClass(a){a=txt(a).toLowerCase();return a.indexOf('dcv')>=0?'dcv':(a.indexOf('led')>=0?'led':'oth');}
   function rowKey(k,r){return k+'::'+txt(r.asin)+'::'+txt(r.sku)+'::'+txt(r.ph)+'::'+txt(r.month);}
@@ -427,13 +430,18 @@
   function hasAcctSummary(){return Array.isArray(D.account_summary)&&D.account_summary.length;}
   function hasPhSummary(){return Array.isArray(D.ph_summary)&&D.ph_summary.length;}
   function phTotals(){
-    if(acctFilter==='__ALL__'&&hasPhSummary()){
-      return D.ph_summary.map(p=>({ph:p.ph,count:Number(p.total!=null?p.total:((p.l1||0)+(p.l2||0)+(p.l3||0)+(p.l4||0)+(p.l5||0)))}))
+    /* Phase 2: All accounts -> ph_summary.total; selected account -> account_breakdown[acct].total (0 if none).
+       Never derived from l1-l5 detail arrays. */
+    if(hasPhSummary()){
+      if(acctFilter==='__ALL__')
+        return D.ph_summary.map(p=>({ph:p.ph,count:Number(p.total!=null?p.total:((p.l1||0)+(p.l2||0)+(p.l3||0)+(p.l4||0)+(p.l5||0)))}))
+          .sort((a,b)=>b.count-a.count);
+      return D.ph_summary.map(p=>{const b=p.account_breakdown&&p.account_breakdown[acctFilter];return {ph:p.ph,count:b?Number(b.total||0):0};})
         .sort((a,b)=>b.count-a.count);
     }
     const m={};
-    ['l1','l2','l3','l4'].forEach(k=>rowsFor(k).forEach(r=>{if(!acctMatch(r))return;const p=r.ph||'UNATTRIBUTED';m[p]=(m[p]||0)+1;}));
-    rowsFor('l5').filter(r=>r.declining&&acctMatch(r)).forEach(r=>{const p=r.ph||'UNATTRIBUTED';m[p]=(m[p]||0)+1;});
+    ['l1','l2','l3','l4'].forEach(k=>rowsFor(k).forEach(r=>{const p=r.ph||'UNATTRIBUTED';m[p]=(m[p]||0)+1;}));
+    rowsFor('l5').filter(r=>r.declining).forEach(r=>{const p=r.ph||'UNATTRIBUTED';m[p]=(m[p]||0)+1;});
     return Object.keys(m).map(p=>({ph:p,count:m[p]})).sort((a,b)=>b.count-a.count);
   }
   function acctTotals(){
@@ -443,9 +451,13 @@
     return m;
   }
   function allPhs(){
-    if(acctFilter==='__ALL__'&&hasPhSummary())return D.ph_summary.map(p=>p.ph);
-    const s=new Set();['l1','l2','l3','l4'].forEach(k=>rowsFor(k).forEach(r=>{if(acctMatch(r))s.add(r.ph||'UNATTRIBUTED');}));
-    rowsFor('l5').filter(r=>r.declining&&acctMatch(r)).forEach(r=>s.add(r.ph));return [...s];}
+    /* Phase 2: Affected PHs — All accounts: all ph_summary; selected account: PHs with account_breakdown[acct].total>0 */
+    if(hasPhSummary()){
+      if(acctFilter==='__ALL__')return D.ph_summary.map(p=>p.ph);
+      return D.ph_summary.filter(p=>{const b=p.account_breakdown&&p.account_breakdown[acctFilter];return b&&Number(b.total||0)>0;}).map(p=>p.ph);
+    }
+    const s=new Set();['l1','l2','l3','l4'].forEach(k=>rowsFor(k).forEach(r=>s.add(r.ph||'UNATTRIBUTED')));
+    rowsFor('l5').filter(r=>r.declining).forEach(r=>s.add(r.ph));return [...s];}
   /* complete PH roster — every holder seen in ANY analysis (l1..l5), flagged or not */
   function phRoster(){
     if(hasPhSummary())return D.ph_summary.map(p=>p.ph);

@@ -47,10 +47,10 @@ Give Bietrick a same-day, professional view of the five leakage analyses (per PH
 - CSV exactly 24 columns per row; `activity_id` continues from `D02-A20` → `D03-A21`.
 
 ## 2.5 Current Status
-- ✅ Source re-validated live (2026-06-24).
-- ✅ L1–L5 executed from source; `data.js` generated with real values.
-- ✅ Display-only `index.html` built, frontend-validated, and refactored to executive UI.
-- ✅ Activity memory prepared (D03-A21..A27 CSV) — **import pending approval**.
+-  Source re-validated live (2026-06-24).
+-  L1–L5 executed from source; `data.js` generated with real values.
+-  Display-only `index.html` built, frontend-validated, and refactored to executive UI.
+-  Activity memory prepared (D03-A21..A27 CSV) — **import pending approval**.
 
 ## 2.6 Evidence
 Live MCP validation + L1–L5 results (2026-06-24); `dashboard/data.js`; `dashboard/index.html`; Node binding-replay (counts 144/214/15/31/9, 0 JS errors); table validation (20 rows, max `D02-A20`, 26-col activity-memory schema).
@@ -60,21 +60,3 @@ Live MCP validation + L1–L5 results (2026-06-24); `dashboard/data.js`; `dashbo
 2. `2026-06-24__sarujanan__wlsp__REQ-01-D03.md` (SKILL).
 3. `2026_06_24_wlsp_work_log.csv` (D03-A21..A27 activity memory).
 4. MCP import plan (idempotent UPSERT) — executed only after approval.
-
-## 2.8 Queryability Check
-- Can another developer continue tomorrow? **YES** — SKILL + requirement + work log + the two-file dashboard fully describe how to regenerate from MCP.
-- Evidence present? **YES** — files + live query results + Node validation.
-- Missing? The external PPC-ETL fix for DQ-1; OPTION B sign-off (both tracked, outside D03).
-
----
-
-## Document control
-
-| Field | Value |
-|-------|-------|
-| Purpose | Define and evidence the D03 dashboard-build requirement |
-| Reviewer | Bietrick (TL) |
-| Status | COMPLETE — memory import pending approval |
-| Pass/Fail Rule | PASS if dashboard renders real counts 144/214/15/31/9 from source with no DB in the HTML and no leakage data persisted |
-| Next Step | Approve and run the D03-A21..A27 idempotent UPSERT into `daily_task.tbl_wlsp_sarujanan` |
-| Known Limitations | data.js is not persisted (regenerated live); L1/L2 detail embedded top-N; net is directional |

@@ -189,7 +189,7 @@
   .acct-opt:hover:not(.on){background:var(--bg2);}
   .acct-opt.on{background:linear-gradient(135deg,#3b62d6,#4f9cf9);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),var(--shadow-sm);}
   .acct-opt.on .ao-name{color:#fff;font-weight:750;}
-  .acct-opt.on .ao-ct{color:#fff;}
+  .acct-opt.on .ao-ct,.acct-opt.on .ao-ct.led,.acct-opt.on .ao-ct.dcv,.acct-opt.on .ao-ct.oth{color:#fff;}
   .acct-opt .ao-name{font-weight:650;}
   .acct-opt .ao-ct{font-weight:800;font-size:13px;}
   .acct-opt .ao-ct.led{color:var(--blue);} .acct-opt .ao-ct.dcv{color:var(--red);} .acct-opt .ao-ct.oth{color:var(--muted);}
@@ -290,13 +290,17 @@
   .stat{transition:transform .14s ease,box-shadow .16s ease,border-color .14s ease;}
   .stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--blue);}
   /* KPI tabs — stronger lift + growing accent rail */
-  .kpi{transition:transform .14s ease,box-shadow .18s ease,border-color .15s ease;}
+  .kpi{transition:transform .14s ease,box-shadow .18s ease,border-color .15s ease,opacity .15s ease;}
   .kpi::before{transition:width .15s ease;}
   .kpi:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--accent);}
   .kpi:hover::before{width:6px;}
   .kpi:focus-visible{outline:none;box-shadow:var(--ring);}
   .kpi .count{letter-spacing:-.5px;}
   .kpi.active{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 6%,var(--card)),var(--card));}
+  /* selected card stays prominent; the others fade back (button-group feel) */
+  .kpi{opacity:.5;}
+  .kpi.active{opacity:1;}
+  .kpi:hover,.kpi:focus-visible{opacity:1;}
   /* Sidebar options — accent cue on hover */
   .acct-opt,.ph-opt{transition:background .14s ease,box-shadow .14s ease,color .14s ease;}
   .acct-opt:hover:not(.on),.ph-opt:hover:not(.on){box-shadow:inset 3px 0 0 var(--blue);}
@@ -382,10 +386,6 @@
     <div class="main">
       <div class="stats" id="stats"></div>
       <div class="kpis" id="kpis"></div>
-      <div class="tabbar-wrap">
-        <span class="tabbar-label">Leakage type</span>
-        <div class="tabbar" id="tabbar" role="tablist"></div>
-      </div>
       <div class="detail">
         <div class="dhead">
           <div class="t" id="d-title"></div>
@@ -402,11 +402,6 @@
       </div>
     </div>
   </div>
-
-  <footer class="readiness">
-    <h3>Source Readiness</h3>
-    <div class="vstatus" id="verify"></div>
-  </footer>
 
 </div>
 
@@ -2762,15 +2757,15 @@ window.dashboardData = dashboardData;
 
   /* ---- analysis UI structure (labels only — unchanged logic) ---- */
   const ANALYSES = [
-    { key:'l1', tab:'Zero-Conv PPC',   window:'Last 7 days',  lvl:'crit', accent:'var(--red)',
+    { key:'l1', tab:'Zero-Conv PPC',   window:'Last 7 days',  lvl:'crit', accent:'var(--blue)',
       full:'ASIN PPC Spend — Zero Conversions', concept:'Immediate cash destruction — PPC spend over £3 returning zero conversions',
       threshold:'Spend > £3 AND Conversions = 0', problem:'ZERO-CONV PPC', action:'PAUSE PPC',
       desc:'PPC spend returning zero sales', flag:'SUM(spend) > £3 AND SUM(orders) = 0' },
-    { key:'l2', tab:'High Shipping',   window:'Last 7 days',  lvl:'high', accent:'var(--amber)',
+    { key:'l2', tab:'High Shipping',   window:'Last 7 days',  lvl:'high', accent:'var(--blue)',
       full:'Shipping Exceeds 25% of Revenue', concept:'Structural margin destruction — carrier cost above 25% of revenue',
       threshold:'Shipping > 25% of Revenue', problem:'SHIPPING TOO HIGH', action:'PRICE / CARRIER',
       desc:'Carrier cost above 25% of revenue', flag:'SUM(carrier_charge) > 0.25 × SUM(revenue)' },
-    { key:'l3', tab:'Net Negative',    window:'Last 7 days',  lvl:'crit', accent:'var(--red)',
+    { key:'l3', tab:'Net Negative',    window:'Last 7 days',  lvl:'crit', accent:'var(--blue)',
       full:'Net-Negative ASINs Still Receiving PPC', concept:'Paying to accelerate losses — loss-making ASINs still spending over £5 on PPC',
       threshold:'(Revenue × 0.45) − Shipping − PPC < £0 AND PPC > £5', problem:'NET NEGATIVE', action:'PAUSE PPC',
       desc:'Losing money while paying for ads', flag:'(revenue×0.45) − shipping − ppc < 0 AND ppc > 5' },
@@ -2778,7 +2773,7 @@ window.dashboardData = dashboardData;
       full:'High Refund Rate ASINs', concept:'Hidden margin erosion — refund rate above 10% (minimum 2 orders)',
       threshold:'Refund Rate > 10% (min 2 orders)', problem:'HIGH REFUND', action:'INVESTIGATE',
       desc:'Refund rate above 10%', flag:'refunded ÷ total > 0.10 AND total ≥ 2' },
-    { key:'l5', tab:'Margin Trend',    window:'Last 3 months', lvl:'high', accent:'var(--amber)',
+    { key:'l5', tab:'Margin Trend',    window:'Last 3 months', lvl:'high', accent:'var(--blue)',
       full:'PH Net Margin Trend — Consecutive Decline', concept:'Systemic portfolio deterioration — net margin declining 2+ consecutive months',
       threshold:'Net margin declining ≥ 2 consecutive months', problem:'MARGIN DECLINE', action:'PH REVIEW',
       desc:'PH margin falling 2+ months', flag:'margin(m) < margin(m-1) < margin(m-2)' }
@@ -2798,10 +2793,15 @@ window.dashboardData = dashboardData;
   const rowsFor=k=>Array.isArray(D[k])?D[k]:[];
   function uniquePhs(rows){return [...new Set(rows.map(r=>r.ph||'UNATTRIBUTED'))];}
   function acctMatch(r){return acctFilter==='__ALL__'||r.account===acctFilter;}
+  function phMatch(r){return phFilter==='__ALL__'||(r.ph||'UNATTRIBUTED')===phFilter;}
+  function viewMatch(r){return acctMatch(r)&&phMatch(r);}
+  /* Counts are derived live from the leakage rows so every view reconciles:
+     a row counts only when it matches BOTH the selected account and the selected PH.
+     l5 (Margin Trend) carries no account, so it is counted on its own (unique
+     declining PHs) and is EXCLUDED from the flagged totals — see totalFlagged(). */
   function countFor(k){
-    if(acctFilter==='__ALL__'){const c=D.summary&&D.summary.counts&&D.summary.counts[k];if(c!=null)return c;}
-    if(k==='l5')return uniquePhs(rowsFor('l5').filter(r=>r.declining&&acctMatch(r))).length;
-    return rowsFor(k).filter(acctMatch).length;}
+    if(k==='l5')return uniquePhs(rowsFor('l5').filter(r=>r.declining&&viewMatch(r))).length;
+    return rowsFor(k).filter(viewMatch).length;}
   function acctClass(a){a=txt(a).toLowerCase();return a.indexOf('dcv')>=0?'dcv':(a.indexOf('led')>=0?'led':'oth');}
   function rowKey(k,r){return k+'::'+txt(r.asin)+'::'+txt(r.sku)+'::'+txt(r.ph)+'::'+txt(r.month);}
   function loadTicks(){try{return JSON.parse(localStorage.getItem('wlsp_ticks')||'{}');}catch(e){return{};}}
@@ -2817,48 +2817,51 @@ window.dashboardData = dashboardData;
   }
   function phRisk(n){return n>=15?'crit':n>=6?'high':n>=3?'med':'low';}
 
-  /* ---- aggregates derived from dashboardData (presentation summaries) ---- */
-  /* FIX (D04): prefer FULL-dataset aggregates (account_summary / ph_summary) from data.js;
-     fall back to row aggregation only when those summaries are absent. KPI/countFor untouched. */
+  /* ---- aggregates derived live from the leakage rows ---- */
+  /* Every flagged total is the sum of the 4 account-attributable leakages (l1..l4).
+     Margin Trend (l5) has no account, so it is NEVER added into a flagged total —
+     it would otherwise inflate "All accounts" above the sum of the per-account views.
+     Counting from the rows guarantees: All == LEDSone + DCVoltage, and each PH total
+     rolls up into its account total. */
+  const FLAG_KEYS=['l1','l2','l3','l4'];
   function hasAcctSummary(){return Array.isArray(D.account_summary)&&D.account_summary.length;}
   function hasPhSummary(){return Array.isArray(D.ph_summary)&&D.ph_summary.length;}
+  /* per-PH flag counts, filtered by the selected account */
   function phTotals(){
-    if(acctFilter==='__ALL__'&&hasPhSummary()){
-      return D.ph_summary.map(p=>({ph:p.ph,count:Number(p.total!=null?p.total:((p.l1||0)+(p.l2||0)+(p.l3||0)+(p.l4||0)+(p.l5||0)))}))
-        .sort((a,b)=>b.count-a.count);
-    }
     const m={};
-    ['l1','l2','l3','l4'].forEach(k=>rowsFor(k).forEach(r=>{if(!acctMatch(r))return;const p=r.ph||'UNATTRIBUTED';m[p]=(m[p]||0)+1;}));
-    rowsFor('l5').filter(r=>r.declining&&acctMatch(r)).forEach(r=>{const p=r.ph||'UNATTRIBUTED';m[p]=(m[p]||0)+1;});
+    FLAG_KEYS.forEach(k=>rowsFor(k).forEach(r=>{if(!acctMatch(r))return;const p=r.ph||'UNATTRIBUTED';m[p]=(m[p]||0)+1;}));
     return Object.keys(m).map(p=>({ph:p,count:m[p]})).sort((a,b)=>b.count-a.count);
   }
+  /* per-account flag counts */
   function acctTotals(){
-    if(hasAcctSummary()){const m={};D.account_summary.forEach(a=>m[a.account]=Number(a.total!=null?a.total:((a.l1||0)+(a.l2||0)+(a.l3||0)+(a.l4||0))));return m;}
     const m={};
-    ['l1','l2','l3','l4'].forEach(k=>rowsFor(k).forEach(r=>{const a=r.account||'—';m[a]=(m[a]||0)+1;}));
+    FLAG_KEYS.forEach(k=>rowsFor(k).forEach(r=>{const a=r.account||'—';m[a]=(m[a]||0)+1;}));
     return m;
   }
   function allPhs(){
-    if(acctFilter==='__ALL__'&&hasPhSummary())return D.ph_summary.map(p=>p.ph);
-    const s=new Set();['l1','l2','l3','l4'].forEach(k=>rowsFor(k).forEach(r=>{if(acctMatch(r))s.add(r.ph||'UNATTRIBUTED');}));
-    rowsFor('l5').filter(r=>r.declining&&acctMatch(r)).forEach(r=>s.add(r.ph));return [...s];}
-  /* complete PH roster — every holder seen in ANY analysis (l1..l5), flagged or not */
+    const s=new Set();FLAG_KEYS.forEach(k=>rowsFor(k).forEach(r=>{if(acctMatch(r))s.add(r.ph||'UNATTRIBUTED');}));
+    return [...s];}
+  /* Affected PHs = distinct portfolio holders with >=1 flag (excludes UNATTRIBUTED).
+     The l1/l2 detail arrays are capped (top-N), so for the unfiltered view we use the
+     authoritative ph_summary; account-filtered views fall back to the rows available. */
+  function affectedPhCount(){
+    if(acctFilter==='__ALL__'&&hasPhSummary()){
+      return D.ph_summary.filter(p=>p.ph&&p.ph!=='UNATTRIBUTED'&&Number(p.total||((p.l1||0)+(p.l2||0)+(p.l3||0)+(p.l4||0)+(p.l5||0)))>0).length;
+    }
+    const s=new Set();
+    FLAG_KEYS.forEach(k=>rowsFor(k).forEach(r=>{const p=r.ph||'UNATTRIBUTED';if(acctMatch(r)&&p!=='UNATTRIBUTED')s.add(p);}));
+    return s.size;}
+  /* complete PH roster — every holder seen in any analysis (l1..l5), flagged or not */
   function phRoster(){
-    if(hasPhSummary())return D.ph_summary.map(p=>p.ph);
     const s=new Set();['l1','l2','l3','l4','l5'].forEach(k=>rowsFor(k).forEach(r=>s.add(r.ph||'UNATTRIBUTED')));return [...s];}
   function flaggedForAccount(acct){
-    if(hasAcctSummary()){
-      if(acct==='__ALL__')return D.account_summary.reduce((t,a)=>t+Number(a.total||0),0);
-      const row=D.account_summary.find(a=>a.account===acct);return row?Number(row.total||0):0;
-    }
     let n=0;
-    ['l1','l2','l3','l4'].forEach(k=>rowsFor(k).forEach(r=>{if(acct==='__ALL__'||r.account===acct)n++;}));
-    rowsFor('l5').forEach(r=>{if(r.declining&&(acct==='__ALL__'||r.account===acct))n++;});
+    FLAG_KEYS.forEach(k=>rowsFor(k).forEach(r=>{if(acct==='__ALL__'||r.account===acct)n++;}));
     return n;}
   function allAccounts(){
     if(hasAcctSummary())return D.account_summary.map(a=>a.account);
-    const s=new Set();['l1','l2','l3','l4'].forEach(k=>rowsFor(k).forEach(r=>r.account&&s.add(r.account)));return [...s];}
-  function totalFlagged(){return ANALYSES.reduce((t,a)=>t+Number(countFor(a.key)||0),0);}
+    const s=new Set();FLAG_KEYS.forEach(k=>rowsFor(k).forEach(r=>r.account&&s.add(r.account)));return [...s];}
+  function totalFlagged(){return ANALYSES.filter(a=>a.key!=='l5').reduce((t,a)=>t+Number(countFor(a.key)||0),0);}
 
   /* ---- header + stats ---- */
   function renderHeader(){
@@ -2866,19 +2869,24 @@ window.dashboardData = dashboardData;
     $('h-title').textContent=s.report_title||'PH Weekly Leakage Action Lists';
     $('h-sub').textContent=[(s.scope||'UK Amazon FBM'),(s.accounts||'LEDSone + DCVoltage'),(ANALYSES.length+' Analyses')].join('  ·  ');
   }
+  function weekStart(endStr,days){
+    const d=new Date(endStr);if(isNaN(d))return '';
+    d.setDate(d.getDate()-((days||7)-1));   // inclusive N-day window ending on endStr
+    return d.toISOString().slice(0,10);
+  }
   function renderStats(){
     const s=D.summary||{};
+    const endDate=s.report_date||s.generated_at||'';
+    const startDate=weekStart(endDate,7);   // weekly (Monday) run = 7-day window
     const stats=[
-      ['Updated Date', s.report_date||s.generated_at||'—','v'],
+      ['Start Date', startDate||'—','v'],
+      ['End Date', endDate||'—','v'],
       ['Analysis Period', '7d / 30d / 3mo','v sm'],
       ['Total Flagged', totalFlagged().toLocaleString(),'v'],
-      ['Affected PHs', allPhs().length,'v'],
+      ['Affected PHs', affectedPhCount(),'v'],
       ['Accounts', allAccounts().length,'v']
     ];
-    $('stats').innerHTML=stats.map(x=>'<div class="stat"><div class="k">'+esc(x[0])+'</div><div class="'+x[2]+'">'+esc(x[1])+'</div></div>').join('')
-      +'<button class="stat stat-refresh" id="refresh-btn" type="button" title="Reload the latest data">'
-      +'<div class="k">Data</div><div class="v rfx"><span class="rfx-ic">⟳</span> Refresh</div></button>';
-    const rb=$('refresh-btn');if(rb)rb.onclick=function(){location.reload();};
+    $('stats').innerHTML=stats.map(x=>'<div class="stat"><div class="k">'+esc(x[0])+'</div><div class="'+x[2]+'">'+esc(x[1])+'</div></div>').join('');
   }
 
   /* ---- KPI cards (clickable = analysis selector) ---- */
@@ -2896,7 +2904,9 @@ window.dashboardData = dashboardData;
         ? '<div class="kpi-cta"><span class="kpi-view on">✓ Showing details</span></div>'
         : '<div class="kpi-cta"><span class="kpi-view">View details</span><span class="kpi-arrow">→</span></div>';
       const lvlFull={crit:'CRITICAL',high:'HIGH',med:'MEDIUM',low:'LOW'}[a.lvl]||txt(a.lvl).toUpperCase();
-      el.innerHTML='<div class="kpi-head"><span class="name">'+esc(a.tab)+'</span><span class="count">'+countFor(a.key)+'</span></div>'+
+      /* Margin Trend (l5) is a per-PH count, not a flagged-item total — hide its count */
+      const countHtml=(a.key==='l5')?'':'<span class="count">'+countFor(a.key)+'</span>';
+      el.innerHTML='<div class="kpi-head"><span class="name">'+esc(a.tab)+'</span>'+countHtml+'</div>'+
         '<div class="kpi-sub"><span class="lvl '+a.lvl+'">'+esc(lvlFull)+'</span><span class="desc">'+esc(a.desc)+'</span></div>'+cta;
       el.onclick=()=>{activeKey=a.key;render();};
       el.onkeydown=(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activeKey=a.key;render();}};
@@ -2915,7 +2925,7 @@ window.dashboardData = dashboardData;
       el.style.setProperty('--accent',a.accent);
       el.setAttribute('role','tab');el.setAttribute('aria-selected',isActive?'true':'false');
       el.title='Show '+a.tab;
-      el.innerHTML='<span class="tab-nm">'+esc(a.tab)+'</span><span class="tab-ct">'+countFor(a.key)+'</span>';
+      el.innerHTML='<span class="tab-nm">'+esc(a.tab)+'</span>'+(a.key==='l5'?'':'<span class="tab-ct">'+countFor(a.key)+'</span>');
       el.onclick=()=>{activeKey=a.key;render();};
       el.onkeydown=(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activeKey=a.key;render();}};
       tb.appendChild(el);
@@ -2939,9 +2949,10 @@ window.dashboardData = dashboardData;
   function renderPhRail(){
     const rail=$('ph-rail');
     const cm={};phTotals().forEach(r=>{cm[r.ph]=r.count;});            // account-aware flag counts
-    const rows=phRoster().map(p=>({ph:p,count:cm[p]||0}))             // every holder, default 0
+    const allRows=phRoster().map(p=>({ph:p,count:cm[p]||0}))          // every holder, default 0
       .sort((a,b)=>b.count-a.count||a.ph.localeCompare(b.ph));        // flagged first, then A→Z
-    const total=rows.reduce((t,r)=>t+r.count,0);
+    const total=allRows.reduce((t,r)=>t+r.count,0);                  // All total still reflects every holder
+    const rows=allRows.filter(r=>r.ph!=='UNATTRIBUTED');             // exclude UNATTRIBUTED from the PH list
     let h='<button class="ph-opt'+(phFilter==='__ALL__'?' on':'')+'" type="button" data-ph="__ALL__">'+
       '<span class="po-name">All Portfolio Holders</span><span class="po-ct">'+total+'</span></button>';
     if(!rows.length){h+='<div class="empty" style="padding:14px;">No PH data.</div>';}
@@ -3190,8 +3201,8 @@ window.dashboardData = dashboardData;
 
   /* ---- master render ---- */
   function render(){
-    renderHeader();renderStats();renderKPIs();renderTabs();
-    renderAccountRail();renderPhRail();renderVerification();
+    renderHeader();renderStats();renderKPIs();
+    renderAccountRail();renderPhRail();
     renderToolbar();renderDetailHead();renderDetailBody();
   }
   document.addEventListener('DOMContentLoaded',function(){initTheme();initActions();render();});
