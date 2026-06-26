@@ -42,6 +42,7 @@ SELECT COALESCE(NULLIF(pp.user_name,''),'UNATTRIBUTED') AS ph, pp.ref_id AS asin
        SUM(pp.impressions)::int AS impressions, SUM(pp.orders)::int AS conversions
 FROM public.ppc_performance pp
 WHERE (pp.ss_name ILIKE '%UK%' OR pp.marketplace ILIKE '%UK%')
+  AND pp.source_name ILIKE '%amazon%'   -- D04 FIX A: Amazon-only (excludes eBay/Shopify/so_926407)
   AND pp.date >= CURRENT_DATE - INTERVAL '7 days' AND pp.record_type='ad'
   AND pp.ref_id IS NOT NULL AND pp.ref_id NOT IN ('','0')
 GROUP BY pp.ref_id, pp.sku, ph, account
@@ -63,7 +64,8 @@ orev AS (SELECT order_id, SUM(line_rev) ord_rev FROM lines GROUP BY order_id),
 ship AS (SELECT order_id, MAX(carrier_charge) cc FROM public.order_shipping_billing_detail
          WHERE carrier_charge_currency='GBP' AND carrier_charge>0 GROUP BY order_id),
 ppc AS (SELECT sku, SUM(spend) ppc FROM public.ppc_performance
-        WHERE (ss_name ILIKE '%UK%' OR marketplace ILIKE '%UK%') AND date>=CURRENT_DATE-INTERVAL '7 days' GROUP BY sku)
+        WHERE (ss_name ILIKE '%UK%' OR marketplace ILIKE '%UK%') AND date>=CURRENT_DATE-INTERVAL '7 days'
+          AND source_name ILIKE '%amazon%' GROUP BY sku)   -- D04 FIX B: Amazon-only PPC term for L2/L3
 ```
 
 ### Q_L2 — shipping > 25% of revenue (7d, ASIN grain)
@@ -136,6 +138,7 @@ rev AS (SELECT ot.user_name ph, DATE_TRUNC('month',ot.order_date)::date mth,
 ppc AS (SELECT user_name ph, DATE_TRUNC('month',date)::date mth, SUM(spend) ppc
         FROM public.ppc_performance
         WHERE (ss_name ILIKE '%UK%' OR marketplace ILIKE '%UK%')
+          AND source_name ILIKE '%amazon%'   -- D04 FIX C: Amazon-only PPC term for L5 margin trend
           AND date >= (DATE_TRUNC('month',CURRENT_DATE)-INTERVAL '3 months')
           AND date <  DATE_TRUNC('month',CURRENT_DATE)
           AND user_name IS NOT NULL AND user_name<>'' GROUP BY 1,2),
@@ -154,14 +157,20 @@ FROM seq ORDER BY ph, month;
 ```
 
 ### Q_ACCOUNT_SUMMARY — full per-account counts across L1–L4 (uncapped)
-Run the L1 set, L2 set, L3 set, L4 set (same predicates as above) grouped by the normalised
-`account`, and combine into `{account,l1,l2,l3,l4,total}`. (Use the same `HAVING` logic as
-Q_L1/Q_L2/Q_L3/Q_L4; count flagged rows per analysis per account.)
+Run the L1 set, L2 set, L3 set, L4 set (same Amazon-only predicates as above) grouped by the
+normalised `account`, and combine into `{account,l1,l2,l3,l4,total}`.
+**D04 FIX F — the L1 leg must be `COUNT(DISTINCT asin)` per account** (group the flagged L1 set
+by ASIN first, assign the account, then count) so the account L1 totals reconcile to the KPI
+`counts.l1 = 125`. L2/L3/L4 count flagged ASIN/SKU/ASIN per account.
 
 ### Q_PH_SUMMARY — full per-PH counts across L1–L4 + L5-declining (uncapped)
 Same flagged sets grouped by `ph` (PPC `user_name` for L1; order `user_name` for L2–L4;
 the set of PHs flagged `declining=true` in Q_L5 contributes `l5`), combined into
 `{ph,l1,l2,l3,l4,l5,total}`.
+**D04 FIX E — EXCLUDE `ph='UNATTRIBUTED'` entirely** (`… WHERE ph<>'UNATTRIBUTED' GROUP BY ph`).
+ph_summary contains assigned PHs ONLY; this drives the PH cards, PH rankings, PH dropdown/filter
+and sidebar PH totals (all read `ph_summary`). The L1/L2/L3/L4 **detail arrays** still keep their
+UNATTRIBUTED rows for investigation (tagged via `ph_status`).
 
 ### Q_SKU_PH_MAP — for `ph_status` (recoverability of UNATTRIBUTED rows)
 ```sql
@@ -177,8 +186,11 @@ Build one object with EXACTLY these keys:
   `scope:"UK Amazon FBM", accounts:"LEDSone + DCVoltage", deadline:"Wednesday EOD",`
   `ph_count:<#PHs in ph_summary excluding UNATTRIBUTED>, analyses_count:5,`
   `counts:{l1,l2,l3,l4,l5}, displayed:{l1,l2,l3,l4,l5}}`
-  - `counts` = **true full-set totals** (L1=row count of Q_L1, L2=Q_L2, L3=Q_L3, L4=Q_L4,
-    L5=number of PHs with any `declining=true`).
+  - `counts` = **true full-set totals**. **D04 FIX D — `counts.l1 = COUNT(DISTINCT asin)` of Q_L1**
+    (distinct Amazon ASINs only — NOT the Q_L1 row count, which is ASIN+SKU+PH grain). Run
+    `SELECT COUNT(*) FROM (SELECT ref_id FROM public.ppc_performance WHERE (ss_name ILIKE '%UK%' OR marketplace ILIKE '%UK%') AND source_name ILIKE '%amazon%' AND date>=CURRENT_DATE-INTERVAL '7 days' AND record_type='ad' AND ref_id IS NOT NULL AND ref_id NOT IN ('','0') GROUP BY ref_id HAVING SUM(spend)>3 AND SUM(orders)=0) x;`
+    L2=COUNT(DISTINCT asin) of Q_L2, L3=COUNT(DISTINCT sku) of Q_L3, L4=COUNT(DISTINCT asin) of Q_L4,
+    L5=number of PHs with any `declining=true`.
 - `l1`,`l2`: the Q_L1 / Q_L2 rows, **capped to the top 60 by severity** (L1 by `spend` desc,
   L2 by `shipping_pct` desc). `l3`,`l4`: all rows. `l5`: all Q_L5 monthly rows.
 - `account_summary`: from Q_ACCOUNT_SUMMARY (full). `ph_summary`: from Q_PH_SUMMARY (full).

@@ -134,6 +134,23 @@ def main():
     if 'src="data.js"' in text:
         fail("data.js dependency present — file is no longer self-contained")
 
+    # 7. D04 REGRESSION GUARDS — Amazon-only marketplace + UNATTRIBUTED exclusion + L1 grain.
+    #    Scan the DATA sections only (verification_summary intentionally documents exclusions).
+    data_only = json.dumps({k: data.get(k) for k in
+                            ("l1", "l2", "l3", "l4", "l5", "account_summary", "ph_summary")}).lower()
+    for token in ("ebay", "shopify", "so_926407"):
+        if token in data_only:
+            fail(f"D04 regression: marketplace contamination — '{token}' found in dashboard data")
+    if any((p.get("ph") == "UNATTRIBUTED") for p in data.get("ph_summary", [])):
+        fail("D04 regression: UNATTRIBUTED present in ph_summary (must be assigned PHs only)")
+    # counts.l1 must be distinct ASINs, not the L1 detail row count (ASIN+SKU+PH grain)
+    l1_distinct_asin = len({(r.get("asin") or "") for r in data.get("l1", [])})
+    if data.get("l1") and len(data["l1"]) < c["l1"]:
+        # l1 detail is capped (top-N); cannot self-check distinct-ASIN beyond the cap — log only
+        log(f"NOTE: L1 detail is capped ({len(data['l1'])}/{c['l1']}); distinct-ASIN guard limited to embedded rows")
+    elif l1_distinct_asin and l1_distinct_asin != c["l1"]:
+        fail(f"D04 regression: counts.l1={c['l1']} != distinct ASIN in L1 detail ({l1_distinct_asin})")
+
     log(f"VALIDATION OK — counts L1={c['l1']} L2={c['l2']} L3={c['l3']} L4={c['l4']} L5={c['l5']}; "
         f"accounts={len(data['account_summary'])}; ph_rows={len(data['ph_summary'])}; "
         f"generated_at={data['summary'].get('generated_at')}")
