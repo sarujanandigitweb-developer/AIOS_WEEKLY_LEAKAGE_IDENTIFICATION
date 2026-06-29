@@ -124,9 +124,12 @@ def main():
     if len(data["l1"]) > c["l1"] or len(data["l2"]) > c["l2"]:
         fail("embedded L1/L2 exceed true counts (cap broken)")
 
-    # 5. no forbidden tables leaked into the data block
-    low = block.lower()
-    leaked = [t for t in FORBIDDEN if t in low]
+    # 5. no forbidden tables leaked into the DATA sections. verification_summary
+    #    intentionally documents the EXCLUDED tables, so it is scanned out here —
+    #    same data_only slice the D04 guards use in #7 (kept in sync below).
+    data_only = json.dumps({k: data.get(k) for k in
+                            ("l1", "l2", "l3", "l4", "l5", "account_summary", "ph_summary")}).lower()
+    leaked = [t for t in FORBIDDEN if t in data_only]
     if leaked:
         fail(f"forbidden tables referenced in data block: {leaked}")
 
@@ -135,9 +138,7 @@ def main():
         fail("data.js dependency present — file is no longer self-contained")
 
     # 7. D04 REGRESSION GUARDS — Amazon-only marketplace + UNATTRIBUTED exclusion + L1 grain.
-    #    Scan the DATA sections only (verification_summary intentionally documents exclusions).
-    data_only = json.dumps({k: data.get(k) for k in
-                            ("l1", "l2", "l3", "l4", "l5", "account_summary", "ph_summary")}).lower()
+    #    Reuses data_only from #5 (DATA sections only; verification_summary excluded).
     for token in ("ebay", "shopify", "so_926407"):
         if token in data_only:
             fail(f"D04 regression: marketplace contamination — '{token}' found in dashboard data")
