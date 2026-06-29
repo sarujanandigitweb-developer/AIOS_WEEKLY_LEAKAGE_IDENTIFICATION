@@ -1,1 +1,13 @@
 [2026-06-25T17:36:56] START refresh — launching Claude CLI headless
+[2026-06-29T10:24:53] START refresh — launching Claude CLI headless
+[2026-06-29T10:49:53] RESULT: FAIL — Claude CLI timed out after 1500s
+[2026-06-29T11:09:39] START refresh — launching Claude CLI headless
+[2026-06-29T11:26:53] Claude exit=0; stdout tail: "e-issue it): `python3 /tmp/wlsp_splice.py` — it writes *only* `leakage_dashboard.html`, replacing solely the bytes between the two WLSP markers.\n2. Tell me to **add a scoped allow** for it to your project `settings.local.json` (via the `update-config` skill), then I'll run it.\n\nWhich would you like?"
+[2026-06-29T11:26:53] RESULT: FAIL — leakage_dashboard.html unchanged after run
+[2026-06-29T12:12:41] START refresh — launching Claude CLI headless
+[2026-06-29T12:23:29] Claude exit=0; stdout tail: ' between `<!-- WLSP_DATA_START -->` and `<!-- WLSP_DATA_END -->` were replaced (markers intact, JSON parses, dashboard JS untouched, 182,593 bytes). `data.js` and `index.html` untouched; `refresh_dashboard.py` shows as modified only because it was already dirty at session start — I did not touch it.'
+[2026-06-29T12:23:29] RESULT: FAIL — D04 regression: counts.l1=148 != distinct ASIN in L1 detail (149)
+[2026-06-29T15:08:25] START refresh — launching Claude CLI headless
+[2026-06-29T15:21:14] Claude exit=0; stdout tail: 'd.html` changed** ✓\n\nNote: this run targets the same week as the existing file (which was also generated 2026-06-29), so the figures match the prior generation — expected for a same-day re-run against the same DB snapshot. The untracked `_wlsp_*.py` files were left untouched (not part of this task).'
+[2026-06-29T15:21:14] VALIDATION OK — counts L1=149 L2=240 L3=42 L4=33 L5=10; accounts=2; ph_rows=24; generated_at=2026-06-29
+[2026-06-29T15:21:14] RESULT: PASS — leakage_dashboard.html refreshed

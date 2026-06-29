@@ -26,9 +26,17 @@ HTML        = os.path.join(HERE, "leakage_dashboard.html")
 PROMPT      = os.path.join(HERE, "dashboard_refresh_prompt.md")
 LOG         = os.path.join(HERE, "refresh.log")
 CLAUDE_BIN  = os.environ.get("CLAUDE_BIN", "claude")
-TIMEOUT_SEC = int(os.environ.get("WLSP_REFRESH_TIMEOUT", "1500"))     # 15 min hard cap
+TIMEOUT_SEC = int(os.environ.get("WLSP_REFRESH_TIMEOUT", "5400"))     # 90 min hard cap
+# NOTE: embedding ALL flagged rows (~536 detail objects, ~108 KB JSON) means the headless
+# Claude hand-assembles a large block, which previously overran the old 1500 s (25 min) cap.
+# Raised to 5400 s (90 min) — still well inside the 4-hour cron interval. Override per-run with
+# WLSP_REFRESH_TIMEOUT. If runs still time out, switch to the single-consolidated-query design.
 START, END  = "<!-- WLSP_DATA_START -->", "<!-- WLSP_DATA_END -->"
-ALLOWED     = "mcp__claude_ai_postgres__execute_sql Read Edit Write"
+ALLOWED     = "mcp__claude_ai_postgres__execute_sql Read Edit Write Bash"
+# Bash is REQUIRED: the embedded data block is ~108 KB, so the headless run generates it with
+# one SQL query (result overflows to a file) and splices it in with a short Python script — that
+# needs Bash. Without it every Bash call returns "This command requires approval" and, being
+# non-interactive, is denied, so the file is never written (the prior timeout/"unchanged" fails).
 
 # tables that must NEVER be referenced by the generated data block
 FORBIDDEN = ["development.leakage_detection", "development.leakage_classification",
@@ -121,8 +129,11 @@ def main():
     c = data["summary"].get("counts", {})
     if not all(k in c for k in ("l1", "l2", "l3", "l4", "l5")):
         fail("summary.counts incomplete")
-    if len(data["l1"]) > c["l1"] or len(data["l2"]) > c["l2"]:
-        fail("embedded L1/L2 exceed true counts (cap broken)")
+    # L2 is ASIN-grain, so its row count must not exceed counts.l2. L1 detail is ASIN+SKU+PH
+    # grain while counts.l1 is COUNT(DISTINCT asin), so len(l1) may legitimately exceed counts.l1
+    # (one ASIN with two SKUs) — L1 is validated by distinct-ASIN in guard #7, not by row length.
+    if len(data["l2"]) > c["l2"]:
+        fail("embedded L2 exceeds true count (cap broken)")
 
     # 5. no forbidden tables leaked into the DATA sections. verification_summary
     #    intentionally documents the EXCLUDED tables, so it is scanned out here —

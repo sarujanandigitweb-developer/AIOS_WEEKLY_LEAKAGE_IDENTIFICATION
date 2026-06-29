@@ -5083,7 +5083,6 @@ const dashboardData = {
   "l5": [
     {
       "ph": "Abinayaa",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 4697.35,
       "shipping": 664.84,
@@ -5094,7 +5093,6 @@ const dashboardData = {
     },
     {
       "ph": "Abinayaa",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 3395.13,
       "shipping": 482.4,
@@ -5105,7 +5103,6 @@ const dashboardData = {
     },
     {
       "ph": "Abinayaa",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 3251.16,
       "shipping": 484.1,
@@ -5115,74 +5112,7 @@ const dashboardData = {
       "declining": true
     },
     {
-      "ph": "Abinayaa",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 869.01,
-      "shipping": 96.55,
-      "ppc": 160.13,
-      "net": 134.37,
-      "margin_pct": 15.5,
-      "declining": null
-    },
-    {
-      "ph": "Abinayaa",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 814.36,
-      "shipping": 82.76,
-      "ppc": 75.66,
-      "net": 208.04,
-      "margin_pct": 25.5,
-      "declining": null
-    },
-    {
-      "ph": "Abinayaa",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 730.0,
-      "shipping": 93.76,
-      "ppc": 98.37,
-      "net": 136.37,
-      "margin_pct": 18.7,
-      "declining": false
-    },
-    {
-      "ph": "Abinayaa",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 3828.34,
-      "shipping": 568.29,
-      "ppc": 330.88,
-      "net": 823.58,
-      "margin_pct": 21.5,
-      "declining": null
-    },
-    {
-      "ph": "Abinayaa",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 2580.77,
-      "shipping": 399.64,
-      "ppc": 396.13,
-      "net": 365.58,
-      "margin_pct": 14.2,
-      "declining": null
-    },
-    {
-      "ph": "Abinayaa",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 2521.16,
-      "shipping": 390.34,
-      "ppc": 379.64,
-      "net": 364.55,
-      "margin_pct": 14.5,
-      "declining": false
-    },
-    {
       "ph": "Arudchelvi",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 2110.8,
       "shipping": 216.36,
@@ -5193,7 +5123,6 @@ const dashboardData = {
     },
     {
       "ph": "Arudchelvi",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 1690.59,
       "shipping": 230.81,
@@ -5204,7 +5133,6 @@ const dashboardData = {
     },
     {
       "ph": "Arudchelvi",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 1068.05,
       "shipping": 204.18,
@@ -5214,74 +5142,7 @@ const dashboardData = {
       "declining": true
     },
     {
-      "ph": "Arudchelvi",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 946.33,
-      "shipping": 68.34,
-      "ppc": 68.61,
-      "net": 288.9,
-      "margin_pct": 30.5,
-      "declining": null
-    },
-    {
-      "ph": "Arudchelvi",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 876.88,
-      "shipping": 80.25,
-      "ppc": 80.71,
-      "net": 233.64,
-      "margin_pct": 26.6,
-      "declining": null
-    },
-    {
-      "ph": "Arudchelvi",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 161.31,
-      "shipping": 24.0,
-      "ppc": 36.27,
-      "net": 12.32,
-      "margin_pct": 7.6,
-      "declining": true
-    },
-    {
-      "ph": "Arudchelvi",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 1164.47,
-      "shipping": 148.02,
-      "ppc": 144.31,
-      "net": 231.68,
-      "margin_pct": 19.9,
-      "declining": null
-    },
-    {
-      "ph": "Arudchelvi",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 813.71,
-      "shipping": 150.56,
-      "ppc": 84.65,
-      "net": 130.96,
-      "margin_pct": 16.1,
-      "declining": null
-    },
-    {
-      "ph": "Arudchelvi",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 906.74,
-      "shipping": 180.18,
-      "ppc": 95.11,
-      "net": 132.74,
-      "margin_pct": 14.6,
-      "declining": true
-    },
-    {
       "ph": "Dilani",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 3425.28,
       "shipping": 597.96,
@@ -5292,7 +5153,6 @@ const dashboardData = {
     },
     {
       "ph": "Dilani",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 2077.32,
       "shipping": 414.94,
@@ -5303,7 +5163,6 @@ const dashboardData = {
     },
     {
       "ph": "Dilani",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 1664.25,
       "shipping": 395.16,
@@ -5313,74 +5172,7 @@ const dashboardData = {
       "declining": true
     },
     {
-      "ph": "Dilani",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 2489.56,
-      "shipping": 401.74,
-      "ppc": 168.59,
-      "net": 549.97,
-      "margin_pct": 22.1,
-      "declining": null
-    },
-    {
-      "ph": "Dilani",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 1384.69,
-      "shipping": 222.45,
-      "ppc": 121.35,
-      "net": 279.31,
-      "margin_pct": 20.2,
-      "declining": null
-    },
-    {
-      "ph": "Dilani",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 892.21,
-      "shipping": 169.43,
-      "ppc": 39.34,
-      "net": 192.72,
-      "margin_pct": 21.6,
-      "declining": false
-    },
-    {
-      "ph": "Dilani",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 935.72,
-      "shipping": 196.22,
-      "ppc": 39.75,
-      "net": 185.1,
-      "margin_pct": 19.8,
-      "declining": null
-    },
-    {
-      "ph": "Dilani",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 692.63,
-      "shipping": 192.49,
-      "ppc": 48.5,
-      "net": 70.69,
-      "margin_pct": 10.2,
-      "declining": null
-    },
-    {
-      "ph": "Dilani",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 772.04,
-      "shipping": 225.73,
-      "ppc": 118.1,
-      "net": 3.59,
-      "margin_pct": 0.5,
-      "declining": true
-    },
-    {
       "ph": "Illakkiya",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 1213.85,
       "shipping": 230.78,
@@ -5391,7 +5183,6 @@ const dashboardData = {
     },
     {
       "ph": "Illakkiya",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 1014.52,
       "shipping": 199.22,
@@ -5402,7 +5193,6 @@ const dashboardData = {
     },
     {
       "ph": "Illakkiya",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 2043.42,
       "shipping": 372.78,
@@ -5412,74 +5202,7 @@ const dashboardData = {
       "declining": true
     },
     {
-      "ph": "Illakkiya",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 699.67,
-      "shipping": 116.25,
-      "ppc": 121.63,
-      "net": 76.97,
-      "margin_pct": 11.0,
-      "declining": null
-    },
-    {
-      "ph": "Illakkiya",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 492.34,
-      "shipping": 84.23,
-      "ppc": 83.13,
-      "net": 54.19,
-      "margin_pct": 11.0,
-      "declining": null
-    },
-    {
-      "ph": "Illakkiya",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 495.0,
-      "shipping": 73.33,
-      "ppc": 190.84,
-      "net": -41.42,
-      "margin_pct": -8.4,
-      "declining": false
-    },
-    {
-      "ph": "Illakkiya",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 514.18,
-      "shipping": 114.53,
-      "ppc": 92.59,
-      "net": 24.26,
-      "margin_pct": 4.7,
-      "declining": null
-    },
-    {
-      "ph": "Illakkiya",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 522.18,
-      "shipping": 114.99,
-      "ppc": 144.84,
-      "net": -24.85,
-      "margin_pct": -4.8,
-      "declining": null
-    },
-    {
-      "ph": "Illakkiya",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 1548.42,
-      "shipping": 299.45,
-      "ppc": 336.13,
-      "net": 61.21,
-      "margin_pct": 4.0,
-      "declining": false
-    },
-    {
       "ph": "Jasmini",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 9340.61,
       "shipping": 2313.07,
@@ -5490,7 +5213,6 @@ const dashboardData = {
     },
     {
       "ph": "Jasmini",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 7822.02,
       "shipping": 2273.9,
@@ -5501,7 +5223,6 @@ const dashboardData = {
     },
     {
       "ph": "Jasmini",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 6636.49,
       "shipping": 2299.07,
@@ -5511,74 +5232,7 @@ const dashboardData = {
       "declining": true
     },
     {
-      "ph": "Jasmini",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 6453.45,
-      "shipping": 1323.8,
-      "ppc": 1284.87,
-      "net": 295.39,
-      "margin_pct": 4.6,
-      "declining": null
-    },
-    {
-      "ph": "Jasmini",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 5014.8,
-      "shipping": 1224.89,
-      "ppc": 1163.11,
-      "net": -131.34,
-      "margin_pct": -2.6,
-      "declining": null
-    },
-    {
-      "ph": "Jasmini",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 4080.82,
-      "shipping": 1138.81,
-      "ppc": 1002.84,
-      "net": -305.28,
-      "margin_pct": -7.5,
-      "declining": true
-    },
-    {
-      "ph": "Jasmini",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 2887.16,
-      "shipping": 989.27,
-      "ppc": 813.23,
-      "net": -503.28,
-      "margin_pct": -17.4,
-      "declining": null
-    },
-    {
-      "ph": "Jasmini",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 2807.22,
-      "shipping": 1049.01,
-      "ppc": 779.74,
-      "net": -565.51,
-      "margin_pct": -20.1,
-      "declining": null
-    },
-    {
-      "ph": "Jasmini",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 2555.67,
-      "shipping": 1160.26,
-      "ppc": 859.29,
-      "net": -869.5,
-      "margin_pct": -34.0,
-      "declining": true
-    },
-    {
       "ph": "Jubista",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 1020.05,
       "shipping": 154.11,
@@ -5589,7 +5243,6 @@ const dashboardData = {
     },
     {
       "ph": "Jubista",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 751.99,
       "shipping": 134.23,
@@ -5600,7 +5253,6 @@ const dashboardData = {
     },
     {
       "ph": "Jubista",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 1300.27,
       "shipping": 137.47,
@@ -5610,74 +5262,7 @@ const dashboardData = {
       "declining": false
     },
     {
-      "ph": "Jubista",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 452.86,
-      "shipping": 56.11,
-      "ppc": 69.7,
-      "net": 77.97,
-      "margin_pct": 17.2,
-      "declining": null
-    },
-    {
-      "ph": "Jubista",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 211.03,
-      "shipping": 41.28,
-      "ppc": 41.97,
-      "net": 11.71,
-      "margin_pct": 5.6,
-      "declining": null
-    },
-    {
-      "ph": "Jubista",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 889.61,
-      "shipping": 60.69,
-      "ppc": 65.92,
-      "net": 273.71,
-      "margin_pct": 30.8,
-      "declining": false
-    },
-    {
-      "ph": "Jubista",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 567.19,
-      "shipping": 97.99,
-      "ppc": 88.91,
-      "net": 68.33,
-      "margin_pct": 12.0,
-      "declining": null
-    },
-    {
-      "ph": "Jubista",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 540.96,
-      "shipping": 92.95,
-      "ppc": 30.59,
-      "net": 119.89,
-      "margin_pct": 22.2,
-      "declining": null
-    },
-    {
-      "ph": "Jubista",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 410.66,
-      "shipping": 76.78,
-      "ppc": 52.67,
-      "net": 55.35,
-      "margin_pct": 13.5,
-      "declining": false
-    },
-    {
       "ph": "mothajini",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 1968.98,
       "shipping": 246.45,
@@ -5688,7 +5273,6 @@ const dashboardData = {
     },
     {
       "ph": "mothajini",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 1795.22,
       "shipping": 192.65,
@@ -5699,7 +5283,6 @@ const dashboardData = {
     },
     {
       "ph": "mothajini",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 2431.12,
       "shipping": 276.91,
@@ -5709,74 +5292,7 @@ const dashboardData = {
       "declining": false
     },
     {
-      "ph": "mothajini",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 130.77,
-      "shipping": 10.0,
-      "ppc": 183.74,
-      "net": -134.9,
-      "margin_pct": -103.2,
-      "declining": null
-    },
-    {
-      "ph": "mothajini",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 405.5,
-      "shipping": 34.2,
-      "ppc": 285.48,
-      "net": -137.21,
-      "margin_pct": -33.8,
-      "declining": null
-    },
-    {
-      "ph": "mothajini",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 635.14,
-      "shipping": 67.91,
-      "ppc": 226.24,
-      "net": -8.34,
-      "margin_pct": -1.3,
-      "declining": false
-    },
-    {
-      "ph": "mothajini",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 1838.21,
-      "shipping": 236.44,
-      "ppc": 373.05,
-      "net": 217.7,
-      "margin_pct": 11.8,
-      "declining": null
-    },
-    {
-      "ph": "mothajini",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 1389.72,
-      "shipping": 158.45,
-      "ppc": 379.94,
-      "net": 86.98,
-      "margin_pct": 6.3,
-      "declining": null
-    },
-    {
-      "ph": "mothajini",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 1795.98,
-      "shipping": 209.0,
-      "ppc": 402.08,
-      "net": 197.11,
-      "margin_pct": 11.0,
-      "declining": false
-    },
-    {
       "ph": "Nithushana",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 1096.07,
       "shipping": 109.91,
@@ -5787,7 +5303,6 @@ const dashboardData = {
     },
     {
       "ph": "Nithushana",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 983.74,
       "shipping": 154.36,
@@ -5798,7 +5313,6 @@ const dashboardData = {
     },
     {
       "ph": "Nithushana",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 1386.99,
       "shipping": 136.69,
@@ -5808,74 +5322,7 @@ const dashboardData = {
       "declining": false
     },
     {
-      "ph": "Nithushana",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 279.46,
-      "shipping": 28.88,
-      "ppc": 38.62,
-      "net": 58.26,
-      "margin_pct": 20.8,
-      "declining": null
-    },
-    {
-      "ph": "Nithushana",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 218.27,
-      "shipping": 33.32,
-      "ppc": 56.13,
-      "net": 8.77,
-      "margin_pct": 4.0,
-      "declining": null
-    },
-    {
-      "ph": "Nithushana",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 640.05,
-      "shipping": 64.91,
-      "ppc": 54.47,
-      "net": 168.65,
-      "margin_pct": 26.3,
-      "declining": false
-    },
-    {
-      "ph": "Nithushana",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 816.61,
-      "shipping": 81.03,
-      "ppc": 290.43,
-      "net": -3.99,
-      "margin_pct": -0.5,
-      "declining": null
-    },
-    {
-      "ph": "Nithushana",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 765.47,
-      "shipping": 121.04,
-      "ppc": 208.49,
-      "net": 14.93,
-      "margin_pct": 2.0,
-      "declining": null
-    },
-    {
-      "ph": "Nithushana",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 746.94,
-      "shipping": 71.79,
-      "ppc": 108.96,
-      "net": 155.38,
-      "margin_pct": 20.8,
-      "declining": false
-    },
-    {
       "ph": "paulr",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 8464.27,
       "shipping": 1653.45,
@@ -5886,7 +5333,6 @@ const dashboardData = {
     },
     {
       "ph": "paulr",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 8471.46,
       "shipping": 1664.76,
@@ -5897,7 +5343,6 @@ const dashboardData = {
     },
     {
       "ph": "paulr",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 10716.88,
       "shipping": 2032.83,
@@ -5907,74 +5352,7 @@ const dashboardData = {
       "declining": false
     },
     {
-      "ph": "paulr",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 4347.64,
-      "shipping": 787.42,
-      "ppc": 954.59,
-      "net": 214.43,
-      "margin_pct": 4.9,
-      "declining": null
-    },
-    {
-      "ph": "paulr",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 4552.06,
-      "shipping": 856.98,
-      "ppc": 950.07,
-      "net": 241.38,
-      "margin_pct": 5.3,
-      "declining": null
-    },
-    {
-      "ph": "paulr",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 5696.98,
-      "shipping": 986.93,
-      "ppc": 1063.03,
-      "net": 513.68,
-      "margin_pct": 9.0,
-      "declining": false
-    },
-    {
-      "ph": "paulr",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 4116.63,
-      "shipping": 866.03,
-      "ppc": 805.43,
-      "net": 181.02,
-      "margin_pct": 4.4,
-      "declining": null
-    },
-    {
-      "ph": "paulr",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 3919.4,
-      "shipping": 807.78,
-      "ppc": 852.65,
-      "net": 103.3,
-      "margin_pct": 2.6,
-      "declining": null
-    },
-    {
-      "ph": "paulr",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 5019.9,
-      "shipping": 1045.89,
-      "ppc": 889.62,
-      "net": 323.44,
-      "margin_pct": 6.4,
-      "declining": false
-    },
-    {
       "ph": "Poovitha",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 3137.91,
       "shipping": 313.97,
@@ -5985,7 +5363,6 @@ const dashboardData = {
     },
     {
       "ph": "Poovitha",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 3099.65,
       "shipping": 388.82,
@@ -5996,7 +5373,6 @@ const dashboardData = {
     },
     {
       "ph": "Poovitha",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 2363.66,
       "shipping": 282.39,
@@ -6006,74 +5382,7 @@ const dashboardData = {
       "declining": false
     },
     {
-      "ph": "Poovitha",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 2383.86,
-      "shipping": 224.97,
-      "ppc": 353.09,
-      "net": 494.68,
-      "margin_pct": 20.8,
-      "declining": null
-    },
-    {
-      "ph": "Poovitha",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 2203.71,
-      "shipping": 259.54,
-      "ppc": 496.61,
-      "net": 235.52,
-      "margin_pct": 10.7,
-      "declining": null
-    },
-    {
-      "ph": "Poovitha",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 1699.42,
-      "shipping": 178.86,
-      "ppc": 386.74,
-      "net": 199.14,
-      "margin_pct": 11.7,
-      "declining": false
-    },
-    {
-      "ph": "Poovitha",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 754.05,
-      "shipping": 89.0,
-      "ppc": 206.68,
-      "net": 43.64,
-      "margin_pct": 5.8,
-      "declining": null
-    },
-    {
-      "ph": "Poovitha",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 895.94,
-      "shipping": 129.28,
-      "ppc": 305.72,
-      "net": -31.83,
-      "margin_pct": -3.6,
-      "declining": null
-    },
-    {
-      "ph": "Poovitha",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 664.24,
-      "shipping": 103.53,
-      "ppc": 227.44,
-      "net": -32.06,
-      "margin_pct": -4.8,
-      "declining": true
-    },
-    {
       "ph": "prasath",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 2086.66,
       "shipping": 969.43,
@@ -6084,7 +5393,6 @@ const dashboardData = {
     },
     {
       "ph": "prasath",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 1698.38,
       "shipping": 715.43,
@@ -6095,7 +5403,6 @@ const dashboardData = {
     },
     {
       "ph": "prasath",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 1736.24,
       "shipping": 816.63,
@@ -6105,74 +5412,7 @@ const dashboardData = {
       "declining": false
     },
     {
-      "ph": "prasath",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 560.57,
-      "shipping": 236.45,
-      "ppc": 52.41,
-      "net": -36.6,
-      "margin_pct": -6.5,
-      "declining": null
-    },
-    {
-      "ph": "prasath",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 570.92,
-      "shipping": 206.36,
-      "ppc": 83.84,
-      "net": -33.29,
-      "margin_pct": -5.8,
-      "declining": null
-    },
-    {
-      "ph": "prasath",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 375.55,
-      "shipping": 184.26,
-      "ppc": 65.03,
-      "net": -80.29,
-      "margin_pct": -21.4,
-      "declining": false
-    },
-    {
-      "ph": "prasath",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 1526.09,
-      "shipping": 732.99,
-      "ppc": 162.38,
-      "net": -208.62,
-      "margin_pct": -13.7,
-      "declining": null
-    },
-    {
-      "ph": "prasath",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 1127.46,
-      "shipping": 509.06,
-      "ppc": 238.88,
-      "net": -240.59,
-      "margin_pct": -21.3,
-      "declining": null
-    },
-    {
-      "ph": "prasath",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 1360.69,
-      "shipping": 632.37,
-      "ppc": 179.55,
-      "net": -199.61,
-      "margin_pct": -14.7,
-      "declining": false
-    },
-    {
       "ph": "preethi",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 3426.75,
       "shipping": 299.81,
@@ -6183,7 +5423,6 @@ const dashboardData = {
     },
     {
       "ph": "preethi",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 3678.23,
       "shipping": 286.65,
@@ -6194,7 +5433,6 @@ const dashboardData = {
     },
     {
       "ph": "preethi",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 1887.24,
       "shipping": 154.07,
@@ -6204,74 +5442,7 @@ const dashboardData = {
       "declining": true
     },
     {
-      "ph": "preethi",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 2398.03,
-      "shipping": 196.58,
-      "ppc": 262.46,
-      "net": 620.07,
-      "margin_pct": 25.9,
-      "declining": null
-    },
-    {
-      "ph": "preethi",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 2262.88,
-      "shipping": 213.66,
-      "ppc": 340.44,
-      "net": 464.19,
-      "margin_pct": 20.5,
-      "declining": null
-    },
-    {
-      "ph": "preethi",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 1301.42,
-      "shipping": 100.05,
-      "ppc": 289.46,
-      "net": 196.13,
-      "margin_pct": 15.1,
-      "declining": true
-    },
-    {
-      "ph": "preethi",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 1028.72,
-      "shipping": 103.23,
-      "ppc": 195.16,
-      "net": 164.54,
-      "margin_pct": 16.0,
-      "declining": null
-    },
-    {
-      "ph": "preethi",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 1415.35,
-      "shipping": 72.99,
-      "ppc": 207.07,
-      "net": 356.85,
-      "margin_pct": 25.2,
-      "declining": null
-    },
-    {
-      "ph": "preethi",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 585.82,
-      "shipping": 54.02,
-      "ppc": 118.47,
-      "net": 91.13,
-      "margin_pct": 15.6,
-      "declining": false
-    },
-    {
       "ph": "Renuha",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 4135.44,
       "shipping": 365.07,
@@ -6282,7 +5453,6 @@ const dashboardData = {
     },
     {
       "ph": "Renuha",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 2607.3,
       "shipping": 305.21,
@@ -6293,7 +5463,6 @@ const dashboardData = {
     },
     {
       "ph": "Renuha",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 2836.03,
       "shipping": 308.35,
@@ -6303,74 +5472,7 @@ const dashboardData = {
       "declining": false
     },
     {
-      "ph": "Renuha",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 2733.02,
-      "shipping": 222.73,
-      "ppc": 338.16,
-      "net": 668.97,
-      "margin_pct": 24.5,
-      "declining": null
-    },
-    {
-      "ph": "Renuha",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 1749.0,
-      "shipping": 181.47,
-      "ppc": 307.51,
-      "net": 298.07,
-      "margin_pct": 17.0,
-      "declining": null
-    },
-    {
-      "ph": "Renuha",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 1677.85,
-      "shipping": 172.45,
-      "ppc": 279.44,
-      "net": 303.14,
-      "margin_pct": 18.1,
-      "declining": false
-    },
-    {
-      "ph": "Renuha",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 1402.42,
-      "shipping": 142.34,
-      "ppc": 283.82,
-      "net": 204.93,
-      "margin_pct": 14.6,
-      "declining": null
-    },
-    {
-      "ph": "Renuha",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 858.3,
-      "shipping": 123.74,
-      "ppc": 242.0,
-      "net": 20.5,
-      "margin_pct": 2.4,
-      "declining": null
-    },
-    {
-      "ph": "Renuha",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 1158.18,
-      "shipping": 135.89,
-      "ppc": 194.56,
-      "net": 190.73,
-      "margin_pct": 16.5,
-      "declining": false
-    },
-    {
       "ph": "Saranya",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 188.65,
       "shipping": 75.06,
@@ -6381,7 +5483,6 @@ const dashboardData = {
     },
     {
       "ph": "Saranya",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 160.45,
       "shipping": 55.77,
@@ -6392,7 +5493,6 @@ const dashboardData = {
     },
     {
       "ph": "Saranya",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 242.45,
       "shipping": 44.61,
@@ -6402,74 +5502,7 @@ const dashboardData = {
       "declining": false
     },
     {
-      "ph": "Saranya",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 96.3,
-      "shipping": 19.41,
-      "ppc": 7.98,
-      "net": 15.95,
-      "margin_pct": 16.6,
-      "declining": null
-    },
-    {
-      "ph": "Saranya",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 58.38,
-      "shipping": 27.65,
-      "ppc": 7.67,
-      "net": -9.05,
-      "margin_pct": -15.5,
-      "declining": null
-    },
-    {
-      "ph": "Saranya",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 147.1,
-      "shipping": 8.64,
-      "ppc": 5.29,
-      "net": 52.27,
-      "margin_pct": 35.5,
-      "declining": false
-    },
-    {
-      "ph": "Saranya",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 92.35,
-      "shipping": 55.65,
-      "ppc": 0.32,
-      "net": -14.41,
-      "margin_pct": -15.6,
-      "declining": null
-    },
-    {
-      "ph": "Saranya",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 102.07,
-      "shipping": 28.12,
-      "ppc": 1.94,
-      "net": 15.87,
-      "margin_pct": 15.5,
-      "declining": null
-    },
-    {
-      "ph": "Saranya",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 95.35,
-      "shipping": 35.97,
-      "ppc": 12.94,
-      "net": -6.0,
-      "margin_pct": -6.3,
-      "declining": false
-    },
-    {
       "ph": "Shanthini",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 1248.93,
       "shipping": 156.41,
@@ -6480,7 +5513,6 @@ const dashboardData = {
     },
     {
       "ph": "Shanthini",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 698.1,
       "shipping": 115.32,
@@ -6491,7 +5523,6 @@ const dashboardData = {
     },
     {
       "ph": "Shanthini",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 1017.8,
       "shipping": 127.88,
@@ -6501,74 +5532,7 @@ const dashboardData = {
       "declining": false
     },
     {
-      "ph": "Shanthini",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 988.35,
-      "shipping": 106.86,
-      "ppc": 139.49,
-      "net": 198.41,
-      "margin_pct": 20.1,
-      "declining": null
-    },
-    {
-      "ph": "Shanthini",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 557.69,
-      "shipping": 82.14,
-      "ppc": 92.3,
-      "net": 76.53,
-      "margin_pct": 13.7,
-      "declining": null
-    },
-    {
-      "ph": "Shanthini",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 779.77,
-      "shipping": 87.09,
-      "ppc": 158.26,
-      "net": 105.55,
-      "margin_pct": 13.5,
-      "declining": true
-    },
-    {
-      "ph": "Shanthini",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 260.58,
-      "shipping": 49.55,
-      "ppc": 60.47,
-      "net": 7.24,
-      "margin_pct": 2.8,
-      "declining": null
-    },
-    {
-      "ph": "Shanthini",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 140.41,
-      "shipping": 33.18,
-      "ppc": 68.95,
-      "net": -38.95,
-      "margin_pct": -27.7,
-      "declining": null
-    },
-    {
-      "ph": "Shanthini",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 238.03,
-      "shipping": 40.79,
-      "ppc": 48.74,
-      "net": 17.58,
-      "margin_pct": 7.4,
-      "declining": false
-    },
-    {
       "ph": "shimee",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 5730.02,
       "shipping": 652.73,
@@ -6579,7 +5543,6 @@ const dashboardData = {
     },
     {
       "ph": "shimee",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 4264.73,
       "shipping": 511.44,
@@ -6590,84 +5553,16 @@ const dashboardData = {
     },
     {
       "ph": "shimee",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 3263.5,
       "shipping": 498.11,
       "ppc": 497.26,
-      "net": 473.21,
+      "net": 473.2,
       "margin_pct": 14.5,
       "declining": true
     },
     {
-      "ph": "shimee",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 1932.2,
-      "shipping": 219.0,
-      "ppc": 235.09,
-      "net": 415.4,
-      "margin_pct": 21.5,
-      "declining": null
-    },
-    {
-      "ph": "shimee",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 2115.76,
-      "shipping": 196.98,
-      "ppc": 231.39,
-      "net": 523.72,
-      "margin_pct": 24.8,
-      "declining": null
-    },
-    {
-      "ph": "shimee",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 1383.49,
-      "shipping": 171.5,
-      "ppc": 293.88,
-      "net": 157.19,
-      "margin_pct": 11.4,
-      "declining": false
-    },
-    {
-      "ph": "shimee",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 3797.82,
-      "shipping": 433.74,
-      "ppc": 330.99,
-      "net": 944.29,
-      "margin_pct": 24.9,
-      "declining": null
-    },
-    {
-      "ph": "shimee",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 2148.97,
-      "shipping": 314.45,
-      "ppc": 406.66,
-      "net": 245.92,
-      "margin_pct": 11.4,
-      "declining": null
-    },
-    {
-      "ph": "shimee",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 1880.01,
-      "shipping": 326.61,
-      "ppc": 203.38,
-      "net": 316.01,
-      "margin_pct": 16.8,
-      "declining": false
-    },
-    {
       "ph": "thanucha",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 40.3,
       "shipping": 8.53,
@@ -6678,7 +5573,6 @@ const dashboardData = {
     },
     {
       "ph": "thanucha",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 50.94,
       "shipping": 12.51,
@@ -6689,40 +5583,6 @@ const dashboardData = {
     },
     {
       "ph": "thanucha",
-      "account": "ALL",
-      "month": "2026-05",
-      "revenue": 67.29,
-      "shipping": 29.6,
-      "ppc": 0.0,
-      "net": 0.68,
-      "margin_pct": 1.0,
-      "declining": true
-    },
-    {
-      "ph": "thanucha",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 40.3,
-      "shipping": 8.53,
-      "ppc": 0.95,
-      "net": 8.66,
-      "margin_pct": 21.5,
-      "declining": null
-    },
-    {
-      "ph": "thanucha",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 50.94,
-      "shipping": 12.51,
-      "ppc": 0.61,
-      "net": 9.8,
-      "margin_pct": 19.2,
-      "declining": null
-    },
-    {
-      "ph": "thanucha",
-      "account": "LEDSone UK",
       "month": "2026-05",
       "revenue": 67.29,
       "shipping": 29.6,
@@ -6733,7 +5593,6 @@ const dashboardData = {
     },
     {
       "ph": "Tharshana",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 1733.48,
       "shipping": 186.91,
@@ -6744,7 +5603,6 @@ const dashboardData = {
     },
     {
       "ph": "Tharshana",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 2382.7,
       "shipping": 212.06,
@@ -6755,7 +5613,6 @@ const dashboardData = {
     },
     {
       "ph": "Tharshana",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 1963.99,
       "shipping": 190.02,
@@ -6765,74 +5622,7 @@ const dashboardData = {
       "declining": false
     },
     {
-      "ph": "Tharshana",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 1038.04,
-      "shipping": 73.78,
-      "ppc": 81.92,
-      "net": 311.42,
-      "margin_pct": 30.0,
-      "declining": null
-    },
-    {
-      "ph": "Tharshana",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 1339.99,
-      "shipping": 101.75,
-      "ppc": 113.4,
-      "net": 387.85,
-      "margin_pct": 28.9,
-      "declining": null
-    },
-    {
-      "ph": "Tharshana",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 1149.96,
-      "shipping": 90.77,
-      "ppc": 139.89,
-      "net": 286.82,
-      "margin_pct": 24.9,
-      "declining": true
-    },
-    {
-      "ph": "Tharshana",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 695.44,
-      "shipping": 113.13,
-      "ppc": 183.9,
-      "net": 15.92,
-      "margin_pct": 2.3,
-      "declining": null
-    },
-    {
-      "ph": "Tharshana",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 1042.71,
-      "shipping": 110.32,
-      "ppc": 166.33,
-      "net": 192.57,
-      "margin_pct": 18.5,
-      "declining": null
-    },
-    {
-      "ph": "Tharshana",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 814.03,
-      "shipping": 99.25,
-      "ppc": 142.77,
-      "net": 124.3,
-      "margin_pct": 15.3,
-      "declining": false
-    },
-    {
       "ph": "Tharsiga(nelli)",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 1230.61,
       "shipping": 582.82,
@@ -6843,7 +5633,6 @@ const dashboardData = {
     },
     {
       "ph": "Tharsiga(nelli)",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 889.75,
       "shipping": 482.19,
@@ -6854,7 +5643,6 @@ const dashboardData = {
     },
     {
       "ph": "Tharsiga(nelli)",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 948.79,
       "shipping": 704.33,
@@ -6864,74 +5652,7 @@ const dashboardData = {
       "declining": true
     },
     {
-      "ph": "Tharsiga(nelli)",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 266.6,
-      "shipping": 68.17,
-      "ppc": 32.66,
-      "net": 19.14,
-      "margin_pct": 7.2,
-      "declining": null
-    },
-    {
-      "ph": "Tharsiga(nelli)",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 157.63,
-      "shipping": 53.69,
-      "ppc": 40.66,
-      "net": -23.42,
-      "margin_pct": -14.9,
-      "declining": null
-    },
-    {
-      "ph": "Tharsiga(nelli)",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 224.11,
-      "shipping": 111.55,
-      "ppc": 30.49,
-      "net": -41.19,
-      "margin_pct": -18.4,
-      "declining": true
-    },
-    {
-      "ph": "Tharsiga(nelli)",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 964.01,
-      "shipping": 514.66,
-      "ppc": 205.76,
-      "net": -286.61,
-      "margin_pct": -29.7,
-      "declining": null
-    },
-    {
-      "ph": "Tharsiga(nelli)",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 732.12,
-      "shipping": 428.5,
-      "ppc": 134.31,
-      "net": -233.35,
-      "margin_pct": -31.9,
-      "declining": null
-    },
-    {
-      "ph": "Tharsiga(nelli)",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 724.68,
-      "shipping": 592.78,
-      "ppc": 227.21,
-      "net": -493.89,
-      "margin_pct": -68.2,
-      "declining": true
-    },
-    {
       "ph": "Tharsika(jaffna)",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 940.23,
       "shipping": 231.2,
@@ -6942,7 +5663,6 @@ const dashboardData = {
     },
     {
       "ph": "Tharsika(jaffna)",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 1476.65,
       "shipping": 376.22,
@@ -6953,7 +5673,6 @@ const dashboardData = {
     },
     {
       "ph": "Tharsika(jaffna)",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 1846.62,
       "shipping": 582.92,
@@ -6963,74 +5682,7 @@ const dashboardData = {
       "declining": false
     },
     {
-      "ph": "Tharsika(jaffna)",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 231.91,
-      "shipping": 67.36,
-      "ppc": 80.94,
-      "net": -43.94,
-      "margin_pct": -18.9,
-      "declining": null
-    },
-    {
-      "ph": "Tharsika(jaffna)",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 249.01,
-      "shipping": 89.93,
-      "ppc": 87.28,
-      "net": -65.16,
-      "margin_pct": -26.2,
-      "declining": null
-    },
-    {
-      "ph": "Tharsika(jaffna)",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 334.02,
-      "shipping": 136.35,
-      "ppc": 115.67,
-      "net": -101.71,
-      "margin_pct": -30.5,
-      "declining": true
-    },
-    {
-      "ph": "Tharsika(jaffna)",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 708.32,
-      "shipping": 163.83,
-      "ppc": 238.08,
-      "net": -83.17,
-      "margin_pct": -11.7,
-      "declining": null
-    },
-    {
-      "ph": "Tharsika(jaffna)",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 1227.64,
-      "shipping": 286.29,
-      "ppc": 319.52,
-      "net": -53.38,
-      "margin_pct": -4.3,
-      "declining": null
-    },
-    {
-      "ph": "Tharsika(jaffna)",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 1512.6,
-      "shipping": 446.57,
-      "ppc": 384.5,
-      "net": -150.4,
-      "margin_pct": -9.9,
-      "declining": false
-    },
-    {
       "ph": "Theepana",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 4871.42,
       "shipping": 475.49,
@@ -7041,7 +5693,6 @@ const dashboardData = {
     },
     {
       "ph": "Theepana",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 4364.88,
       "shipping": 465.18,
@@ -7052,7 +5703,6 @@ const dashboardData = {
     },
     {
       "ph": "Theepana",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 4839.64,
       "shipping": 486.46,
@@ -7062,74 +5712,7 @@ const dashboardData = {
       "declining": false
     },
     {
-      "ph": "Theepana",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 2294.66,
-      "shipping": 217.74,
-      "ppc": 304.52,
-      "net": 510.34,
-      "margin_pct": 22.2,
-      "declining": null
-    },
-    {
-      "ph": "Theepana",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 1833.86,
-      "shipping": 214.08,
-      "ppc": 331.95,
-      "net": 279.21,
-      "margin_pct": 15.2,
-      "declining": null
-    },
-    {
-      "ph": "Theepana",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 2037.52,
-      "shipping": 181.0,
-      "ppc": 276.42,
-      "net": 459.47,
-      "margin_pct": 22.6,
-      "declining": false
-    },
-    {
-      "ph": "Theepana",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 2576.76,
-      "shipping": 257.75,
-      "ppc": 532.95,
-      "net": 368.84,
-      "margin_pct": 14.3,
-      "declining": null
-    },
-    {
-      "ph": "Theepana",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 2531.02,
-      "shipping": 251.1,
-      "ppc": 634.36,
-      "net": 253.5,
-      "margin_pct": 10.0,
-      "declining": null
-    },
-    {
-      "ph": "Theepana",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 2802.12,
-      "shipping": 305.46,
-      "ppc": 536.14,
-      "net": 419.35,
-      "margin_pct": 15.0,
-      "declining": false
-    },
-    {
       "ph": "Thojika",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 1131.95,
       "shipping": 247.23,
@@ -7140,7 +5723,6 @@ const dashboardData = {
     },
     {
       "ph": "Thojika",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 1057.41,
       "shipping": 283.77,
@@ -7151,7 +5733,6 @@ const dashboardData = {
     },
     {
       "ph": "Thojika",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 967.38,
       "shipping": 285.0,
@@ -7161,74 +5742,7 @@ const dashboardData = {
       "declining": true
     },
     {
-      "ph": "Thojika",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 571.69,
-      "shipping": 84.82,
-      "ppc": 24.21,
-      "net": 148.23,
-      "margin_pct": 25.9,
-      "declining": null
-    },
-    {
-      "ph": "Thojika",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 511.06,
-      "shipping": 97.22,
-      "ppc": 20.93,
-      "net": 111.82,
-      "margin_pct": 21.9,
-      "declining": null
-    },
-    {
-      "ph": "Thojika",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 727.85,
-      "shipping": 109.92,
-      "ppc": 64.12,
-      "net": 153.49,
-      "margin_pct": 21.1,
-      "declining": true
-    },
-    {
-      "ph": "Thojika",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 560.26,
-      "shipping": 162.41,
-      "ppc": 58.4,
-      "net": 31.31,
-      "margin_pct": 5.6,
-      "declining": null
-    },
-    {
-      "ph": "Thojika",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 546.35,
-      "shipping": 186.54,
-      "ppc": 53.17,
-      "net": 6.14,
-      "margin_pct": 1.1,
-      "declining": null
-    },
-    {
-      "ph": "Thojika",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 239.53,
-      "shipping": 175.08,
-      "ppc": 100.59,
-      "net": -167.88,
-      "margin_pct": -70.1,
-      "declining": true
-    },
-    {
       "ph": "thuwaraga",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 8899.19,
       "shipping": 1564.21,
@@ -7239,7 +5753,6 @@ const dashboardData = {
     },
     {
       "ph": "thuwaraga",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 6267.99,
       "shipping": 1171.2,
@@ -7250,7 +5763,6 @@ const dashboardData = {
     },
     {
       "ph": "thuwaraga",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 6118.44,
       "shipping": 1296.1,
@@ -7260,74 +5772,7 @@ const dashboardData = {
       "declining": false
     },
     {
-      "ph": "thuwaraga",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 2228.76,
-      "shipping": 381.75,
-      "ppc": 312.8,
-      "net": 308.39,
-      "margin_pct": 13.8,
-      "declining": null
-    },
-    {
-      "ph": "thuwaraga",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 1473.14,
-      "shipping": 316.09,
-      "ppc": 248.59,
-      "net": 98.23,
-      "margin_pct": 6.7,
-      "declining": null
-    },
-    {
-      "ph": "thuwaraga",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 1864.15,
-      "shipping": 367.1,
-      "ppc": 182.71,
-      "net": 289.05,
-      "margin_pct": 15.5,
-      "declining": false
-    },
-    {
-      "ph": "thuwaraga",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 6670.43,
-      "shipping": 1182.46,
-      "ppc": 761.17,
-      "net": 1058.06,
-      "margin_pct": 15.9,
-      "declining": null
-    },
-    {
-      "ph": "thuwaraga",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 4794.85,
-      "shipping": 855.11,
-      "ppc": 711.61,
-      "net": 590.96,
-      "margin_pct": 12.3,
-      "declining": null
-    },
-    {
-      "ph": "thuwaraga",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 4254.29,
-      "shipping": 929.0,
-      "ppc": 499.27,
-      "net": 486.16,
-      "margin_pct": 11.4,
-      "declining": true
-    },
-    {
       "ph": "utharsika",
-      "account": "ALL",
       "month": "2026-03",
       "revenue": 18099.25,
       "shipping": 3390.17,
@@ -7338,7 +5783,6 @@ const dashboardData = {
     },
     {
       "ph": "utharsika",
-      "account": "ALL",
       "month": "2026-04",
       "revenue": 15904.63,
       "shipping": 2894.54,
@@ -7349,7 +5793,6 @@ const dashboardData = {
     },
     {
       "ph": "utharsika",
-      "account": "ALL",
       "month": "2026-05",
       "revenue": 16957.04,
       "shipping": 3030.44,
@@ -7357,72 +5800,6 @@ const dashboardData = {
       "net": 50.82,
       "margin_pct": 0.3,
       "declining": false
-    },
-    {
-      "ph": "utharsika",
-      "account": "DCVoltage UK",
-      "month": "2026-03",
-      "revenue": 9888.45,
-      "shipping": 1903.74,
-      "ppc": 2931.36,
-      "net": -385.3,
-      "margin_pct": -3.9,
-      "declining": null
-    },
-    {
-      "ph": "utharsika",
-      "account": "DCVoltage UK",
-      "month": "2026-04",
-      "revenue": 8370.81,
-      "shipping": 1471.07,
-      "ppc": 2382.85,
-      "net": -87.06,
-      "margin_pct": -1.0,
-      "declining": null
-    },
-    {
-      "ph": "utharsika",
-      "account": "DCVoltage UK",
-      "month": "2026-05",
-      "revenue": 9903.54,
-      "shipping": 1624.45,
-      "ppc": 2478.7,
-      "net": 353.45,
-      "margin_pct": 3.6,
-      "declining": false
-    },
-    {
-      "ph": "utharsika",
-      "account": "LEDSone UK",
-      "month": "2026-03",
-      "revenue": 8210.8,
-      "shipping": 1486.43,
-      "ppc": 1920.87,
-      "net": 287.56,
-      "margin_pct": 3.5,
-      "declining": null
-    },
-    {
-      "ph": "utharsika",
-      "account": "LEDSone UK",
-      "month": "2026-04",
-      "revenue": 7533.82,
-      "shipping": 1423.47,
-      "ppc": 1917.62,
-      "net": 49.13,
-      "margin_pct": 0.7,
-      "declining": null
-    },
-    {
-      "ph": "utharsika",
-      "account": "LEDSone UK",
-      "month": "2026-05",
-      "revenue": 7053.5,
-      "shipping": 1406.0,
-      "ppc": 2070.7,
-      "net": -302.62,
-      "margin_pct": -4.3,
-      "declining": true
     }
   ],
   "account_summary": [
@@ -7664,19 +6041,31 @@ const dashboardData = {
   "verification_summary": [
     {
       "metric": "Generated",
-      "value": "2026-06-29 - week 2026-06-22 to 2026-06-28"
+      "value": "2026-06-29 - single-pass full regeneration (template-inclusive shipping)"
     },
     {
-      "metric": "Reporting window",
-      "value": "Previous Mon-Sun week; L4=30d ending Sunday; L5=last 3 complete months"
+      "metric": "Source",
+      "value": "summary.counts, account_summary, ph_summary, l1-l5 all from ONE query execution"
     },
     {
-      "metric": "L5 grain",
-      "value": "Per PH x account x month; account=ALL is the combined cross-account trend (All Accounts view)"
+      "metric": "L1 KPI grain",
+      "value": "COUNT(DISTINCT ASIN); all detail rows embedded (SKU+PH kept)"
+    },
+    {
+      "metric": "Counts (DB=Dashboard)",
+      "value": "L1 149, L2 240, L3 42, L4 33, L5 10"
     },
     {
       "metric": "Shipping basis",
       "value": "carrier_charge (GBP) + shipping_template_price, de-duped per order, allocated by line-revenue share"
+    },
+    {
+      "metric": "L3 grain",
+      "value": "ASIN grain; (rev x0.45) - shipping - PPC < 0 AND PPC > GBP5; PPC joined via ref_id"
+    },
+    {
+      "metric": "L4 grain",
+      "value": "SKU grain; refunded distinct orders / total distinct orders > 10% (min 2 orders)"
     },
     {
       "metric": "Marketplace",
@@ -7740,11 +6129,8 @@ window.dashboardData = dashboardData;
      a row counts only when it matches BOTH the selected account and the selected PH.
      l5 (Margin Trend) carries no account, so it is counted on its own (unique
      declining PHs) and is EXCLUDED from the flagged totals — see totalFlagged(). */
-  /* L5 carries an account dimension: account='ALL' is the combined cross-account trend
-     (shown for "All accounts"); per-account rows show when a specific account is selected. */
-  function l5Acct(){return acctFilter==='__ALL__'?'ALL':acctFilter;}
   function countFor(k){
-    if(k==='l5')return uniquePhs(rowsFor('l5').filter(r=>(r.account||'ALL')===l5Acct()&&r.declining&&phMatch(r))).length;
+    if(k==='l5')return uniquePhs(rowsFor('l5').filter(r=>r.declining&&viewMatch(r))).length;
     return rowsFor(k).filter(viewMatch).length;}
   function acctClass(a){a=txt(a).toLowerCase();return a.indexOf('dcv')>=0?'dcv':(a.indexOf('led')>=0?'led':'oth');}
   function rowKey(k,r){return k+'::'+txt(r.asin)+'::'+txt(r.sku)+'::'+txt(r.ph)+'::'+txt(r.month);}
@@ -8010,9 +6396,7 @@ window.dashboardData = dashboardData;
   }
 
   function renderL5(body,a){
-    const acct=l5Acct();
     const rows=rowsFor('l5').filter(r=>{
-      if((r.account||'ALL')!==acct)return false;
       if(phFilter!=='__ALL__'&&(r.ph||'UNATTRIBUTED')!==phFilter)return false;
       if(searchText.trim()){const q=searchText.toLowerCase();if((r.ph||'').toLowerCase().indexOf(q)<0)return false;}
       return true;});

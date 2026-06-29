@@ -27,6 +27,19 @@ CASE WHEN ss_name ILIKE '%dcvoltage%' THEN 'DCVoltage UK'
      ELSE ss_name END
 ```
 
+## Reporting window (weekly — run every Monday)
+This runs every **Monday** and reports the **previous complete week, Monday→Sunday**. Anchor every
+window to that week using ISO-week truncation (robust even if a run slips to another weekday):
+- **Week start (previous Monday)** = `date_trunc('week',CURRENT_DATE)::date - INTERVAL '7 days'`
+- **Week end (previous Sunday)**   = `date_trunc('week',CURRENT_DATE)::date - INTERVAL '1 day'`
+- The bounded predicate used by the 7-day analyses is therefore
+  `date >= date_trunc('week',CURRENT_DATE)::date - INTERVAL '7 days' AND date < date_trunc('week',CURRENT_DATE)::date`
+  (i.e. inclusive of the previous Monday through the previous Sunday; never includes the current,
+  partial week). Example: a run on **Mon 2026-06-29** fetches **2026-06-22 → 2026-06-28**.
+- **L1, L2, L3** use exactly this Mon–Sun window. **L4** uses the 30 days ending on the previous
+  Sunday (`>= week_end-29d … < this Monday`). **L5** stays on the last 3 *complete calendar months*
+  (month-anchored, independent of the week). The header `Start/End Date` shows the **Mon–Sun** window.
+
 ---
 
 ## STEP 1 — Run these exact queries (in order) via `mcp__claude_ai_postgres__execute_sql`
@@ -43,7 +56,8 @@ SELECT COALESCE(NULLIF(pp.user_name,''),'UNATTRIBUTED') AS ph, pp.ref_id AS asin
 FROM public.ppc_performance pp
 WHERE (pp.ss_name ILIKE '%UK%' OR pp.marketplace ILIKE '%UK%')
   AND pp.source_name ILIKE '%amazon%'   -- D04 FIX A: Amazon-only (excludes eBay/Shopify/so_926407)
-  AND pp.date >= CURRENT_DATE - INTERVAL '7 days' AND pp.record_type='ad'
+  AND pp.date >= date_trunc('week',CURRENT_DATE)::date - INTERVAL '7 days'
+  AND pp.date <  date_trunc('week',CURRENT_DATE)::date AND pp.record_type='ad'
   AND pp.ref_id IS NOT NULL AND pp.ref_id NOT IN ('','0')
 GROUP BY pp.ref_id, pp.sku, ph, account
 HAVING SUM(pp.spend) > 3 AND SUM(pp.orders) = 0
@@ -61,7 +75,9 @@ WITH lines AS (
          SUM(ot.item_price*ot.quantity) AS line_rev
   FROM public.order_transaction ot
   WHERE ot.source_name ILIKE '%amazon%' AND ot.market_place ILIKE '%UK%' AND ot.fba_sales=false
-    AND ot.order_status='Completed' AND ot.order_date >= CURRENT_DATE - INTERVAL '7 days'
+    AND ot.order_status='Completed'
+    AND ot.order_date >= date_trunc('week',CURRENT_DATE)::date - INTERVAL '7 days'
+    AND ot.order_date <  date_trunc('week',CURRENT_DATE)::date
   GROUP BY ot.order_id, ot.asin, ot.sku),
 orev AS (SELECT order_id, SUM(line_rev) ord_rev FROM lines GROUP BY order_id),
 ship AS (SELECT order_id,
@@ -69,7 +85,9 @@ ship AS (SELECT order_id,
               + COALESCE(MAX(shipping_template_price) FILTER (WHERE shipping_template_price>0),0) AS cc
          FROM public.order_shipping_billing_detail GROUP BY order_id),   -- carrier + template, per order
 ppc AS (SELECT ref_id AS asin, SUM(spend) ppc FROM public.ppc_performance
-        WHERE (ss_name ILIKE '%UK%' OR marketplace ILIKE '%UK%') AND date>=CURRENT_DATE-INTERVAL '7 days'
+        WHERE (ss_name ILIKE '%UK%' OR marketplace ILIKE '%UK%')
+          AND date >= date_trunc('week',CURRENT_DATE)::date - INTERVAL '7 days'
+          AND date <  date_trunc('week',CURRENT_DATE)::date
           AND source_name ILIKE '%amazon%' AND record_type='ad'
           AND ref_id IS NOT NULL AND ref_id NOT IN ('','0') GROUP BY ref_id)   -- Amazon-only PPC by ASIN for L3
 ```
@@ -124,25 +142,33 @@ SELECT ot.sku, MAX(ot.asin) AS asin, COALESCE(NULLIF(MAX(ot.user_name),''),'UNAT
        ROUND(SUM(ot.item_price*ot.quantity) FILTER (WHERE ot.order_status='Refunded')::numeric,2) AS revenue_at_risk
 FROM public.order_transaction ot
 WHERE ot.source_name ILIKE '%amazon%' AND ot.market_place ILIKE '%UK%' AND ot.fba_sales=false
-  AND ot.order_date >= CURRENT_DATE - INTERVAL '30 days' AND ot.sku IS NOT NULL AND ot.sku<>''
+  AND ot.order_date >= date_trunc('week',CURRENT_DATE)::date - INTERVAL '30 days'
+  AND ot.order_date <  date_trunc('week',CURRENT_DATE)::date AND ot.sku IS NOT NULL AND ot.sku<>''
 GROUP BY ot.sku
 HAVING COUNT(DISTINCT ot.order_id) >= 2
    AND 100.0*COUNT(DISTINCT ot.order_id) FILTER (WHERE ot.order_status='Refunded')/COUNT(DISTINCT ot.order_id) > 10
 ORDER BY refund_rate DESC, revenue_at_risk DESC;
 ```
 
-### Q_L5 — net margin declining ≥2 consecutive months (3 full months, per PH)
-Net = `revenue − revenue×0.55 − shipping − PPC` (= `revenue×0.45 − shipping − PPC`). **Shipping = carrier + template, de-duped per order and allocated by line-revenue share** (NOT summed per line — that double-counts multi-line orders).
+### Q_L5 — net margin declining ≥2 consecutive months (3 full months, per PH **× account**)
+Net = `revenue − revenue×0.55 − shipping − PPC` (= `revenue×0.45 − shipping − PPC`). **Shipping = carrier + template, de-duped per order and allocated by line-revenue share.**
+**Account-aware:** emit one trend per `(ph, account, month)` **plus** a combined `account='ALL'` slice
+(via `GROUPING SETS`). The dashboard shows the `ALL` slice for "All accounts" and the per-account
+slice when LEDSone UK / DCVoltage UK is selected. `declining` is computed independently per
+`(ph, account)` series. **Every L5 row MUST include an `account` field** (`'ALL'` | `'LEDSone UK'` | `'DCVoltage UK'`).
 ```sql
 WITH lines AS (
-  SELECT ot.order_id, ot.user_name AS ph, DATE_TRUNC('month',ot.order_date)::date AS mth,
-         SUM(ot.item_price*ot.quantity) AS line_rev
+  SELECT ot.order_id, ot.user_name AS ph,
+         CASE WHEN ot.ss_name ILIKE '%dcvoltage%' THEN 'DCVoltage UK'
+              WHEN ot.ss_name ILIKE '%ledsone%' OR ot.ss_name ILIKE '%led_sone%' OR ot.ss_name ILIKE '%srm%' THEN 'LEDSone UK'
+              ELSE ot.ss_name END AS account,
+         DATE_TRUNC('month',ot.order_date)::date AS mth, SUM(ot.item_price*ot.quantity) AS line_rev
   FROM public.order_transaction ot
   WHERE ot.source_name ILIKE '%amazon%' AND ot.market_place ILIKE '%UK%' AND ot.fba_sales=false
     AND ot.order_status IN ('Completed','Refunded')
     AND ot.order_date >= (DATE_TRUNC('month',CURRENT_DATE)-INTERVAL '3 months')
     AND ot.order_date <  DATE_TRUNC('month',CURRENT_DATE)
-    AND ot.user_name IS NOT NULL AND ot.user_name<>'' GROUP BY 1,2,3),
+    AND ot.user_name IS NOT NULL AND ot.user_name<>'' GROUP BY ot.order_id, ot.user_name, account, mth),
 orev AS (SELECT ot.order_id, SUM(ot.item_price*ot.quantity) ord_rev
          FROM public.order_transaction ot
          WHERE ot.source_name ILIKE '%amazon%' AND ot.market_place ILIKE '%UK%' AND ot.fba_sales=false
@@ -153,29 +179,31 @@ ship AS (SELECT order_id,
                 COALESCE(MAX(carrier_charge) FILTER (WHERE carrier_charge_currency='GBP' AND carrier_charge>0),0)
               + COALESCE(MAX(shipping_template_price) FILTER (WHERE shipping_template_price>0),0) AS cc
          FROM public.order_shipping_billing_detail GROUP BY order_id),   -- carrier + template, per order
-rev AS (SELECT l.ph, l.mth, SUM(l.line_rev) revenue,
+rev AS (SELECT l.ph, COALESCE(l.account,'ALL') AS account, l.mth, SUM(l.line_rev) revenue,
                SUM(COALESCE(s.cc,0)*l.line_rev/NULLIF(o.ord_rev,0)) shipping
         FROM lines l JOIN orev o ON l.order_id=o.order_id LEFT JOIN ship s ON l.order_id=s.order_id
-        GROUP BY l.ph, l.mth),
-ppc AS (SELECT user_name ph, DATE_TRUNC('month',date)::date mth, SUM(spend) ppc
-        FROM public.ppc_performance
-        WHERE (ss_name ILIKE '%UK%' OR marketplace ILIKE '%UK%')
-          AND source_name ILIKE '%amazon%'   -- D04 FIX C: Amazon-only PPC term for L5 margin trend
-          AND date >= (DATE_TRUNC('month',CURRENT_DATE)-INTERVAL '3 months')
-          AND date <  DATE_TRUNC('month',CURRENT_DATE)
-          AND user_name IS NOT NULL AND user_name<>'' GROUP BY 1,2),
-marg AS (SELECT r.ph, to_char(r.mth,'YYYY-MM') month, r.mth,
+        GROUP BY GROUPING SETS ((l.ph,l.account,l.mth),(l.ph,l.mth))),   -- per-account + ALL rollup
+ppc AS (SELECT q.ph, COALESCE(q.acct,'ALL') AS account, q.mth, SUM(q.spend) ppc FROM (
+          SELECT user_name AS ph, DATE_TRUNC('month',date)::date AS mth, spend,
+                 CASE WHEN ss_name ILIKE '%dcvoltage%' THEN 'DCVoltage UK'
+                      WHEN ss_name ILIKE '%ledsone%' OR ss_name ILIKE '%led_sone%' OR ss_name ILIKE '%srm%' THEN 'LEDSone UK' ELSE ss_name END AS acct
+          FROM public.ppc_performance
+          WHERE (ss_name ILIKE '%UK%' OR marketplace ILIKE '%UK%') AND source_name ILIKE '%amazon%'
+            AND date >= (DATE_TRUNC('month',CURRENT_DATE)-INTERVAL '3 months') AND date < DATE_TRUNC('month',CURRENT_DATE)
+            AND user_name IS NOT NULL AND user_name<>'') q
+        GROUP BY GROUPING SETS ((q.ph,q.acct,q.mth),(q.ph,q.mth))),
+marg AS (SELECT r.ph, r.account, to_char(r.mth,'YYYY-MM') AS month, r.mth,
                 ROUND(r.revenue::numeric,2) revenue, ROUND(r.shipping::numeric,2) shipping,
                 ROUND(COALESCE(p.ppc,0)::numeric,2) ppc,
                 ROUND((r.revenue*0.45 - r.shipping - COALESCE(p.ppc,0))::numeric,2) net,
                 CASE WHEN r.revenue>0 THEN ROUND((100.0*(r.revenue*0.45 - r.shipping - COALESCE(p.ppc,0))/r.revenue)::numeric,1) END margin_pct
-         FROM rev r LEFT JOIN ppc p ON r.ph=p.ph AND r.mth=p.mth),
-seq AS (SELECT ph, month, revenue, shipping, ppc, net, margin_pct,
-               LAG(margin_pct) OVER (PARTITION BY ph ORDER BY mth) pm,
-               LAG(margin_pct,2) OVER (PARTITION BY ph ORDER BY mth) pm2 FROM marg)
-SELECT ph, month, revenue, shipping, ppc, net, margin_pct,
+         FROM rev r LEFT JOIN ppc p ON r.ph=p.ph AND r.account=p.account AND r.mth=p.mth),
+seq AS (SELECT ph, account, month, revenue, shipping, ppc, net, margin_pct,
+               LAG(margin_pct) OVER (PARTITION BY ph,account ORDER BY mth) pm,
+               LAG(margin_pct,2) OVER (PARTITION BY ph,account ORDER BY mth) pm2 FROM marg)
+SELECT ph, account, month, revenue, shipping, ppc, net, margin_pct,
        CASE WHEN pm IS NULL OR pm2 IS NULL THEN NULL ELSE (margin_pct < pm AND pm < pm2) END AS declining
-FROM seq ORDER BY ph, month;
+FROM seq ORDER BY ph, account, month;
 ```
 
 ### Q_ACCOUNT_SUMMARY — full per-account counts across L1–L4 (uncapped)
@@ -187,7 +215,7 @@ L2 counts flagged ASIN, L3 counts flagged ASIN, L4 counts flagged SKU per accoun
 
 ### Q_PH_SUMMARY — full per-PH counts across L1–L4 + L5-declining (uncapped)
 Same flagged sets grouped by `ph` (PPC `user_name` for L1; order `user_name` for L2–L4;
-the set of PHs flagged `declining=true` in Q_L5 contributes `l5`), combined into
+the set of PHs flagged `declining=true` in the `account='ALL'` slice of Q_L5 contributes `l5`), combined into
 `{ph,l1,l2,l3,l4,l5,total}`.
 **D04 FIX E — EXCLUDE `ph='UNATTRIBUTED'` entirely** (`… WHERE ph<>'UNATTRIBUTED' GROUP BY ph`).
 ph_summary contains assigned PHs ONLY; this drives the PH cards, PH rankings, PH dropdown/filter
@@ -204,18 +232,26 @@ WHERE source_name ILIKE '%amazon%' AND user_name IS NOT NULL AND user_name<>'' G
 
 ## STEP 2 — Assemble the `dashboardData` JSON
 Build one object with EXACTLY these keys:
-- `summary`: `{report_title:"PH Weekly Leakage Action Lists", report_date:<today ISO>, generated_at:<today ISO>,`
+- `summary`: `{report_title:"PH Weekly Leakage Action Lists", report_date:<previous Sunday>, generated_at:<today ISO run date>,`
   `scope:"UK Amazon FBM (Amazon-only)", accounts:"LEDSone + DCVoltage", deadline:"Wednesday EOD",`
+  - **`report_date` MUST be the reporting week-END (previous Sunday), NOT the run date.** The dashboard
+    header derives `End Date = report_date` and `Start Date = report_date − 6 days`, so setting
+    `report_date` to the previous Sunday makes the header display the **Mon–Sun** window
+    (e.g. run Mon 2026-06-29 → `report_date` 2026-06-28 → header shows 2026-06-22 → 2026-06-28).
+    Get both via `SELECT (date_trunc('week',CURRENT_DATE)::date - 1) AS report_date,
+    (date_trunc('week',CURRENT_DATE)::date - 7) AS week_start;`. Keep `generated_at` = the actual run date.
   `ph_count:<#PHs in ph_summary excluding UNATTRIBUTED>, analyses_count:5,`
   `counts:{l1,l2,l3,l4,l5}, displayed:{l1,l2,l3,l4,l5}}`
   - `counts` = **true full-set totals**. **D04 FIX D — `counts.l1 = COUNT(DISTINCT asin)` of Q_L1**
     (distinct Amazon ASINs only — NOT the Q_L1 row count, which is ASIN+SKU+PH grain). Run
-    `SELECT COUNT(*) FROM (SELECT ref_id FROM public.ppc_performance WHERE (ss_name ILIKE '%UK%' OR marketplace ILIKE '%UK%') AND source_name ILIKE '%amazon%' AND date>=CURRENT_DATE-INTERVAL '7 days' AND record_type='ad' AND ref_id IS NOT NULL AND ref_id NOT IN ('','0') GROUP BY ref_id HAVING SUM(spend)>3 AND SUM(orders)=0) x;`
+    `SELECT COUNT(*) FROM (SELECT ref_id FROM public.ppc_performance WHERE (ss_name ILIKE '%UK%' OR marketplace ILIKE '%UK%') AND source_name ILIKE '%amazon%' AND date >= date_trunc('week',CURRENT_DATE)::date - INTERVAL '7 days' AND date < date_trunc('week',CURRENT_DATE)::date AND record_type='ad' AND ref_id IS NOT NULL AND ref_id NOT IN ('','0') GROUP BY ref_id HAVING SUM(spend)>3 AND SUM(orders)=0) x;`
     L2=COUNT(DISTINCT asin) of Q_L2, L3=COUNT(DISTINCT asin) of Q_L3, L4=COUNT(DISTINCT sku) of Q_L4,
-    L5=number of PHs with any `declining=true`.
+    L5=number of PHs with `declining=true` in the **`account='ALL'`** slice (portfolio-level).
 - `l1`,`l2`,`l3`,`l4`: **ALL rows** from each query (NO cap). The live KPI/tab counts are derived
   from the embedded array lengths (`rowsFor(k).length`), so every flagged row MUST be embedded for
-  the dashboard to show the true totals. `l5`: all Q_L5 monthly rows (3 per PH).
+  the dashboard to show the true totals. `l5`: **all** Q_L5 rows — 3 months × ({`ALL`} + each
+  account the PH trades in) per PH; **every L5 row keeps its `account` field**. `displayed.l5` =
+  distinct PH in the `account='ALL'` slice (renderL5 filters L5 by the selected account; `__ALL__`→`ALL`).
 - `account_summary`: from Q_ACCOUNT_SUMMARY (full). `ph_summary`: from Q_PH_SUMMARY (full).
 - For every embedded `l1/l2/l3/l4` row whose `ph` is `UNATTRIBUTED`, add
   `ph_status:"RECOVERABLE"` if its `sku` exists in Q_SKU_PH_MAP, else `"MISSING_SOURCE"`.
