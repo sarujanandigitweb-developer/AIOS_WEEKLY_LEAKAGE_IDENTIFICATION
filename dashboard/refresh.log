@@ -11,3 +11,8 @@
 [2026-06-29T15:21:14] Claude exit=0; stdout tail: 'd.html` changed** ✓\n\nNote: this run targets the same week as the existing file (which was also generated 2026-06-29), so the figures match the prior generation — expected for a same-day re-run against the same DB snapshot. The untracked `_wlsp_*.py` files were left untouched (not part of this task).'
 [2026-06-29T15:21:14] VALIDATION OK — counts L1=149 L2=240 L3=42 L4=33 L5=10; accounts=2; ph_rows=24; generated_at=2026-06-29
 [2026-06-29T15:21:14] RESULT: PASS — leakage_dashboard.html refreshed
+[2026-06-30T11:49:52] START refresh — launching Claude CLI headless
+[2026-06-30T11:57:50] Claude exit=0; stdout tail: ' portfolio level.\n- UNATTRIBUTED L1–L4 rows tagged with `ph_status` (RECOVERABLE/MISSING_SOURCE) via the SKU→PH map.\n\n**Only `leakage_dashboard.html` was changed.** (`index.html` and `refresh_dashboard.py` show as modified in git, but they were already dirty at session start — I did not touch them.)'
+[2026-06-30T11:57:50] VALIDATION OK (master) — counts L1=147 L2=270 L3=45 L4=40 L5=10; accounts=2; ph_rows=24; generated_at=2026-06-30
+[2026-06-30T11:57:50] PH dashboards OK — 24 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-06-30T11:57:50] RESULT: PASS — leakage_dashboard.html + 24 PH dashboards refreshed in 477.4s total

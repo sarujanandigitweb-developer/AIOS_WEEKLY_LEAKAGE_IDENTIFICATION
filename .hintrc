@@ -1,0 +1,7 @@
+{
+  "hints": {
+    "compat-api/css": ["default", {
+      "ignore": ["color-mix", "scrollbar-width", "scrollbar-color"]
+    }]
+  }
+}

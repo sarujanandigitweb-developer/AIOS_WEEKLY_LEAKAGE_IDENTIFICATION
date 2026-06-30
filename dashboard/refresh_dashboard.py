@@ -5,24 +5,31 @@ AIOS Weekly Leakage Identification · UK Amazon FBM · LEDSone + DCVoltage
 
 Runs every 4 hours (cron). Each run:
   1. Launches Claude CLI non-interactively (`claude -p`) with dashboard_refresh_prompt.md.
-  2. Claude queries live PostgreSQL via the MCP tool mcp__claude_ai_postgres__execute_sql,
+  2. Claude queries live PostgreSQL via the MCP tool mcp__claude_ai_postgres__execute_sql ONCE,
      runs the approved WLSP L1-L5 calculations, builds dashboardData, and replaces ONLY the
      content between <!-- WLSP_DATA_START --> and <!-- WLSP_DATA_END --> in leakage_dashboard.html.
-  3. This script WAITS for completion, then VALIDATES the file was updated correctly.
-  4. Appends a line to refresh.log.
+  3. This script WAITS for completion, then VALIDATES the master file was updated correctly.
+  4. It then REUSES that single dashboardData to regenerate one standalone dashboard per
+     Portfolio Holder under portfolio_holders/<name>_leakage.html — by copying the master and
+     replacing ONLY the marker block with the PH-filtered data (no extra SQL, no business logic,
+     no rendering code; everything outside the markers stays byte-identical to the master).
+  5. Validates every PH dashboard (shell byte-identical + isolated to its PH) and appends to refresh.log.
 
-This script itself NEVER touches PostgreSQL and never edits the HTML — Claude does the work;
-this is purely launch + wait + validate + log. Exit code 0 on success, non-zero on failure.
+PostgreSQL touches: exactly ONE query set, run by Claude in step 2. Python never touches the DB;
+the per-PH dashboards in step 4 are pure data-filtering of the already-generated dashboardData.
+Exit code 0 on success, non-zero on failure.
 
 Prereqs (proven working in this environment):
   - `claude` CLI on PATH (or set CLAUDE_BIN).
   - A valid claude.ai credential (~/.claude/.credentials.json) so the claude.ai postgres MCP loads.
 """
 
-import os, re, sys, json, hashlib, subprocess, datetime
+import os, re, sys, json, hashlib, subprocess, datetime, time, glob
 
 HERE        = os.path.dirname(os.path.abspath(__file__))
 HTML        = os.path.join(HERE, "leakage_dashboard.html")
+PH_DIR      = os.path.join(HERE, "portfolio_holders")   # per-Portfolio-Holder dashboards
+ACCOUNTS    = ["LEDSone UK", "DCVoltage UK"]             # account filter must keep both
 PROMPT      = os.path.join(HERE, "dashboard_refresh_prompt.md")
 LOG         = os.path.join(HERE, "refresh.log")
 CLAUDE_BIN  = os.environ.get("CLAUDE_BIN", "claude")
@@ -79,7 +86,68 @@ def fail(msg):
     sys.exit(1)
 
 
+def ph_filename(ph):
+    """abinayaa_leakage.html, tharsiga_nelli_leakage.html, ..."""
+    return re.sub(r"[^a-z0-9]+", "_", ph.lower()).strip("_") + "_leakage.html"
+
+
+def build_ph_data(data, ph):
+    """Filter the master dashboardData to a single Portfolio Holder — NO database access.
+       Returns the same schema (summary, account_summary, ph_summary, verification_summary,
+       l1-l5) so the unchanged dashboard JS renders identically with only this PH's records."""
+    l1 = [r for r in data["l1"] if r.get("ph") == ph]
+    l2 = [r for r in data["l2"] if r.get("ph") == ph]
+    l3 = [r for r in data["l3"] if r.get("ph") == ph]
+    l4 = [r for r in data["l4"] if r.get("ph") == ph]
+    l5 = [r for r in data["l5"] if r.get("ph") == ph]
+    s = dict(data["summary"]); s["ph_count"] = 1
+    s["counts"] = {"l1": len({r.get("asin") for r in l1}), "l2": len(l2), "l3": len(l3), "l4": len(l4),
+                   "l5": len({r["ph"] for r in l5 if r.get("account") == "ALL" and r.get("declining")})}
+    s["displayed"] = {"l1": len(l1), "l2": len(l2), "l3": len(l3), "l4": len(l4),
+                      "l5": len({r["ph"] for r in l5 if r.get("account") == "ALL"})}
+    asum = []
+    for a in ACCOUNTS:  # keep BOTH accounts so the account filter still offers each one
+        a1 = len({r.get("asin") for r in l1 if r.get("account") == a})
+        a2 = len([r for r in l2 if r.get("account") == a])
+        a3 = len([r for r in l3 if r.get("account") == a])
+        a4 = len([r for r in l4 if r.get("account") == a])
+        asum.append({"account": a, "l1": a1, "l2": a2, "l3": a3, "l4": a4, "total": a1 + a2 + a3 + a4})
+    asum.sort(key=lambda x: (-x["total"], x["account"]))
+    return {"summary": s, "l1": l1, "l2": l2, "l3": l3, "l4": l4, "l5": l5,
+            "account_summary": asum,
+            "ph_summary": [p for p in data["ph_summary"] if p.get("ph") == ph],
+            "verification_summary": data.get("verification_summary", [])}
+
+
+def generate_ph_dashboards(master_text, master_data):
+    """Reuse the SINGLE already-generated dashboardData (master_data) to write one standalone
+       dashboard per Portfolio Holder. Only the bytes between the markers change; the rest of the
+       file is copied byte-for-byte from the freshly-refreshed master (so HTML/CSS/JS/layout/
+       rendering are identical). No SQL, no business logic, no rendering code is duplicated here.
+       Returns (list_of_(ph,filename), master_shell, elapsed_seconds)."""
+    t0 = time.time()
+    m = re.search(re.escape(START) + r"(.*?)" + re.escape(END), master_text, re.DOTALL)
+    prefix, suffix = master_text[:m.start()], master_text[m.end():]
+    master_shell = prefix + suffix      # everything outside the data block — must stay identical
+    phs = sorted({r.get("ph") for k in ("l1", "l2", "l3", "l4", "l5")
+                  for r in master_data.get(k, []) if r.get("ph") and r.get("ph") != "UNATTRIBUTED"})
+    os.makedirs(PH_DIR, exist_ok=True)
+    for old in glob.glob(os.path.join(PH_DIR, "*_leakage.html")):   # drop stale PHs
+        os.remove(old)
+    out = []
+    for ph in phs:
+        pretty = json.dumps(build_ph_data(master_data, ph), indent=2, ensure_ascii=False)
+        block = (START + "\n<script>\nconst dashboardData = " + pretty +
+                 ";\nwindow.dashboardData = dashboardData;\n</script>\n" + END)
+        fn = ph_filename(ph)
+        with open(os.path.join(PH_DIR, fn), "w", encoding="utf-8") as f:
+            f.write(prefix + block + suffix)
+        out.append((ph, fn))
+    return out, master_shell, time.time() - t0
+
+
 def main():
+    t_start = time.time()
     for p in (HTML, PROMPT):
         if not os.path.isfile(p):
             fail(f"missing required file: {p}")
@@ -163,10 +231,35 @@ def main():
     elif l1_distinct_asin and l1_distinct_asin != c["l1"]:
         fail(f"D04 regression: counts.l1={c['l1']} != distinct ASIN in L1 detail ({l1_distinct_asin})")
 
-    log(f"VALIDATION OK — counts L1={c['l1']} L2={c['l2']} L3={c['l3']} L4={c['l4']} L5={c['l5']}; "
+    log(f"VALIDATION OK (master) — counts L1={c['l1']} L2={c['l2']} L3={c['l3']} L4={c['l4']} L5={c['l5']}; "
         f"accounts={len(data['account_summary'])}; ph_rows={len(data['ph_summary'])}; "
         f"generated_at={data['summary'].get('generated_at')}")
-    log("RESULT: PASS — leakage_dashboard.html refreshed")
+
+    # ---- STEP 2: regenerate every Portfolio Holder dashboard from the SAME dashboardData ----
+    #      (reuse master_data; NO extra PostgreSQL queries; only the marker block changes per file)
+    ph_list, master_shell, ph_secs = generate_ph_dashboards(text, data)
+    if not ph_list:
+        fail("no Portfolio Holders found in dashboardData — 0 PH dashboards generated")
+    bad_shell, bad_iso = [], []
+    for ph, fn in ph_list:
+        pt = open(os.path.join(PH_DIR, fn), encoding="utf-8").read()
+        if pt[:pt.index(START)] + pt[pt.index(END) + len(END):] != master_shell:
+            bad_shell.append(fn)                                   # HTML/CSS/JS drift outside the data block
+        pd = extract_data_json(extract_block(pt))
+        isolated = (pd is not None
+                    and len(pd.get("ph_summary", [])) == 1 and pd["ph_summary"][0].get("ph") == ph
+                    and all(r.get("ph") == ph for k in ("l1", "l2", "l3", "l4", "l5") for r in pd.get(k, [])))
+        if not isolated:
+            bad_iso.append(fn)
+    if bad_shell:
+        fail(f"PH dashboards differ from master outside the data block: {bad_shell[:5]} "
+             f"(+{max(0, len(bad_shell) - 5)} more)")
+    if bad_iso:
+        fail(f"PH dashboards not isolated to their Portfolio Holder: {bad_iso[:5]}")
+    log(f"PH dashboards OK — {len(ph_list)} regenerated in {ph_secs:.2f}s into "
+        f"{os.path.relpath(PH_DIR, HERE)}/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)")
+    log(f"RESULT: PASS — leakage_dashboard.html + {len(ph_list)} PH dashboards refreshed "
+        f"in {time.time() - t_start:.1f}s total")
 
 
 if __name__ == "__main__":

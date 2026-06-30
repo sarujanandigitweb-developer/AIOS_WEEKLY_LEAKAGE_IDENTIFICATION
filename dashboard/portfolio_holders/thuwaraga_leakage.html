@@ -8,7 +8,7 @@
   This refactor changes PRESENTATION ONLY — counts, filtering, L1-L5 logic,
   and the dashboardData schema are unchanged.
 -->
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -28,7 +28,7 @@
   }
   html[data-theme="light"]{
     --bg:#eef1f6; --bg2:#eaeef4; --card:#ffffff; --card2:#f6f8fc; --line:#dde3ec;
-    --text:#161d2b; --muted:#697587; --soft:#46506180;
+    --text:#161d2b; --muted:#535e70; --soft:#525b69;
     --redb:#fdecec; --grnb:#e9f7ee; --amberb:#fdf3da; --blueb:#e9f1fe;
     --shadow:0 1px 2px rgba(20,30,50,.07),0 6px 18px -6px rgba(20,30,50,.10);
     --shadow-sm:0 1px 2px rgba(20,30,50,.06);
@@ -94,16 +94,44 @@
 
   /* ---------- KPI cards (act as analysis tabs) ---------- */
   .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:16px;}
-  .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 15px;cursor:pointer;
+  @media(min-width:1300px){.kpis{grid-template-columns:repeat(5,minmax(0,1fr));}}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:9px 13px 8px;cursor:pointer;
     position:relative;overflow:hidden;box-shadow:var(--shadow);transition:transform .08s,border-color .12s;}
   .kpi:hover{transform:translateY(-2px);}
   .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent,var(--muted));}
   .kpi.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),var(--shadow);}
-  .kpi .row1{display:flex;justify-content:space-between;align-items:center;}
-  .kpi .name{font-size:12px;font-weight:700;letter-spacing:.3px;}
-  .kpi .lvl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;border-radius:20px;}
-  .kpi .count{font-size:30px;font-weight:800;margin:6px 0 1px;}
-  .kpi .desc{font-size:11px;color:var(--muted);}
+  .kpi .kpi-head{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .kpi .name{font-size:17px;font-weight:800;letter-spacing:.2px;flex:1;min-width:0;line-height:1.2;}
+  .kpi .count{font-size:17px;font-weight:800;line-height:1;flex:none;color:var(--accent,var(--text));
+    background:rgba(79,156,249,.14);
+    border:1px solid rgba(79,156,249,.38);border-radius:20px;padding:4px 12px;}
+  .kpi .kpi-sub{display:flex;align-items:center;gap:7px;margin-top:7px;}
+  .kpi .lvl{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:3px 9px;border-radius:20px;flex:none;}
+  .kpi .desc{font-size:10.5px;color:var(--muted);line-height:1.3;}
+  /* clickable affordance — makes it obvious the card opens its details */
+  .kpi .kpi-cta{display:flex;align-items:center;justify-content:space-between;gap:6px;
+    margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);}
+  .kpi .kpi-view{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--accent,var(--blue));}
+  .kpi .kpi-view.on{color:var(--grn);}
+  .kpi .kpi-arrow{font-size:13px;font-weight:800;line-height:1;color:var(--accent,var(--blue));transition:transform .15s ease;}
+  .kpi:hover .kpi-arrow{transform:translateX(4px);}
+  .kpi:focus-visible{outline:none;box-shadow:var(--ring);}
+
+  /* ---------- Tab bar (explicit selector synced with the KPI cards) ---------- */
+  .tabbar-wrap{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+  .tabbar-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);flex:none;}
+  .tabbar{display:flex;gap:6px;flex:1;min-width:0;overflow-x:auto;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:6px;}
+  .tab{display:inline-flex;align-items:center;gap:8px;flex:none;padding:9px 14px;border-radius:8px;cursor:pointer;
+    font-family:inherit;font-size:12.5px;font-weight:700;color:var(--muted);white-space:nowrap;background:none;
+    border:1px solid transparent;transition:background .14s ease,color .14s ease,border-color .14s ease,box-shadow .14s ease;}
+  .tab:hover{background:var(--bg2);color:var(--text);}
+  .tab.active{color:var(--text);background:rgba(79,156,249,.12);
+    border-color:var(--accent);box-shadow:inset 0 -2px 0 var(--accent);}
+  .tab:focus-visible{outline:none;box-shadow:var(--ring);}
+  .tab .tab-ct{font-size:10.5px;font-weight:800;color:var(--accent,var(--muted));
+    background:rgba(79,156,249,.14);padding:1px 8px;border-radius:20px;}
+  @media(max-width:760px){.tabbar-wrap{flex-direction:column;align-items:stretch;gap:6px;} .tabbar-label{padding-left:2px;}}
   .lvl.crit{background:var(--redb);color:var(--red);} .lvl.high{background:var(--amberb);color:var(--amber);}
   .lvl.med{background:var(--blueb);color:var(--blue);} .lvl.low{background:var(--grnb);color:var(--grn);}
 
@@ -138,18 +166,22 @@
   @media(max-width:900px){.shell{grid-template-columns:1fr;}}
   .main{min-width:0;}
   /* top-left account selector sidebar */
-  .accounts-rail{position:sticky;top:94px;background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--line);
-    border-left:4px solid var(--blue);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
-  .accounts-rail h3{margin:0;padding:12px 14px;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;
-    color:var(--text);border-bottom:2px solid var(--line);background:var(--card2);display:flex;align-items:center;gap:8px;}
-  /* Accounts heading — blue band */
-  .accounts-rail h3:first-of-type{background:linear-gradient(180deg,var(--blueb),var(--card2));border-bottom-color:var(--blue);}
-  .accounts-rail h3::before{content:"";width:8px;height:8px;border-radius:50%;flex:none;
-    background:var(--blue);box-shadow:0 0 0 3px var(--blueb);}
-  /* Portfolio Holders heading — amber band, clearly separated from the section above */
-  #acct-rail+h3{margin-top:10px;border-top:2px solid var(--line);
-    background:linear-gradient(180deg,var(--amberb),var(--card2));border-bottom-color:var(--amber);}
-  #acct-rail+h3::before{background:var(--amber);box-shadow:0 0 0 3px var(--amberb);}
+  /* sidebar = two clearly separate section cards with a gap between them */
+  .accounts-rail{position:sticky;top:94px;display:flex;flex-direction:column;gap:14px;
+    background:none;border:0;border-radius:0;box-shadow:none;overflow:visible;}
+  .rail-sec{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+  .rail-sec .rail-h{margin:0;padding:11px 14px;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;
+    display:flex;align-items:center;gap:9px;}
+  .rail-sec .rail-h::before{content:"";width:9px;height:9px;border-radius:50%;flex:none;}
+  /* Accounts — solid dark navy header */
+  .sec-acct{border-top:3px solid var(--blue);}
+  .sec-acct .rail-h{color:#ffffff;background:linear-gradient(135deg,#16266b,#070e33);border-bottom:1px solid rgba(255,255,255,.14);}
+  .sec-acct .rail-h::before{background:var(--blue);box-shadow:0 0 0 3px rgba(79,156,249,.35);}
+  /* Portfolio Holders — light header with amber accent (visibly different treatment) */
+  .sec-ph{border-top:3px solid var(--amber);}
+  .sec-ph .rail-h{color:var(--text);background:var(--card2);border-left:4px solid var(--amber);
+    border-bottom:2px solid var(--amber);padding-left:11px;}
+  .sec-ph .rail-h::before{background:var(--amber);box-shadow:0 0 0 3px rgba(227,179,65,.30);}
   .acct-opt{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;text-align:left;
     background:none;border:0;border-bottom:1px solid var(--line);color:var(--text);
     padding:11px 14px;cursor:pointer;font-family:inherit;font-size:12.5px;}
@@ -184,10 +216,16 @@
 
   /* ---------- Detail section ---------- */
   .detail{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
-  .dhead{padding:13px 16px;border-bottom:1px solid var(--line);}
-  .dhead .t{font-size:15px;font-weight:750;}
-  .dhead .th{font-size:11.5px;color:var(--muted);margin-top:2px;}
-  .flagcond{font-family:Consolas,monospace;color:var(--grn);font-size:11px;margin-top:6px;opacity:.9;}
+  .dhead{padding:11px 16px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,var(--card2),var(--card));}
+  .dhead .dh-title-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px;}
+  .dhead .dh-name{font-size:15px;font-weight:800;letter-spacing:.2px;}
+  .dhead .dh-window{font-size:9.5px;font-weight:800;color:var(--muted);background:var(--bg2);border:1px solid var(--line);
+    border-radius:20px;padding:2px 9px;text-transform:uppercase;letter-spacing:.5px;}
+  .dhead .dh-concept{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.35;}
+  .dhead .dh-concept b{color:var(--soft);font-weight:700;}
+  .dhead-flag{display:flex;align-items:center;gap:8px;margin-top:5px;flex-wrap:wrap;}
+  .dhead-flag .df-k{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);flex:none;}
+  .dhead-flag .df-v{font-family:Consolas,monospace;font-size:10.5px;color:var(--grn);background:var(--grnb);border-radius:6px;padding:3px 8px;}
   .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:11px 16px;border-bottom:1px solid var(--line);background:var(--card2);}
   .search{flex:1;min-width:200px;display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:7px 11px;}
   .search input{flex:1;background:none;border:0;color:var(--text);font-size:13px;outline:none;}
@@ -209,9 +247,9 @@
   .lcard .acct{font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
   .acct.led{background:var(--blueb);color:var(--blue);} .acct.dcv{background:var(--redb);color:var(--red);}
   .acct.oth{background:var(--card);color:var(--muted);border:1px solid var(--line);}
-  .lcard .sku{font-size:11px;color:var(--muted);margin-top:3px;word-break:break-all;font-family:Consolas,monospace;}
-  .lcard .ph{font-size:11.5px;margin-top:4px;}
-  .lcard .ph b{color:var(--soft);font-weight:700;}
+  .lcard .sku{font-size:11px;color:var(--soft);font-weight:600;margin-top:3px;word-break:break-all;font-family:Consolas,monospace;}
+  .lcard .ph{font-size:11.5px;margin-top:4px;color:var(--text);font-weight:550;}
+  .lcard .ph b{color:var(--text);font-weight:750;}
   /* card badge row — priority / category / status */
   .cbadges{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;}
   .cpill{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:3px 9px;border-radius:20px;
@@ -221,9 +259,9 @@
   .cpill.st-done{color:var(--grn);background:var(--grnb);border-color:transparent;}
   .metrics{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px;margin-top:8px;}
   .metric{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;border-bottom:1px solid var(--line);padding-bottom:3px;}
-  .metric .ml{color:var(--muted);font-size:11px;} .metric .mv{font-weight:750;}
+  .metric .ml{color:var(--soft);font-size:11px;font-weight:600;} .metric .mv{font-weight:750;}
   .mv.neg{color:var(--red);}
-  .lcard .eq{font-family:Consolas,monospace;font-size:10.5px;color:var(--muted);margin-top:6px;
+  .lcard .eq{font-family:Consolas,monospace;font-size:10.5px;color:var(--soft);font-weight:600;margin-top:6px;
     background:var(--bg2);border:1px solid var(--line);border-radius:7px;padding:4px 8px;word-break:break-word;}
   .lcard .foot{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:7px;border-top:1px solid var(--line);}
   .lcard .act{font-size:10px;font-weight:800;letter-spacing:.4px;color:var(--red);text-transform:uppercase;
@@ -234,9 +272,10 @@
   .tickwrap input{accent-color:var(--grn);}
 
   .ph-block{padding:4px 16px 2px;}
-  .ph-banner{display:flex;justify-content:space-between;align-items:center;margin:14px 0 2px;padding:7px 12px;
-    background:var(--bg2);border:1px solid var(--line);border-radius:9px;cursor:pointer;}
-  .ph-banner .pn{font-weight:750;font-size:13px;} .ph-banner .pc{font-size:11.5px;color:var(--red);font-weight:700;}
+  .ph-banner{display:flex;justify-content:space-between;align-items:center;margin:14px 0 2px;padding:9px 13px;
+    background:linear-gradient(135deg,#16266b,#070e33);border:1px solid rgba(255,255,255,.10);
+    border-left:3px solid var(--blue);border-radius:9px;cursor:pointer;box-shadow:var(--shadow-sm);}
+  .ph-banner .pn{font-weight:750;font-size:13px;color:#ffffff;} .ph-banner .pc{font-size:11.5px;color:#ffb4b8;font-weight:700;}
 
   table.mini{border-collapse:collapse;width:100%;margin:6px 0 2px;font-size:12px;}
   table.mini th,table.mini td{border:1px solid var(--line);padding:5px 8px;text-align:right;}
@@ -251,13 +290,17 @@
   .stat{transition:transform .14s ease,box-shadow .16s ease,border-color .14s ease;}
   .stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--blue);}
   /* KPI tabs — stronger lift + growing accent rail */
-  .kpi{transition:transform .14s ease,box-shadow .18s ease,border-color .15s ease;}
+  .kpi{transition:transform .14s ease,box-shadow .18s ease,border-color .15s ease,opacity .15s ease;}
   .kpi::before{transition:width .15s ease;}
   .kpi:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--accent);}
   .kpi:hover::before{width:6px;}
   .kpi:focus-visible{outline:none;box-shadow:var(--ring);}
   .kpi .count{letter-spacing:-.5px;}
   .kpi.active{background:var(--card) linear-gradient(180deg,rgba(79,156,249,.06),transparent);}
+  /* selected card stays prominent; the others fade back (button-group feel) */
+  .kpi{opacity:.5;}
+  .kpi.active{opacity:1;}
+  .kpi:hover,.kpi:focus-visible{opacity:1;}
   /* Sidebar options — accent cue on hover */
   .acct-opt,.ph-opt{transition:background .14s ease,box-shadow .14s ease,color .14s ease;}
   .acct-opt:hover:not(.on),.ph-opt:hover:not(.on){box-shadow:inset 3px 0 0 var(--blue);}
@@ -275,7 +318,7 @@
   .lcard.done:hover{transform:none;box-shadow:none;}
   /* PH banners + verification cards */
   .ph-banner{transition:background .14s ease,border-color .14s ease,box-shadow .14s ease;}
-  .ph-banner:hover{border-color:var(--blue);box-shadow:var(--shadow-sm);background:var(--card2);}
+  .ph-banner:hover{border-color:var(--blue);box-shadow:var(--shadow);background:linear-gradient(135deg,#1d3080,#0c1646);}
   .vcard{transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease;}
   .vcard:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm);border-color:var(--blue);}
   table.mini tr{transition:background .12s ease;}
@@ -328,16 +371,20 @@
       <button class="hbtn" id="print-btn" type="button" title="Print this dashboard"><span class="hi">🖨️</span><span class="hl">Print</span></button>
       <button class="hbtn" id="csv-btn" type="button" title="Export the current view to CSV"><span class="hi">📄</span><span class="hl">CSV</span></button>
       <button class="hbtn" id="xls-btn" type="button" title="Export the current view to Excel"><span class="hi">📊</span><span class="hl">Excel</span></button>
-      <button class="theme-btn" id="theme-btn" type="button"><span id="theme-ic">🌙</span><span id="theme-lb">Dark</span></button>
+      <button class="theme-btn" id="theme-btn" type="button"><span id="theme-ic">☀</span><span id="theme-lb">Light</span></button>
     </div>
   </div>
 
   <div class="shell">
     <aside class="accounts-rail">
-      <h3>Accounts</h3>
-      <div id="acct-rail"></div>
-      <h3>Portfolio Holders</h3>
-      <div id="ph-rail"></div>
+      <section class="rail-sec sec-acct">
+        <h3 class="rail-h">Accounts</h3>
+        <div id="acct-rail"></div>
+      </section>
+      <section class="rail-sec sec-ph">
+        <h3 class="rail-h">Portfolio Holders</h3>
+        <div id="ph-rail"></div>
+      </section>
     </aside>
     <div class="main">
       <div class="stats" id="stats"></div>
@@ -359,14 +406,691 @@
     </div>
   </div>
 
-  <footer class="readiness">
-    <h3>Source Readiness</h3>
-    <div class="vstatus" id="verify"></div>
-  </footer>
-
 </div>
 
-<script src="data.js"></script>
+<!-- WLSP_DATA_START -->
+<script>
+const dashboardData = {
+  "summary": {
+    "report_title": "PH Weekly Leakage Action Lists",
+    "report_date": "2026-06-28",
+    "generated_at": "2026-06-30",
+    "scope": "UK Amazon FBM (Amazon-only)",
+    "accounts": "LEDSone + DCVoltage",
+    "deadline": "Wednesday EOD",
+    "ph_count": 1,
+    "analyses_count": 5,
+    "counts": {
+      "l1": 6,
+      "l2": 31,
+      "l3": 3,
+      "l4": 4,
+      "l5": 0
+    },
+    "displayed": {
+      "l1": 6,
+      "l2": 31,
+      "l3": 3,
+      "l4": 4,
+      "l5": 1
+    }
+  },
+  "l1": [
+    {
+      "ph": "thuwaraga",
+      "asin": "B0DCDSZ719",
+      "sku": "LDSG95DIE2743PK j",
+      "account": "LEDSone UK",
+      "spend": 6.83,
+      "clicks": 19,
+      "impressions": 1853,
+      "conversions": 0,
+      "ph_status": null
+    },
+    {
+      "ph": "thuwaraga",
+      "asin": "B0FPWV2SHR",
+      "sku": "LDCWT75B22126PK_1",
+      "account": "LEDSone UK",
+      "spend": 6.55,
+      "clicks": 15,
+      "impressions": 3372,
+      "conversions": 0,
+      "ph_status": null
+    },
+    {
+      "ph": "thuwaraga",
+      "asin": "B0FB3ZFXY1",
+      "sku": "LDMC35E1443PK_1",
+      "account": "LEDSone UK",
+      "spend": 5.4,
+      "clicks": 13,
+      "impressions": 820,
+      "conversions": 0,
+      "ph_status": null
+    },
+    {
+      "ph": "thuwaraga",
+      "asin": "B0CNPV5SC5",
+      "sku": "LDMG95B228",
+      "account": "DCVoltage UK",
+      "spend": 4.97,
+      "clicks": 19,
+      "impressions": 640,
+      "conversions": 0,
+      "ph_status": null
+    },
+    {
+      "ph": "thuwaraga",
+      "asin": "B0CV5DK5NC",
+      "sku": "LDSG125LOE2742PK-LV",
+      "account": "LEDSone UK",
+      "spend": 3.8,
+      "clicks": 9,
+      "impressions": 1566,
+      "conversions": 0,
+      "ph_status": null
+    },
+    {
+      "ph": "thuwaraga",
+      "asin": "B09JZ61NJM",
+      "sku": "LDST45E2743PK",
+      "account": "DCVoltage UK",
+      "spend": 3.38,
+      "clicks": 7,
+      "impressions": 845,
+      "conversions": 0,
+      "ph_status": null
+    }
+  ],
+  "l2": [
+    {
+      "asin": "B08L6515VT",
+      "ph": "thuwaraga",
+      "sku": "LDCWE2725",
+      "account": "DCVoltage UK",
+      "revenue": 5.99,
+      "shipping": 5.61,
+      "orders": 1,
+      "shipping_pct": 93.7,
+      "ph_status": null
+    },
+    {
+      "asin": "B07RCVBBXN",
+      "ph": "thuwaraga",
+      "sku": "LDMST64B228",
+      "account": "DCVoltage UK",
+      "revenue": 6.99,
+      "shipping": 5.61,
+      "orders": 1,
+      "shipping_pct": 80.3,
+      "ph_status": null
+    },
+    {
+      "asin": "B0FPWYRDQT",
+      "ph": "thuwaraga",
+      "sku": "LDCWA55B2256PK",
+      "account": "LEDSone UK",
+      "revenue": 11.98,
+      "shipping": 9.6,
+      "orders": 2,
+      "shipping_pct": 80.1,
+      "ph_status": null
+    },
+    {
+      "asin": "B0DG29SP2H",
+      "ph": "thuwaraga",
+      "sku": "LDMA60E274WW2PK",
+      "account": "LEDSone UK",
+      "revenue": 6.66,
+      "shipping": 5.13,
+      "orders": 1,
+      "shipping_pct": 77.0,
+      "ph_status": null
+    },
+    {
+      "asin": "B0FPWXQWQD",
+      "ph": "thuwaraga",
+      "sku": "LDCWA60HB2296PK",
+      "account": "LEDSone UK",
+      "revenue": 68.64,
+      "shipping": 45.77,
+      "orders": 10,
+      "shipping_pct": 66.7,
+      "ph_status": null
+    },
+    {
+      "asin": "B0GTV48J5T",
+      "ph": "thuwaraga",
+      "sku": "LDMT185B224",
+      "account": "LEDSone UK",
+      "revenue": 9.98,
+      "shipping": 5.44,
+      "orders": 2,
+      "shipping_pct": 54.5,
+      "ph_status": null
+    },
+    {
+      "asin": "B07DHK71YN",
+      "ph": "thuwaraga",
+      "sku": "LDMST64E274",
+      "account": "LEDSone UK",
+      "revenue": 5.74,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 47.4,
+      "ph_status": null
+    },
+    {
+      "asin": "B09475XCMR",
+      "ph": "thuwaraga",
+      "sku": "LDMG95E278",
+      "account": "LEDSone UK",
+      "revenue": 5.82,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 46.7,
+      "ph_status": null
+    },
+    {
+      "asin": "B07F9HBHVY",
+      "ph": "thuwaraga",
+      "sku": "LDMT45E274",
+      "account": "DCVoltage UK",
+      "revenue": 11.78,
+      "shipping": 5.44,
+      "orders": 2,
+      "shipping_pct": 46.2,
+      "ph_status": null
+    },
+    {
+      "asin": "B0845Z2MZ2",
+      "ph": "thuwaraga",
+      "sku": "LDMST64B228",
+      "account": "LEDSone UK",
+      "revenue": 5.99,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 45.4,
+      "ph_status": null
+    },
+    {
+      "asin": "B0B8P4R7WF",
+      "ph": "thuwaraga",
+      "sku": "LDMA60E278WW2PK",
+      "account": "LEDSone UK",
+      "revenue": 6.07,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 44.8,
+      "ph_status": null
+    },
+    {
+      "asin": "B07DK4TWLQ",
+      "ph": "thuwaraga",
+      "sku": "LDMG95E274",
+      "account": "DCVoltage UK",
+      "revenue": 6.59,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 41.3,
+      "ph_status": null
+    },
+    {
+      "asin": "B0CNPV5SC5",
+      "ph": "thuwaraga",
+      "sku": "LDMG95B228",
+      "account": "DCVoltage UK",
+      "revenue": 6.79,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 40.1,
+      "ph_status": null
+    },
+    {
+      "asin": "B09Z6P8H29",
+      "ph": "thuwaraga",
+      "sku": "LDCWA60HB227",
+      "account": "LEDSone UK",
+      "revenue": 6.82,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 39.9,
+      "ph_status": null
+    },
+    {
+      "asin": "B07CVCT7XN",
+      "ph": "thuwaraga",
+      "sku": "LDMG95E278",
+      "account": "DCVoltage UK",
+      "revenue": 6.99,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 38.9,
+      "ph_status": null
+    },
+    {
+      "asin": "B07CVBX8L5",
+      "ph": "thuwaraga",
+      "sku": "LDMG95B224",
+      "account": "DCVoltage UK",
+      "revenue": 6.99,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 38.9,
+      "ph_status": null
+    },
+    {
+      "asin": "B0CNPZDQHZ",
+      "ph": "thuwaraga",
+      "sku": "LDMG95E278",
+      "account": "DCVoltage UK",
+      "revenue": 7.19,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 37.8,
+      "ph_status": null
+    },
+    {
+      "asin": "B0FPQVSMFT",
+      "ph": "thuwaraga",
+      "sku": "LDCWT75B2212",
+      "account": "LEDSone UK",
+      "revenue": 7.32,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 37.2,
+      "ph_status": null
+    },
+    {
+      "asin": "B0B8VVQSNV",
+      "ph": "thuwaraga",
+      "sku": "LDSG125LOE274",
+      "account": "LEDSone UK",
+      "revenue": 22.47,
+      "shipping": 8.16,
+      "orders": 3,
+      "shipping_pct": 36.3,
+      "ph_status": null
+    },
+    {
+      "asin": "B07F9R3GVS",
+      "ph": "thuwaraga",
+      "sku": "LDMG95E278",
+      "account": "DCVoltage UK",
+      "revenue": 16.38,
+      "shipping": 5.44,
+      "orders": 2,
+      "shipping_pct": 33.2,
+      "ph_status": null
+    },
+    {
+      "asin": "B0CW3FD87K",
+      "ph": "thuwaraga",
+      "sku": "LDSG125MUE274",
+      "account": "DCVoltage UK",
+      "revenue": 8.49,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 32.0,
+      "ph_status": null
+    },
+    {
+      "asin": "B093LS5JQH",
+      "ph": "thuwaraga",
+      "sku": "LDCWE27186PK",
+      "account": "LEDSone UK",
+      "revenue": 13.99,
+      "shipping": 4.35,
+      "orders": 1,
+      "shipping_pct": 31.1,
+      "ph_status": null
+    },
+    {
+      "asin": "B0GDCN4LCW",
+      "ph": "thuwaraga",
+      "sku": "LDMT185E2736PK",
+      "account": "LEDSone UK",
+      "revenue": 14.32,
+      "shipping": 4.35,
+      "orders": 1,
+      "shipping_pct": 30.4,
+      "ph_status": null
+    },
+    {
+      "asin": "B0CV5DK5NC",
+      "ph": "thuwaraga",
+      "sku": "LDSG125LOE2742PK",
+      "account": "LEDSone UK",
+      "revenue": 29.82,
+      "shipping": 8.7,
+      "orders": 2,
+      "shipping_pct": 29.2,
+      "ph_status": null
+    },
+    {
+      "asin": "B0CK86KGYK",
+      "ph": "thuwaraga",
+      "sku": "LDSSTRE274",
+      "account": "LEDSone UK",
+      "revenue": 9.91,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 27.4,
+      "ph_status": null
+    },
+    {
+      "asin": "B0D6RC9VMP",
+      "ph": "thuwaraga",
+      "sku": "LDCWE27252PK",
+      "account": "LEDSone UK",
+      "revenue": 10.66,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 25.5,
+      "ph_status": null
+    },
+    {
+      "asin": "B0CNQ1Q3BJ",
+      "ph": "thuwaraga",
+      "sku": "LDMG125E278",
+      "account": "DCVoltage UK",
+      "revenue": 106.47,
+      "shipping": 27.2,
+      "orders": 10,
+      "shipping_pct": 25.5,
+      "ph_status": null
+    },
+    {
+      "asin": "B0BLZGY3D7",
+      "ph": "thuwaraga",
+      "sku": "LDMG95E2742PK",
+      "account": "LEDSone UK",
+      "revenue": 10.74,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 25.3,
+      "ph_status": null
+    },
+    {
+      "asin": "B0GL8P6NQ3",
+      "ph": "thuwaraga",
+      "sku": "LDMT185E2742PK",
+      "account": "LEDSone UK",
+      "revenue": 21.64,
+      "shipping": 5.44,
+      "orders": 2,
+      "shipping_pct": 25.1,
+      "ph_status": null
+    },
+    {
+      "asin": "B0FY5TWHGH",
+      "ph": "thuwaraga",
+      "sku": "LDSG1007E27",
+      "account": "LEDSone UK",
+      "revenue": 10.82,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 25.1,
+      "ph_status": null
+    },
+    {
+      "asin": "B0BL7LZR24",
+      "ph": "thuwaraga",
+      "sku": "LDMT45E2746PK",
+      "account": "LEDSone UK",
+      "revenue": 17.32,
+      "shipping": 4.35,
+      "orders": 1,
+      "shipping_pct": 25.1,
+      "ph_status": null
+    }
+  ],
+  "l3": [
+    {
+      "asin": "B0CW3FD87K",
+      "ph": "thuwaraga",
+      "sku": "LDSG125MUE274",
+      "account": "DCVoltage UK",
+      "revenue": 8.49,
+      "shipping": 2.72,
+      "ppc": 6.17,
+      "net": -5.07,
+      "ph_status": null
+    },
+    {
+      "asin": "B0B8VVQSNV",
+      "ph": "thuwaraga",
+      "sku": "LDSG125LOE274",
+      "account": "LEDSone UK",
+      "revenue": 22.47,
+      "shipping": 8.16,
+      "ppc": 5.35,
+      "net": -3.4,
+      "ph_status": null
+    },
+    {
+      "asin": "B0DCDSZ719",
+      "ph": "thuwaraga",
+      "sku": "LDSG95DIE2743PK",
+      "account": "LEDSone UK",
+      "revenue": 18.24,
+      "shipping": 4.35,
+      "ppc": 6.83,
+      "net": -2.97,
+      "ph_status": null
+    }
+  ],
+  "l4": [
+    {
+      "sku": "LDCWE27252PK",
+      "asin": "B0DT9SB8XR",
+      "ph": "thuwaraga",
+      "account": "LEDSone UK",
+      "total_orders": 2,
+      "refunded_orders": 1,
+      "refund_rate": 50.0,
+      "revenue_at_risk": 12.99,
+      "ph_status": null
+    },
+    {
+      "sku": "LDSG1007E272PK",
+      "asin": "B0FY5NVS4S",
+      "ph": "thuwaraga",
+      "account": "LEDSone UK",
+      "total_orders": 3,
+      "refunded_orders": 1,
+      "refund_rate": 33.3,
+      "revenue_at_risk": 17.49,
+      "ph_status": null
+    },
+    {
+      "sku": "LDMT185E2735PK",
+      "asin": "B0GLH4GJMZ",
+      "ph": "thuwaraga",
+      "account": "LEDSone UK",
+      "total_orders": 6,
+      "refunded_orders": 1,
+      "refund_rate": 16.7,
+      "revenue_at_risk": 17.99,
+      "ph_status": null
+    },
+    {
+      "sku": "LDST185E2746PK",
+      "asin": "B0GTYJBGDD",
+      "ph": "thuwaraga",
+      "account": "LEDSone UK",
+      "total_orders": 7,
+      "refunded_orders": 1,
+      "refund_rate": 14.3,
+      "revenue_at_risk": 14.91,
+      "ph_status": null
+    }
+  ],
+  "l5": [
+    {
+      "ph": "thuwaraga",
+      "account": "ALL",
+      "month": "2026-03",
+      "revenue": 8899.19,
+      "shipping": 1564.21,
+      "ppc": 1073.97,
+      "net": 1366.45,
+      "margin_pct": 15.4,
+      "declining": null
+    },
+    {
+      "ph": "thuwaraga",
+      "account": "ALL",
+      "month": "2026-04",
+      "revenue": 6267.99,
+      "shipping": 1171.2,
+      "ppc": 960.2,
+      "net": 689.2,
+      "margin_pct": 11.0,
+      "declining": null
+    },
+    {
+      "ph": "thuwaraga",
+      "account": "ALL",
+      "month": "2026-05",
+      "revenue": 6118.44,
+      "shipping": 1296.1,
+      "ppc": 681.98,
+      "net": 775.21,
+      "margin_pct": 12.7,
+      "declining": false
+    },
+    {
+      "ph": "thuwaraga",
+      "account": "DCVoltage UK",
+      "month": "2026-03",
+      "revenue": 2228.76,
+      "shipping": 381.75,
+      "ppc": 312.8,
+      "net": 308.39,
+      "margin_pct": 13.8,
+      "declining": null
+    },
+    {
+      "ph": "thuwaraga",
+      "account": "DCVoltage UK",
+      "month": "2026-04",
+      "revenue": 1473.14,
+      "shipping": 316.09,
+      "ppc": 248.59,
+      "net": 98.23,
+      "margin_pct": 6.7,
+      "declining": null
+    },
+    {
+      "ph": "thuwaraga",
+      "account": "DCVoltage UK",
+      "month": "2026-05",
+      "revenue": 1864.15,
+      "shipping": 367.1,
+      "ppc": 182.71,
+      "net": 289.05,
+      "margin_pct": 15.5,
+      "declining": false
+    },
+    {
+      "ph": "thuwaraga",
+      "account": "LEDSone UK",
+      "month": "2026-03",
+      "revenue": 6670.43,
+      "shipping": 1182.46,
+      "ppc": 761.17,
+      "net": 1058.06,
+      "margin_pct": 15.9,
+      "declining": null
+    },
+    {
+      "ph": "thuwaraga",
+      "account": "LEDSone UK",
+      "month": "2026-04",
+      "revenue": 4794.85,
+      "shipping": 855.11,
+      "ppc": 711.61,
+      "net": 590.96,
+      "margin_pct": 12.3,
+      "declining": null
+    },
+    {
+      "ph": "thuwaraga",
+      "account": "LEDSone UK",
+      "month": "2026-05",
+      "revenue": 4254.29,
+      "shipping": 929.0,
+      "ppc": 499.27,
+      "net": 486.16,
+      "margin_pct": 11.4,
+      "declining": true
+    }
+  ],
+  "account_summary": [
+    {
+      "account": "LEDSone UK",
+      "l1": 4,
+      "l2": 20,
+      "l3": 2,
+      "l4": 4,
+      "total": 30
+    },
+    {
+      "account": "DCVoltage UK",
+      "l1": 2,
+      "l2": 11,
+      "l3": 1,
+      "l4": 0,
+      "total": 14
+    }
+  ],
+  "ph_summary": [
+    {
+      "ph": "thuwaraga",
+      "l1": 6,
+      "l2": 31,
+      "l3": 3,
+      "l4": 4,
+      "l5": 0,
+      "total": 44
+    }
+  ],
+  "verification_summary": [
+    {
+      "metric": "generated_date",
+      "value": "2026-06-30"
+    },
+    {
+      "metric": "reporting_window",
+      "value": "2026-06-22 to 2026-06-28"
+    },
+    {
+      "metric": "source_tables_used",
+      "value": "public.ppc_performance, public.order_transaction, public.order_shipping_billing_detail, public.amazon_returns"
+    },
+    {
+      "metric": "shipping_basis",
+      "value": "carrier_charge (GBP) + shipping_template_price, de-duped per order (MAX), allocated by line-revenue share"
+    },
+    {
+      "metric": "l3_grain",
+      "value": "ASIN"
+    },
+    {
+      "metric": "l4_grain",
+      "value": "SKU"
+    },
+    {
+      "metric": "tables_excluded_from_calc",
+      "value": "development.leakage_detection, development.leakage_classification, ph_action_board.*, ph_daily_actions"
+    }
+  ]
+};
+window.dashboardData = dashboardData;
+</script>
+<!-- WLSP_DATA_END -->
 <script>
 'use strict';
 (function(){
@@ -374,19 +1098,24 @@
 
   /* ---- analysis UI structure (labels only — unchanged logic) ---- */
   const ANALYSES = [
-    { key:'l1', tab:'Zero-Conv PPC',   window:'Last 7 days',  lvl:'crit', accent:'var(--red)',
+    { key:'l1', tab:'Zero-Conv PPC',   window:'Last 7 days',  lvl:'crit', accent:'var(--blue)',
+      full:'ASIN PPC Spend — Zero Conversions', concept:'Immediate cash destruction — PPC spend over £3 returning zero conversions',
       threshold:'Spend > £3 AND Conversions = 0', problem:'ZERO-CONV PPC', action:'PAUSE PPC',
       desc:'PPC spend returning zero sales', flag:'SUM(spend) > £3 AND SUM(orders) = 0' },
-    { key:'l2', tab:'High Shipping',   window:'Last 7 days',  lvl:'high', accent:'var(--amber)',
+    { key:'l2', tab:'High Shipping',   window:'Last 7 days',  lvl:'high', accent:'var(--blue)',
+      full:'Shipping Exceeds 25% of Revenue', concept:'Structural margin destruction — carrier cost above 25% of revenue',
       threshold:'Shipping > 25% of Revenue', problem:'SHIPPING TOO HIGH', action:'PRICE / CARRIER',
       desc:'Carrier cost above 25% of revenue', flag:'SUM(carrier_charge) > 0.25 × SUM(revenue)' },
-    { key:'l3', tab:'Net Negative',    window:'Last 7 days',  lvl:'crit', accent:'var(--red)',
+    { key:'l3', tab:'Net Negative',    window:'Last 7 days',  lvl:'crit', accent:'var(--blue)',
+      full:'Net-Negative ASINs Still Receiving PPC', concept:'Paying to accelerate losses — loss-making ASINs still spending over £5 on PPC',
       threshold:'(Revenue × 0.45) − Shipping − PPC < £0 AND PPC > £5', problem:'NET NEGATIVE', action:'PAUSE PPC',
       desc:'Losing money while paying for ads', flag:'(revenue×0.45) − shipping − ppc < 0 AND ppc > 5' },
     { key:'l4', tab:'Refund Rate',     window:'Last 30 days', lvl:'med',  accent:'var(--blue)',
+      full:'High Refund Rate ASINs', concept:'Hidden margin erosion — refund rate above 10% (minimum 2 orders)',
       threshold:'Refund Rate > 10% (min 2 orders)', problem:'HIGH REFUND', action:'INVESTIGATE',
       desc:'Refund rate above 10%', flag:'refunded ÷ total > 0.10 AND total ≥ 2' },
-    { key:'l5', tab:'Margin Trend',    window:'Last 3 months', lvl:'high', accent:'var(--amber)',
+    { key:'l5', tab:'Margin Trend',    window:'Last 3 months', lvl:'high', accent:'var(--blue)',
+      full:'PH Net Margin Trend — Consecutive Decline', concept:'Systemic portfolio deterioration — net margin declining 2+ consecutive months',
       threshold:'Net margin declining ≥ 2 consecutive months', problem:'MARGIN DECLINE', action:'PH REVIEW',
       desc:'PH margin falling 2+ months', flag:'margin(m) < margin(m-1) < margin(m-2)' }
   ];
@@ -405,13 +1134,18 @@
   const rowsFor=k=>Array.isArray(D[k])?D[k]:[];
   function uniquePhs(rows){return [...new Set(rows.map(r=>r.ph||'UNATTRIBUTED'))];}
   function acctMatch(r){return acctFilter==='__ALL__'||r.account===acctFilter;}
+  function phMatch(r){return phFilter==='__ALL__'||(r.ph||'UNATTRIBUTED')===phFilter;}
+  function viewMatch(r){return acctMatch(r)&&phMatch(r);}
+  /* Counts are derived live from the leakage rows so every view reconciles:
+     a row counts only when it matches BOTH the selected account and the selected PH.
+     l5 (Margin Trend) carries no account, so it is counted on its own (unique
+     declining PHs) and is EXCLUDED from the flagged totals — see totalFlagged(). */
+  /* L5 carries an account dimension: account='ALL' is the combined cross-account trend
+     (shown for "All accounts"); per-account rows show when a specific account is selected. */
+  function l5Acct(){return acctFilter==='__ALL__'?'ALL':acctFilter;}
   function countFor(k){
-    if(acctFilter==='__ALL__'){const c=D.summary&&D.summary.counts&&D.summary.counts[k];if(c!=null)return c;}
-    /* Phase 1: L5 is PH-grain — always GLOBAL, never account-filtered (l5 rows have no account) */
-    if(k==='l5'){const g=D.summary&&D.summary.counts&&D.summary.counts.l5;return g!=null?Number(g):uniquePhs(rowsFor('l5').filter(r=>r.declining)).length;}
-    /* Phase 1: account-filtered KPI reads the authoritative account_summary, NOT the capped detail arrays */
-    if(acctFilter!=='__ALL__'&&Array.isArray(D.account_summary)){const row=D.account_summary.find(a=>a.account===acctFilter);if(row&&row[k]!=null)return Number(row[k]);}
-    return rowsFor(k).filter(acctMatch).length;}
+    if(k==='l5')return uniquePhs(rowsFor('l5').filter(r=>(r.account||'ALL')===l5Acct()&&r.declining&&phMatch(r))).length;
+    return rowsFor(k).filter(viewMatch).length;}
   function acctClass(a){a=txt(a).toLowerCase();return a.indexOf('dcv')>=0?'dcv':(a.indexOf('led')>=0?'led':'oth');}
   function rowKey(k,r){return k+'::'+txt(r.asin)+'::'+txt(r.sku)+'::'+txt(r.ph)+'::'+txt(r.month);}
   function loadTicks(){try{return JSON.parse(localStorage.getItem('wlsp_ticks')||'{}');}catch(e){return{};}}
@@ -427,57 +1161,51 @@
   }
   function phRisk(n){return n>=15?'crit':n>=6?'high':n>=3?'med':'low';}
 
-  /* ---- aggregates derived from dashboardData (presentation summaries) ---- */
-  /* FIX (D04): prefer FULL-dataset aggregates (account_summary / ph_summary) from data.js;
-     fall back to row aggregation only when those summaries are absent. KPI/countFor untouched. */
+  /* ---- aggregates derived live from the leakage rows ---- */
+  /* Every flagged total is the sum of the 4 account-attributable leakages (l1..l4).
+     Margin Trend (l5) has no account, so it is NEVER added into a flagged total —
+     it would otherwise inflate "All accounts" above the sum of the per-account views.
+     Counting from the rows guarantees: All == LEDSone + DCVoltage, and each PH total
+     rolls up into its account total. */
+  const FLAG_KEYS=['l1','l2','l3','l4'];
   function hasAcctSummary(){return Array.isArray(D.account_summary)&&D.account_summary.length;}
   function hasPhSummary(){return Array.isArray(D.ph_summary)&&D.ph_summary.length;}
+  /* per-PH flag counts, filtered by the selected account */
   function phTotals(){
-    /* Phase 2: All accounts -> ph_summary.total; selected account -> account_breakdown[acct].total (0 if none).
-       Never derived from l1-l5 detail arrays. */
-    if(hasPhSummary()){
-      if(acctFilter==='__ALL__')
-        return D.ph_summary.map(p=>({ph:p.ph,count:Number(p.total!=null?p.total:((p.l1||0)+(p.l2||0)+(p.l3||0)+(p.l4||0)+(p.l5||0)))}))
-          .sort((a,b)=>b.count-a.count);
-      return D.ph_summary.map(p=>{const b=p.account_breakdown&&p.account_breakdown[acctFilter];return {ph:p.ph,count:b?Number(b.total||0):0};})
-        .sort((a,b)=>b.count-a.count);
-    }
     const m={};
-    ['l1','l2','l3','l4'].forEach(k=>rowsFor(k).forEach(r=>{const p=r.ph||'UNATTRIBUTED';m[p]=(m[p]||0)+1;}));
-    rowsFor('l5').filter(r=>r.declining).forEach(r=>{const p=r.ph||'UNATTRIBUTED';m[p]=(m[p]||0)+1;});
+    FLAG_KEYS.forEach(k=>rowsFor(k).forEach(r=>{if(!acctMatch(r))return;const p=r.ph||'UNATTRIBUTED';m[p]=(m[p]||0)+1;}));
     return Object.keys(m).map(p=>({ph:p,count:m[p]})).sort((a,b)=>b.count-a.count);
   }
+  /* per-account flag counts */
   function acctTotals(){
-    if(hasAcctSummary()){const m={};D.account_summary.forEach(a=>m[a.account]=Number(a.total!=null?a.total:((a.l1||0)+(a.l2||0)+(a.l3||0)+(a.l4||0))));return m;}
     const m={};
-    ['l1','l2','l3','l4'].forEach(k=>rowsFor(k).forEach(r=>{const a=r.account||'—';m[a]=(m[a]||0)+1;}));
+    FLAG_KEYS.forEach(k=>rowsFor(k).forEach(r=>{const a=r.account||'—';m[a]=(m[a]||0)+1;}));
     return m;
   }
   function allPhs(){
-    /* Phase 2: Affected PHs — All accounts: all ph_summary; selected account: PHs with account_breakdown[acct].total>0 */
-    if(hasPhSummary()){
-      if(acctFilter==='__ALL__')return D.ph_summary.map(p=>p.ph);
-      return D.ph_summary.filter(p=>{const b=p.account_breakdown&&p.account_breakdown[acctFilter];return b&&Number(b.total||0)>0;}).map(p=>p.ph);
+    const s=new Set();FLAG_KEYS.forEach(k=>rowsFor(k).forEach(r=>{if(acctMatch(r))s.add(r.ph||'UNATTRIBUTED');}));
+    return [...s];}
+  /* Affected PHs = distinct portfolio holders with >=1 flag (excludes UNATTRIBUTED).
+     The l1/l2 detail arrays are capped (top-N), so for the unfiltered view we use the
+     authoritative ph_summary; account-filtered views fall back to the rows available. */
+  function affectedPhCount(){
+    if(acctFilter==='__ALL__'&&hasPhSummary()){
+      return D.ph_summary.filter(p=>p.ph&&p.ph!=='UNATTRIBUTED'&&Number(p.total||((p.l1||0)+(p.l2||0)+(p.l3||0)+(p.l4||0)+(p.l5||0)))>0).length;
     }
-    const s=new Set();['l1','l2','l3','l4'].forEach(k=>rowsFor(k).forEach(r=>s.add(r.ph||'UNATTRIBUTED')));
-    rowsFor('l5').filter(r=>r.declining).forEach(r=>s.add(r.ph));return [...s];}
-  /* complete PH roster — every holder seen in ANY analysis (l1..l5), flagged or not */
+    const s=new Set();
+    FLAG_KEYS.forEach(k=>rowsFor(k).forEach(r=>{const p=r.ph||'UNATTRIBUTED';if(acctMatch(r)&&p!=='UNATTRIBUTED')s.add(p);}));
+    return s.size;}
+  /* complete PH roster — every holder seen in any analysis (l1..l5), flagged or not */
   function phRoster(){
-    if(hasPhSummary())return D.ph_summary.map(p=>p.ph);
     const s=new Set();['l1','l2','l3','l4','l5'].forEach(k=>rowsFor(k).forEach(r=>s.add(r.ph||'UNATTRIBUTED')));return [...s];}
   function flaggedForAccount(acct){
-    if(hasAcctSummary()){
-      if(acct==='__ALL__')return D.account_summary.reduce((t,a)=>t+Number(a.total||0),0);
-      const row=D.account_summary.find(a=>a.account===acct);return row?Number(row.total||0):0;
-    }
     let n=0;
-    ['l1','l2','l3','l4'].forEach(k=>rowsFor(k).forEach(r=>{if(acct==='__ALL__'||r.account===acct)n++;}));
-    rowsFor('l5').forEach(r=>{if(r.declining&&(acct==='__ALL__'||r.account===acct))n++;});
+    FLAG_KEYS.forEach(k=>rowsFor(k).forEach(r=>{if(acct==='__ALL__'||r.account===acct)n++;}));
     return n;}
   function allAccounts(){
     if(hasAcctSummary())return D.account_summary.map(a=>a.account);
-    const s=new Set();['l1','l2','l3','l4'].forEach(k=>rowsFor(k).forEach(r=>r.account&&s.add(r.account)));return [...s];}
-  function totalFlagged(){return ANALYSES.reduce((t,a)=>t+Number(countFor(a.key)||0),0);}
+    const s=new Set();FLAG_KEYS.forEach(k=>rowsFor(k).forEach(r=>r.account&&s.add(r.account)));return [...s];}
+  function totalFlagged(){return ANALYSES.filter(a=>a.key!=='l5').reduce((t,a)=>t+Number(countFor(a.key)||0),0);}
 
   /* ---- header + stats ---- */
   function renderHeader(){
@@ -485,19 +1213,24 @@
     $('h-title').textContent=s.report_title||'PH Weekly Leakage Action Lists';
     $('h-sub').textContent=[(s.scope||'UK Amazon FBM'),(s.accounts||'LEDSone + DCVoltage'),(ANALYSES.length+' Analyses')].join('  ·  ');
   }
+  function weekStart(endStr,days){
+    const d=new Date(endStr);if(isNaN(d))return '';
+    d.setDate(d.getDate()-((days||7)-1));   // inclusive N-day window ending on endStr
+    return d.toISOString().slice(0,10);
+  }
   function renderStats(){
     const s=D.summary||{};
+    const endDate=s.report_date||s.generated_at||'';
+    const startDate=weekStart(endDate,7);   // weekly (Monday) run = 7-day window
     const stats=[
-      ['Updated Date', s.report_date||s.generated_at||'—','v'],
+      ['Start Date', startDate||'—','v'],
+      ['End Date', endDate||'—','v'],
       ['Analysis Period', '7d / 30d / 3mo','v sm'],
       ['Total Flagged', totalFlagged().toLocaleString(),'v'],
-      ['Affected PHs', allPhs().length,'v'],
+      ['Affected PHs', affectedPhCount(),'v'],
       ['Accounts', allAccounts().length,'v']
     ];
-    $('stats').innerHTML=stats.map(x=>'<div class="stat"><div class="k">'+esc(x[0])+'</div><div class="'+x[2]+'">'+esc(x[1])+'</div></div>').join('')
-      +'<button class="stat stat-refresh" id="refresh-btn" type="button" title="Reload the latest data">'
-      +'<div class="k">Data</div><div class="v rfx"><span class="rfx-ic">⟳</span> Refresh</div></button>';
-    const rb=$('refresh-btn');if(rb)rb.onclick=function(){location.reload();};
+    $('stats').innerHTML=stats.map(x=>'<div class="stat"><div class="k">'+esc(x[0])+'</div><div class="'+x[2]+'">'+esc(x[1])+'</div></div>').join('');
   }
 
   /* ---- KPI cards (clickable = analysis selector) ---- */
@@ -505,12 +1238,41 @@
     $('kpis').innerHTML='';
     ANALYSES.forEach(a=>{
       const el=document.createElement('div');
-      el.className='kpi'+(a.key===activeKey?' active':'');
+      const isActive=a.key===activeKey;
+      el.className='kpi'+(isActive?' active':'');
       el.style.setProperty('--accent',a.accent);
-      el.innerHTML='<div class="row1"><span class="name">'+esc(a.tab)+'</span><span class="lvl '+a.lvl+'">'+a.lvl+'</span></div>'+
-        '<div class="count">'+countFor(a.key)+'</div><div class="desc">'+esc(a.desc)+'</div>';
+      el.setAttribute('role','button');el.setAttribute('tabindex','0');
+      el.setAttribute('aria-pressed',isActive?'true':'false');
+      el.title='Click to view '+a.tab+' details';
+      const cta=isActive
+        ? '<div class="kpi-cta"><span class="kpi-view on">✓ Showing details</span></div>'
+        : '<div class="kpi-cta"><span class="kpi-view">View details</span><span class="kpi-arrow">→</span></div>';
+      const lvlFull={crit:'CRITICAL',high:'HIGH',med:'MEDIUM',low:'LOW'}[a.lvl]||txt(a.lvl).toUpperCase();
+      /* Margin Trend (l5) is a per-PH count, not a flagged-item total — hide its count */
+      const countHtml=(a.key==='l5')?'':'<span class="count">'+countFor(a.key)+'</span>';
+      el.innerHTML='<div class="kpi-head"><span class="name">'+esc(a.tab)+'</span>'+countHtml+'</div>'+
+        '<div class="kpi-sub"><span class="lvl '+a.lvl+'">'+esc(lvlFull)+'</span><span class="desc">'+esc(a.desc)+'</span></div>'+cta;
       el.onclick=()=>{activeKey=a.key;render();};
+      el.onkeydown=(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activeKey=a.key;render();}};
       $('kpis').appendChild(el);
+    });
+  }
+
+  /* ---- tab bar (explicit selector — stays in sync with the KPI cards) ---- */
+  function renderTabs(){
+    const tb=$('tabbar');if(!tb)return;
+    tb.innerHTML='';
+    ANALYSES.forEach(a=>{
+      const isActive=a.key===activeKey;
+      const el=document.createElement('button');
+      el.type='button';el.className='tab'+(isActive?' active':'');
+      el.style.setProperty('--accent',a.accent);
+      el.setAttribute('role','tab');el.setAttribute('aria-selected',isActive?'true':'false');
+      el.title='Show '+a.tab;
+      el.innerHTML='<span class="tab-nm">'+esc(a.tab)+'</span>'+(a.key==='l5'?'':'<span class="tab-ct">'+countFor(a.key)+'</span>');
+      el.onclick=()=>{activeKey=a.key;render();};
+      el.onkeydown=(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activeKey=a.key;render();}};
+      tb.appendChild(el);
     });
   }
 
@@ -531,14 +1293,24 @@
   function renderPhRail(){
     const rail=$('ph-rail');
     const cm={};phTotals().forEach(r=>{cm[r.ph]=r.count;});            // account-aware flag counts
-    const rows=phRoster().map(p=>({ph:p,count:cm[p]||0}))             // every holder, default 0
+    const allRows=phRoster().map(p=>({ph:p,count:cm[p]||0}))          // every holder, default 0
       .sort((a,b)=>b.count-a.count||a.ph.localeCompare(b.ph));        // flagged first, then A→Z
-    const total=rows.reduce((t,r)=>t+r.count,0);
-    let h='<button class="ph-opt'+(phFilter==='__ALL__'?' on':'')+'" type="button" data-ph="__ALL__">'+
-      '<span class="po-name">All Portfolio Holders</span><span class="po-ct">'+total+'</span></button>';
+    const total=allRows.reduce((t,r)=>t+r.count,0);                  // All total still reflects every holder
+    const rows=allRows.filter(r=>r.ph!=='UNATTRIBUTED');             // exclude UNATTRIBUTED from the PH list
+    /* "All Portfolio Holders" is only meaningful when more than one PH exists; on a
+       single-PH dashboard it is redundant (All == that PH), so it is omitted and the lone
+       PH renders as the selected row. Master (many PHs) is unaffected. */
+    let h='';
+    if(rows.length>1){
+      h+='<button class="ph-opt'+(phFilter==='__ALL__'?' on':'')+'" type="button" data-ph="__ALL__">'+
+        '<span class="po-name">All Portfolio Holders</span><span class="po-ct">'+total+'</span></button>';
+    }
     if(!rows.length){h+='<div class="empty" style="padding:14px;">No PH data.</div>';}
-    h+=rows.map(r=>'<button class="ph-opt'+(phFilter===r.ph?' on':'')+(r.count===0?' empty-ph':'')+'" type="button" data-ph="'+esc(r.ph)+'">'+
-      '<span class="po-name">'+esc(r.ph)+'</span><span class="po-ct'+(r.count===0?' zero':'')+'">'+r.count+'</span></button>').join('');
+    h+=rows.map(r=>{
+      const active=(phFilter===r.ph)||(rows.length===1&&phFilter==='__ALL__');
+      return '<button class="ph-opt'+(active?' on':'')+(r.count===0?' empty-ph':'')+'" type="button" data-ph="'+esc(r.ph)+'">'+
+        '<span class="po-name">'+esc(r.ph)+'</span><span class="po-ct'+(r.count===0?' zero':'')+'">'+r.count+'</span></button>';
+    }).join('');
     rail.innerHTML=h;
     rail.querySelectorAll('.ph-opt').forEach(b=>b.onclick=()=>{
       const p=b.getAttribute('data-ph');phFilter=(p==='__ALL__'||phFilter===p)?'__ALL__':p;render();});
@@ -615,10 +1387,16 @@
   }
 
   function renderDetailHead(){
-    const a=ANALYSES.find(x=>x.key===activeKey);const s=D.summary||{};
-    $('d-title').textContent=a.tab+'  ·  '+a.window;
-    $('d-thresh').textContent='Threshold: '+a.threshold+'   |   Scope: '+(s.scope||'UK Amazon FBM')+' · '+(s.accounts||'LEDSone + DCVoltage');
-    $('d-flag').textContent='FLAG CONDITION (from source):  '+a.flag;
+    const a=ANALYSES.find(x=>x.key===activeKey);
+    const lvlText={crit:'CRITICAL',high:'HIGH',med:'MEDIUM',low:'LOW'}[a.lvl]||txt(a.lvl).toUpperCase();
+    $('d-title').innerHTML='<div class="dh-title-row">'+
+      '<span class="dh-name">'+esc(a.full||a.tab)+'</span>'+
+      '<span class="badge '+a.lvl+'">'+esc(lvlText)+'</span>'+
+      '<span class="dh-window">'+esc(a.window)+'</span></div>';
+    $('d-thresh').className='dh-concept';
+    $('d-thresh').innerHTML=esc(a.concept||a.desc);
+    $('d-flag').className='dhead-flag';
+    $('d-flag').innerHTML='<span class="df-k">Flag</span><code class="df-v">'+esc(a.flag)+'</code>';
   }
 
   function renderDetailBody(){
@@ -641,7 +1419,9 @@
   }
 
   function renderL5(body,a){
+    const acct=l5Acct();
     const rows=rowsFor('l5').filter(r=>{
+      if((r.account||'ALL')!==acct)return false;
       if(phFilter!=='__ALL__'&&(r.ph||'UNATTRIBUTED')!==phFilter)return false;
       if(searchText.trim()){const q=searchText.toLowerCase();if((r.ph||'').toLowerCase().indexOf(q)<0)return false;}
       return true;});
@@ -769,7 +1549,7 @@
     try{localStorage.setItem('wlsp_theme',t);}catch(e){}
   }
   function initTheme(){
-    let t='dark';try{t=localStorage.getItem('wlsp_theme')||'dark';}catch(e){}
+    let t='light';try{t=localStorage.getItem('wlsp_theme')||'light';}catch(e){}
     applyTheme(t);
     $('theme-btn').onclick=()=>applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');
   }
@@ -777,7 +1557,7 @@
   /* ---- master render ---- */
   function render(){
     renderHeader();renderStats();renderKPIs();
-    renderAccountRail();renderPhRail();renderVerification();
+    renderAccountRail();renderPhRail();
     renderToolbar();renderDetailHead();renderDetailBody();
   }
   document.addEventListener('DOMContentLoaded',function(){initTheme();initActions();render();});
