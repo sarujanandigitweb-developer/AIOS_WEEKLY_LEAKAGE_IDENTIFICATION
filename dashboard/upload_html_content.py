@@ -26,13 +26,14 @@ Usage:
 Exit code 0 = PASS (stored size == source size), non-zero = FAIL.
 """
 
-import os, sys, json, glob
+import os, sys, json, glob, hashlib
 
 HERE       = os.path.dirname(os.path.abspath(__file__))
 HTML_PATH  = os.path.join(HERE, "leakage_dashboard.html")
 ROW_ID     = 8
-PROJECT    = "wlsp"
+PROJECT    = "WLSP"          # normalized (row 8's project_code was changed wlsp -> WLSP)
 TASK_ID    = "WLSP_Bietrick_Leakage_Dashboard-V1"
+# id + task_id uniquely identify the row, so project_code is NOT used in the WHERE clause.
 
 
 def find_dsn():
