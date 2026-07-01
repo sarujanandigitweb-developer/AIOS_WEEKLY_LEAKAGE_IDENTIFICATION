@@ -14,7 +14,11 @@ def f(x):
 def clean(rows):
     return [{k: f(v) for k, v in r.items()} for r in rows]
 
-l1 = clean(L1); l2 = clean(L2); l3 = clean(L3); l4 = clean(L4); l5 = clean(L5)
+l1 = clean(globals().get('L1', []))
+l2 = clean(globals().get('L2', []))
+l3 = clean(globals().get('L3', []))
+l4 = clean(globals().get('L4', []))
+l5 = clean(globals().get('L5', []))
 
 # collect UNATTRIBUTED skus across l1-l4
 unattr = sorted({r['sku'] for arr in (l1, l2, l3, l4) for r in arr if r.get('ph') == 'UNATTRIBUTED'})
