@@ -61,8 +61,10 @@ def main():
         raw = f.read()
     html = raw.decode("utf-8")            # bound parameter (str -> UTF-8 on the wire)
     source_bytes = len(raw)
+    source_md5   = hashlib.md5(raw).hexdigest()
     print(f"source file : {HTML_PATH}")
     print(f"source bytes: {source_bytes}")
+    print(f"source md5  : {source_md5}")
 
     dsn = find_dsn()
     if not dsn:
@@ -83,36 +85,48 @@ def main():
         conn.autocommit = False
         cur = conn.cursor()
 
-        # confirm the target row exists (do NOT create / delete)
+        # confirm the target row exists (do NOT create / delete).
+        # id + task_id uniquely identify the row -> project_code intentionally omitted.
         cur.execute("""SELECT 1 FROM tech_team_outputs.ph_task
-                       WHERE id=%s AND project_code=%s AND task_id=%s""",
-                    (ROW_ID, PROJECT, TASK_ID))
+                       WHERE id=%s AND task_id=%s""",
+                    (ROW_ID, TASK_ID))
         if cur.fetchone() is None:
             conn.rollback()
-            sys.exit(f"FAIL: row id={ROW_ID} ({PROJECT}/{TASK_ID}) not found — refusing to insert.")
+            sys.exit(f"FAIL: row id={ROW_ID} ({TASK_ID}) not found — refusing to insert.")
 
         # single, byte-exact UPDATE via bound parameter — only html_content + updated_at
         cur.execute("""UPDATE tech_team_outputs.ph_task
-                       SET html_content = %s, updated_at = now()
-                       WHERE id = %s AND project_code = %s AND task_id = %s""",
-                    (html, ROW_ID, PROJECT, TASK_ID))
+                       SET html_content = %s, updated_at = NOW()
+                       WHERE id = %s AND task_id = %s""",
+                    (html, ROW_ID, TASK_ID))
         if cur.rowcount != 1:
             conn.rollback()
             sys.exit(f"FAIL: expected to update 1 row, updated {cur.rowcount} — rolled back.")
         conn.commit()
 
-        # verify with octet_length (as required — no MD5/SHA)
-        cur.execute("SELECT octet_length(html_content) FROM tech_team_outputs.ph_task WHERE id=%s",
+        # verify: octet_length + md5 against the source file
+        cur.execute("""SELECT id, project_code, task_id,
+                              octet_length(html_content) AS html_size,
+                              md5(html_content)          AS html_md5,
+                              updated_at
+                       FROM tech_team_outputs.ph_task WHERE id=%s""",
                     (ROW_ID,))
-        stored_bytes = cur.fetchone()[0]
-        print(f"stored bytes: {stored_bytes}")
+        rid, pcode, tid, stored_bytes, stored_md5, upd = cur.fetchone()
         cur.close()
+        print(f"stored bytes: {stored_bytes}")
+        print(f"stored md5  : {stored_md5}")
+        print(f"row         : id={rid} project_code={pcode} task_id={tid} updated_at={upd}")
 
-        if stored_bytes == source_bytes:
-            print(f"PASS: stored html_content ({stored_bytes} bytes) == source file ({source_bytes} bytes)")
+        if stored_bytes == source_bytes and stored_md5 == source_md5:
+            print(f"PASS: html_size={stored_bytes} and md5={stored_md5} match the source file byte-for-byte.")
             return 0
         else:
-            sys.exit(f"FAIL: stored {stored_bytes} != source {source_bytes}")
+            reasons = []
+            if stored_bytes != source_bytes:
+                reasons.append(f"size {stored_bytes} != source {source_bytes}")
+            if stored_md5 != source_md5:
+                reasons.append(f"md5 {stored_md5} != source {source_md5}")
+            sys.exit("FAIL: " + "; ".join(reasons))
     finally:
         conn.close()
 
