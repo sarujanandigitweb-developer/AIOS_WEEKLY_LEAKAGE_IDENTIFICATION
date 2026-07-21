@@ -16,3 +16,25 @@
 [2026-06-30T11:57:50] VALIDATION OK (master) — counts L1=147 L2=270 L3=45 L4=40 L5=10; accounts=2; ph_rows=24; generated_at=2026-06-30
 [2026-06-30T11:57:50] PH dashboards OK — 24 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
 [2026-06-30T11:57:50] RESULT: PASS — leakage_dashboard.html + 24 PH dashboards refreshed in 477.4s total
+[2026-07-06T08:45:01] START refresh — launching Claude CLI headless
+[2026-07-06T08:54:54] Claude exit=0; stdout tail: 'ardData; </script>`; DB accessed read-only (SELECT only); no forbidden tables (`development.*`, `ph_action_board.*`, `ph_daily_actions`) appear in any section except `verification_summary`; 89 UNATTRIBUTED rows across L1–L4 tagged `RECOVERABLE`/`MISSING_SOURCE`. File write succeeded (228,965 bytes).'
+[2026-07-06T08:54:54] VALIDATION OK (master) — counts L1=147 L2=239 L3=54 L4=28 L5=7; accounts=2; ph_rows=24; generated_at=2026-07-06
+[2026-07-06T08:54:54] PH dashboards OK — 24 regenerated in 0.03s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-07-06T08:54:54] RESULT: PASS — leakage_dashboard.html + 24 PH dashboards refreshed in 592.6s total
+[2026-07-13T08:45:01] START refresh — launching Claude CLI headless
+[2026-07-13T08:51:51] Claude exit=0; stdout tail: 'only: only `SELECT` issued; no DDL/DML.\n- Sources: `public.ppc_performance`, `public.order_transaction`, `public.order_shipping_billing_detail` only. Forbidden-table scan over every section except `verification_summary` came back clean.\n- Single file written; no `data.js` created; markers unchanged.'
+[2026-07-13T08:51:52] RESULT: FAIL — D04 regression: counts.l1=124 != distinct ASIN in L1 detail (125)
+[2026-07-13T09:01:39] RECONCILED: counts.l1 124->125 (distinct asin of 125 detail rows)
+[2026-07-13T09:45:01] START refresh — launching Claude CLI headless
+[2026-07-13T09:50:48] Claude exit=0; stdout tail: 'es in `verification_summary` (scanned and confirmed). One note on method: because L1–L4 were fetched as a single combined snapshot query, the row counts above supersede the eyeball counts I mentioned mid-run for L1 and L2 (125/205) — those were my miscounts of the streamed output, not a data change.'
+[2026-07-13T09:50:48] VALIDATION OK (master) — counts L1=126 L2=221 L3=38 L4=23 L5=9; accounts=2; ph_rows=28; generated_at=2026-07-13
+[2026-07-13T09:50:48] PH dashboards OK — 30 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-07-13T09:50:48] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 347.4s total
+[2026-07-20T08:45:01] START refresh — launching Claude CLI headless
+[2026-07-20T08:45:52] Claude exit=0; stdout tail: "Re-run this prompt. If it still fails, restart Claude so the MCP client re-attempts the connection, or run `claude mcp list` to confirm it shows a healthy ✔ before retrying.\n\nWant me to keep retrying the connection on an interval, or set a reminder to re-run once you've confirmed the server is back?"
+[2026-07-20T08:45:52] RESULT: FAIL — leakage_dashboard.html unchanged after run
+[2026-07-20T09:40:01] START refresh — launching Claude CLI headless
+[2026-07-20T09:49:02] Claude exit=0; stdout tail: 'idden schemas (`development.*`, `ph_action_board.*`, `ph_daily_actions`) appear anywhere except the `verification_summary` "excluded" note. Confirmed programmatically.\n- Embedded JSON re-parses cleanly; both markers intact; **only `leakage_dashboard.html` was modified** (no `data.js`, no new files).'
+[2026-07-20T09:49:02] VALIDATION OK (master) — counts L1=97 L2=227 L3=44 L4=37 L5=9; accounts=2; ph_rows=30; generated_at=2026-07-20
+[2026-07-20T09:49:02] PH dashboards OK — 30 regenerated in 0.03s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-07-20T09:49:02] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 540.3s total

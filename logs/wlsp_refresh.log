@@ -1,0 +1,237 @@
+[2026-07-06T08:45:01] START refresh — launching Claude CLI headless
+[2026-07-06T08:54:54] Claude exit=0; stdout tail: 'ardData; </script>`; DB accessed read-only (SELECT only); no forbidden tables (`development.*`, `ph_action_board.*`, `ph_daily_actions`) appear in any section except `verification_summary`; 89 UNATTRIBUTED rows across L1–L4 tagged `RECOVERABLE`/`MISSING_SOURCE`. File write succeeded (228,965 bytes).'
+[2026-07-06T08:54:54] VALIDATION OK (master) — counts L1=147 L2=239 L3=54 L4=28 L5=7; accounts=2; ph_rows=24; generated_at=2026-07-06
+[2026-07-06T08:54:54] PH dashboards OK — 24 regenerated in 0.03s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-07-06T08:54:54] RESULT: PASS — leakage_dashboard.html + 24 PH dashboards refreshed in 592.6s total
+scan: master + /home/led-247/Downloads/AIOS_WEEKLY_LEAKAGE_IDENTIFICATION/AIOS_Weekly_Leakage_Identification/dashboard/portfolio_holders
+ignore override: none | dashboards to process: 25
+
+  PASS  UPDATE  id=8    Master              228965 bytes
+  PASS  UPDATE  id=18   Abinayaa             63232 bytes
+  PASS  UPDATE  id=22   Arudchelvi           61992 bytes
+  PASS  UPDATE  id=23   Dilani               64539 bytes
+  PASS  UPDATE  id=27   Illakkiya            62455 bytes
+  PASS  UPDATE  id=31   Jasmini              74060 bytes
+  PASS  UPDATE  id=28   Jubista              63134 bytes
+  PASS  UPDATE  id=32   mothajini            62079 bytes
+  PASS  UPDATE  id=34   Nithushana           63502 bytes
+  PASS  UPDATE  id=36   paulr                70526 bytes
+  PASS  UPDATE  id=37   Poovitha             63112 bytes
+  PASS  UPDATE  id=39   prasath              64918 bytes
+  PASS  UPDATE  id=40   preethi              62644 bytes
+  PASS  UPDATE  id=42   Renuha               62989 bytes
+  PASS  UPDATE  id=43   Saranya              61182 bytes
+  PASS  UPDATE  id=44   Shanthini            61478 bytes
+  PASS  UPDATE  id=45   shimee               63432 bytes
+  PASS  UPDATE  id=46   thanucha             60233 bytes
+  PASS  UPDATE  id=47   Tharshana            61511 bytes
+  PASS  UPDATE  id=49   Tharsiga(nelli)      65592 bytes
+  PASS  UPDATE  id=50   Tharsika(jaffna)     66119 bytes
+  PASS  UPDATE  id=51   Theepana             64011 bytes
+  PASS  UPDATE  id=52   Thojika              63922 bytes
+  PASS  UPDATE  id=53   thuwaraga            74778 bytes
+  PASS  UPDATE  id=54   utharsika            75350 bytes
+
+| Dashboard | Operation | Row ID | HTML Size | Status |
+|---|---|---|---|---|
+| Master | UPDATE | 8 | 228965 | PASS |
+| Abinayaa | UPDATE | 18 | 63232 | PASS |
+| Arudchelvi | UPDATE | 22 | 61992 | PASS |
+| Dilani | UPDATE | 23 | 64539 | PASS |
+| Illakkiya | UPDATE | 27 | 62455 | PASS |
+| Jasmini | UPDATE | 31 | 74060 | PASS |
+| Jubista | UPDATE | 28 | 63134 | PASS |
+| mothajini | UPDATE | 32 | 62079 | PASS |
+| Nithushana | UPDATE | 34 | 63502 | PASS |
+| paulr | UPDATE | 36 | 70526 | PASS |
+| Poovitha | UPDATE | 37 | 63112 | PASS |
+| prasath | UPDATE | 39 | 64918 | PASS |
+| preethi | UPDATE | 40 | 62644 | PASS |
+| Renuha | UPDATE | 42 | 62989 | PASS |
+| Saranya | UPDATE | 43 | 61182 | PASS |
+| Shanthini | UPDATE | 44 | 61478 | PASS |
+| shimee | UPDATE | 45 | 63432 | PASS |
+| thanucha | UPDATE | 46 | 60233 | PASS |
+| Tharshana | UPDATE | 47 | 61511 | PASS |
+| Tharsiga(nelli) | UPDATE | 49 | 65592 | PASS |
+| Tharsika(jaffna) | UPDATE | 50 | 66119 | PASS |
+| Theepana | UPDATE | 51 | 64011 | PASS |
+| Thojika | UPDATE | 52 | 63922 | PASS |
+| thuwaraga | UPDATE | 53 | 74778 | PASS |
+| utharsika | UPDATE | 54 | 75350 | PASS |
+
+Total dashboards processed     : 25
+Master dashboards processed    : 1
+Portfolio Holder dashboards    : 24
+INSERTS                        : 0
+UPDATES                        : 25
+PASS                           : 25
+FAIL                           : 0
+[2026-07-13T08:45:01] START refresh — launching Claude CLI headless
+[2026-07-13T08:51:51] Claude exit=0; stdout tail: 'only: only `SELECT` issued; no DDL/DML.\n- Sources: `public.ppc_performance`, `public.order_transaction`, `public.order_shipping_billing_detail` only. Forbidden-table scan over every section except `verification_summary` came back clean.\n- Single file written; no `data.js` created; markers unchanged.'
+[2026-07-13T08:51:52] RESULT: FAIL — D04 regression: counts.l1=124 != distinct ASIN in L1 detail (125)
+[2026-07-13T09:45:01] START refresh — launching Claude CLI headless
+[2026-07-13T09:50:48] Claude exit=0; stdout tail: 'es in `verification_summary` (scanned and confirmed). One note on method: because L1–L4 were fetched as a single combined snapshot query, the row counts above supersede the eyeball counts I mentioned mid-run for L1 and L2 (125/205) — those were my miscounts of the streamed output, not a data change.'
+[2026-07-13T09:50:48] VALIDATION OK (master) — counts L1=126 L2=221 L3=38 L4=23 L5=9; accounts=2; ph_rows=28; generated_at=2026-07-13
+[2026-07-13T09:50:48] PH dashboards OK — 30 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-07-13T09:50:48] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 347.4s total
+scan: master + /home/led-247/Downloads/AIOS_WEEKLY_LEAKAGE_IDENTIFICATION/AIOS_Weekly_Leakage_Identification/dashboard/portfolio_holders
+ignore override: none | dashboards to process: 31
+
+  PASS  UPDATE  id=8    Master              218009 bytes
+  PASS  UPDATE  id=18   Abinayaa             62708 bytes
+  PASS  UPDATE  id=201  Akalika              62012 bytes
+  PASS  UPDATE  id=202  Akanila              62078 bytes
+  PASS  UPDATE  id=22   Arudchelvi           63845 bytes
+  PASS  UPDATE  id=203  Dilakshiga           61824 bytes
+  PASS  UPDATE  id=23   Dilani               64355 bytes
+  PASS  UPDATE  id=27   Illakkiya            62732 bytes
+  PASS  UPDATE  id=31   Jasmini              75980 bytes
+  PASS  UPDATE  id=204  Jathisha             63049 bytes
+  PASS  UPDATE  id=28   Jubista              62460 bytes
+  PASS  UPDATE  id=32   mothajini            63321 bytes
+  PASS  UPDATE  id=34   Nithushana           61838 bytes
+  PASS  UPDATE  id=36   paulr                69319 bytes
+  PASS  UPDATE  id=39   prasath              67541 bytes
+  PASS  UPDATE  id=40   preethi              62252 bytes
+  PASS  UPDATE  id=205  Ramsika              62020 bytes
+  PASS  UPDATE  id=42   Renuha               64085 bytes
+  PASS  UPDATE  id=43   Saranya              62755 bytes
+  PASS  UPDATE  id=206  Sarbavi              61572 bytes
+  PASS  UPDATE  id=44   Shanthini            63413 bytes
+  PASS  UPDATE  id=45   shimee               65145 bytes
+  PASS  UPDATE  id=207  thanusha             62894 bytes
+  PASS  UPDATE  id=47   Tharshana            61622 bytes
+  PASS  UPDATE  id=49   Tharsiga(nelli)      65318 bytes
+  PASS  UPDATE  id=50   Tharsika(jaffna)     65605 bytes
+  PASS  UPDATE  id=51   Theepana             65021 bytes
+  PASS  UPDATE  id=52   Thojika              63366 bytes
+  PASS  UPDATE  id=53   thuwaraga            71182 bytes
+  PASS  UPDATE  id=54   utharsika            72222 bytes
+  PASS  UPDATE  id=208  Vaishnavi            61601 bytes
+
+| Dashboard | Operation | Row ID | HTML Size | version_status | assigned_user_team | Status |
+|---|---|---|---|---|---|---|
+| Master | UPDATE | 8 | 218009 | released | ph_priors | PASS |
+| Abinayaa | UPDATE | 18 | 62708 | released | ph_priors | PASS |
+| Akalika | UPDATE | 201 | 62012 | released | ph_priors | PASS |
+| Akanila | UPDATE | 202 | 62078 | released | ph_priors | PASS |
+| Arudchelvi | UPDATE | 22 | 63845 | released | ph_priors | PASS |
+| Dilakshiga | UPDATE | 203 | 61824 | released | ph_priors | PASS |
+| Dilani | UPDATE | 23 | 64355 | released | ph_priors | PASS |
+| Illakkiya | UPDATE | 27 | 62732 | released | ph_priors | PASS |
+| Jasmini | UPDATE | 31 | 75980 | released | ph_priors | PASS |
+| Jathisha | UPDATE | 204 | 63049 | released | ph_priors | PASS |
+| Jubista | UPDATE | 28 | 62460 | released | ph_priors | PASS |
+| mothajini | UPDATE | 32 | 63321 | released | ph_priors | PASS |
+| Nithushana | UPDATE | 34 | 61838 | released | ph_priors | PASS |
+| paulr | UPDATE | 36 | 69319 | released | ph_priors | PASS |
+| prasath | UPDATE | 39 | 67541 | released | ph_priors | PASS |
+| preethi | UPDATE | 40 | 62252 | released | ph_priors | PASS |
+| Ramsika | UPDATE | 205 | 62020 | released | ph_priors | PASS |
+| Renuha | UPDATE | 42 | 64085 | released | ph_priors | PASS |
+| Saranya | UPDATE | 43 | 62755 | released | ph_priors | PASS |
+| Sarbavi | UPDATE | 206 | 61572 | released | ph_priors | PASS |
+| Shanthini | UPDATE | 44 | 63413 | released | ph_priors | PASS |
+| shimee | UPDATE | 45 | 65145 | released | ph_priors | PASS |
+| thanusha | UPDATE | 207 | 62894 | released | ph_priors | PASS |
+| Tharshana | UPDATE | 47 | 61622 | released | ph_priors | PASS |
+| Tharsiga(nelli) | UPDATE | 49 | 65318 | released | ph_priors | PASS |
+| Tharsika(jaffna) | UPDATE | 50 | 65605 | released | ph_priors | PASS |
+| Theepana | UPDATE | 51 | 65021 | released | ph_priors | PASS |
+| Thojika | UPDATE | 52 | 63366 | released | ph_priors | PASS |
+| thuwaraga | UPDATE | 53 | 71182 | released | ph_priors | PASS |
+| utharsika | UPDATE | 54 | 72222 | released | ph_priors | PASS |
+| Vaishnavi | UPDATE | 208 | 61601 | released | ph_priors | PASS |
+
+Total dashboards processed     : 31
+Master dashboards processed    : 1
+Portfolio Holder dashboards    : 30
+INSERTS                        : 0
+UPDATES                        : 31
+PASS                           : 31
+FAIL                           : 0
+[2026-07-20T08:45:01] START refresh — launching Claude CLI headless
+[2026-07-20T08:45:52] Claude exit=0; stdout tail: "Re-run this prompt. If it still fails, restart Claude so the MCP client re-attempts the connection, or run `claude mcp list` to confirm it shows a healthy ✔ before retrying.\n\nWant me to keep retrying the connection on an interval, or set a reminder to re-run once you've confirmed the server is back?"
+[2026-07-20T08:45:52] RESULT: FAIL — leakage_dashboard.html unchanged after run
+[2026-07-20T09:40:01] START refresh — launching Claude CLI headless
+[2026-07-20T09:49:02] Claude exit=0; stdout tail: 'idden schemas (`development.*`, `ph_action_board.*`, `ph_daily_actions`) appear anywhere except the `verification_summary` "excluded" note. Confirmed programmatically.\n- Embedded JSON re-parses cleanly; both markers intact; **only `leakage_dashboard.html` was modified** (no `data.js`, no new files).'
+[2026-07-20T09:49:02] VALIDATION OK (master) — counts L1=97 L2=227 L3=44 L4=37 L5=9; accounts=2; ph_rows=30; generated_at=2026-07-20
+[2026-07-20T09:49:02] PH dashboards OK — 30 regenerated in 0.03s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-07-20T09:49:02] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 540.3s total
+scan: master + /home/led-247/Downloads/AIOS_WEEKLY_LEAKAGE_IDENTIFICATION/AIOS_Weekly_Leakage_Identification/dashboard/portfolio_holders
+ignore override: none | dashboards to process: 31
+
+  PASS  UPDATE  id=8    Master              217811 bytes
+  PASS  UPDATE  id=18   Abinayaa             63639 bytes
+  PASS  UPDATE  id=201  Akalika              62007 bytes
+  PASS  UPDATE  id=202  Akanila              62315 bytes
+  PASS  UPDATE  id=22   Arudchelvi           63204 bytes
+  PASS  UPDATE  id=203  Dilakshiga           62052 bytes
+  PASS  UPDATE  id=23   Dilani               64373 bytes
+  PASS  UPDATE  id=27   Illakkiya            62274 bytes
+  PASS  UPDATE  id=31   Jasmini              71866 bytes
+  PASS  UPDATE  id=204  Jathisha             63062 bytes
+  PASS  UPDATE  id=28   Jubista              62498 bytes
+  PASS  UPDATE  id=32   mothajini            63346 bytes
+  PASS  UPDATE  id=34   Nithushana           62078 bytes
+  PASS  UPDATE  id=36   paulr                70845 bytes
+  PASS  UPDATE  id=39   prasath              66635 bytes
+  PASS  UPDATE  id=40   preethi              63520 bytes
+  PASS  UPDATE  id=205  Ramsika              62260 bytes
+  PASS  UPDATE  id=42   Renuha               62907 bytes
+  PASS  UPDATE  id=43   Saranya              62296 bytes
+  PASS  UPDATE  id=206  Sarbavi              61786 bytes
+  PASS  UPDATE  id=44   Shanthini            62295 bytes
+  PASS  UPDATE  id=45   shimee               65029 bytes
+  PASS  UPDATE  id=207  thanusha             62868 bytes
+  PASS  UPDATE  id=47   Tharshana            61884 bytes
+  PASS  UPDATE  id=49   Tharsiga(nelli)      66410 bytes
+  PASS  UPDATE  id=50   Tharsika(jaffna)     65832 bytes
+  PASS  UPDATE  id=51   Theepana             64508 bytes
+  PASS  UPDATE  id=52   Thojika              63378 bytes
+  PASS  UPDATE  id=53   thuwaraga            70797 bytes
+  PASS  UPDATE  id=54   utharsika            75850 bytes
+  PASS  UPDATE  id=208  Vaishnavi            61845 bytes
+
+| Dashboard | Operation | Row ID | HTML Size | version_status | assigned_user_team | Status |
+|---|---|---|---|---|---|---|
+| Master | UPDATE | 8 | 217811 | released | ph_priors | PASS |
+| Abinayaa | UPDATE | 18 | 63639 | released | ph_priors | PASS |
+| Akalika | UPDATE | 201 | 62007 | released | ph_priors | PASS |
+| Akanila | UPDATE | 202 | 62315 | released | ph_priors | PASS |
+| Arudchelvi | UPDATE | 22 | 63204 | released | ph_priors | PASS |
+| Dilakshiga | UPDATE | 203 | 62052 | released | ph_priors | PASS |
+| Dilani | UPDATE | 23 | 64373 | completed | ph_priors | PASS |
+| Illakkiya | UPDATE | 27 | 62274 | completed | ph_priors | PASS |
+| Jasmini | UPDATE | 31 | 71866 | released | ph_priors | PASS |
+| Jathisha | UPDATE | 204 | 63062 | released | ph_priors | PASS |
+| Jubista | UPDATE | 28 | 62498 | released | ph_priors | PASS |
+| mothajini | UPDATE | 32 | 63346 | released | ph_priors | PASS |
+| Nithushana | UPDATE | 34 | 62078 | released | ph_priors | PASS |
+| paulr | UPDATE | 36 | 70845 | released | ph_priors | PASS |
+| prasath | UPDATE | 39 | 66635 | completed | ph_priors | PASS |
+| preethi | UPDATE | 40 | 63520 | released | ph_priors | PASS |
+| Ramsika | UPDATE | 205 | 62260 | released | ph_priors | PASS |
+| Renuha | UPDATE | 42 | 62907 | released | ph_priors | PASS |
+| Saranya | UPDATE | 43 | 62296 | completed | ph_priors | PASS |
+| Sarbavi | UPDATE | 206 | 61786 | released | ph_priors | PASS |
+| Shanthini | UPDATE | 44 | 62295 | released | ph_priors | PASS |
+| shimee | UPDATE | 45 | 65029 | completed | ph_priors | PASS |
+| thanusha | UPDATE | 207 | 62868 | released | ph_priors | PASS |
+| Tharshana | UPDATE | 47 | 61884 | released | ph_priors | PASS |
+| Tharsiga(nelli) | UPDATE | 49 | 66410 | released | ph_priors | PASS |
+| Tharsika(jaffna) | UPDATE | 50 | 65832 | released | ph_priors | PASS |
+| Theepana | UPDATE | 51 | 64508 | completed | ph_priors | PASS |
+| Thojika | UPDATE | 52 | 63378 | released | ph_priors | PASS |
+| thuwaraga | UPDATE | 53 | 70797 | released | ph_priors | PASS |
+| utharsika | UPDATE | 54 | 75850 | released | ph_priors | PASS |
+| Vaishnavi | UPDATE | 208 | 61845 | released | ph_priors | PASS |
+
+Total dashboards processed     : 31
+Master dashboards processed    : 1
+Portfolio Holder dashboards    : 30
+INSERTS                        : 0
+UPDATES                        : 31
+PASS                           : 31
+FAIL                           : 0

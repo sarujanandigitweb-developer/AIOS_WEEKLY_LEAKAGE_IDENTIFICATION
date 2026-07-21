@@ -242,11 +242,36 @@ Build one object with EXACTLY these keys:
     (date_trunc('week',CURRENT_DATE)::date - 7) AS week_start;`. Keep `generated_at` = the actual run date.
   `ph_count:<#PHs in ph_summary excluding UNATTRIBUTED>, analyses_count:5,`
   `counts:{l1,l2,l3,l4,l5}, displayed:{l1,l2,l3,l4,l5}}`
-  - `counts` = **true full-set totals**. **D04 FIX D — `counts.l1 = COUNT(DISTINCT asin)` of Q_L1**
-    (distinct Amazon ASINs only — NOT the Q_L1 row count, which is ASIN+SKU+PH grain). Run
-    `SELECT COUNT(*) FROM (SELECT ref_id FROM public.ppc_performance WHERE (ss_name ILIKE '%UK%' OR marketplace ILIKE '%UK%') AND source_name ILIKE '%amazon%' AND date >= date_trunc('week',CURRENT_DATE)::date - INTERVAL '7 days' AND date < date_trunc('week',CURRENT_DATE)::date AND record_type='ad' AND ref_id IS NOT NULL AND ref_id NOT IN ('','0') GROUP BY ref_id HAVING SUM(spend)>3 AND SUM(orders)=0) x;`
-    L2=COUNT(DISTINCT asin) of Q_L2, L3=COUNT(DISTINCT asin) of Q_L3, L4=COUNT(DISTINCT sku) of Q_L4,
-    L5=number of PHs with `declining=true` in the **`account='ALL'`** slice (portfolio-level).
+  - `counts` = **true full-set totals**, and every one of L1–L4 MUST be derived **from the rows you
+    already embedded** — never from a second, separately-grouped aggregate query:
+    - `counts.l1` = **COUNT(DISTINCT asin) over the Q_L1 result rows** (L1 detail is ASIN+SKU+PH+account
+      grain, so this is NOT the row count either).
+    - `counts.l2` = COUNT(DISTINCT asin) of Q_L2 · `counts.l3` = COUNT(DISTINCT asin) of Q_L3 ·
+      `counts.l4` = COUNT(DISTINCT sku) of Q_L4 — all over their own embedded rows.
+    - `counts.l5` = number of PHs with `declining=true` in the **`account='ALL'`** slice (portfolio-level).
+
+    **D04 FIX D — DO NOT re-run the L1 filter rolled up to ASIN.** A query ending
+    `GROUP BY ref_id HAVING SUM(spend)>3 AND SUM(orders)=0` is **WRONG** and is the single most
+    common cause of the `counts.l1 != distinct ASIN in L1 detail` regression. Why: the HAVING is
+    then evaluated on ASIN *totals*, so an ASIN with one dead SKU and one converting SKU is
+    silently dropped from the count while its dead SKU still sits in the detail. Real example from
+    the 2026-07-13 run — ASIN `B094R3M2DC`: SKU `PLADBM F` spent £6.19 with **0 orders** (correctly
+    flagged into the L1 detail), while sibling SKU `PLADBM S` took 3 orders. Rolled up to ASIN the
+    pair reads `SUM(orders)=3`, so the rollup excluded the ASIN — count 124 vs detail 125 → FAIL.
+
+    Correct derivation (SQL form, if you want to check your work — note it counts the **flagged
+    ASIN+SKU set**, then de-duplicates to ASIN; the HAVING stays at ASIN+SKU grain):
+    ```sql
+    SELECT COUNT(DISTINCT asin) FROM (
+      SELECT ref_id AS asin FROM public.ppc_performance
+      WHERE (ss_name ILIKE '%UK%' OR marketplace ILIKE '%UK%') AND source_name ILIKE '%amazon%'
+        AND date >= date_trunc('week',CURRENT_DATE)::date - INTERVAL '7 days'
+        AND date <  date_trunc('week',CURRENT_DATE)::date
+        AND record_type='ad' AND ref_id IS NOT NULL AND ref_id NOT IN ('','0')
+      GROUP BY ref_id, sku            -- <<< ASIN+SKU grain, SAME AS Q_L1
+      HAVING SUM(spend) > 3 AND SUM(orders) = 0
+    ) x;
+    ```
 - `l1`,`l2`,`l3`,`l4`: **ALL rows** from each query (NO cap). The live KPI/tab counts are derived
   from the embedded array lengths (`rowsFor(k).length`), so every flagged row MUST be embedded for
   the dashboard to show the true totals. `l5`: **all** Q_L5 rows — 3 months × ({`ALL`} + each

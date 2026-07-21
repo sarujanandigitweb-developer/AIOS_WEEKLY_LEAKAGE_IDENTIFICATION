@@ -86,6 +86,50 @@ def fail(msg):
     sys.exit(1)
 
 
+# grain of the KPI each level counts, per WLSP-VAL-04 (L1/L2/L3 = ASIN, L4 = SKU)
+COUNT_GRAIN = {"l1": "asin", "l2": "asin", "l3": "asin", "l4": "sku"}
+
+
+def reconcile_counts(text, data):
+    """WLSP-VAL-09 — derive summary.counts from the EMBEDDED detail instead of trusting a
+    second LLM-written aggregate query.
+
+    Q_L1 is grouped at ASIN+SKU+PH+account grain, so an ASIN whose dead SKU is flagged while
+    its sibling SKU converts belongs in the L1 detail — but an ASIN-rollup count re-applying
+    `HAVING SUM(orders)=0` at ASIN grain silently drops it. The two then disagree and the D04
+    guard fails. The detail arrays are uncapped (the prompt forbids a cap), so distinct-KPI
+    over the detail IS the true full-set total: derive it and the desync becomes impossible.
+
+    Only corrects a level whose detail is demonstrably uncapped (len(rows) >= stated count).
+    Returns (text, data, [corrections])."""
+    c = data.get("summary", {}).get("counts", {})
+    fixed = []
+    for lvl, key in COUNT_GRAIN.items():
+        rows = data.get(lvl) or []
+        if not rows or lvl not in c:
+            continue
+        if len(rows) < c[lvl]:          # detail is capped -> stated count is authoritative
+            log(f"NOTE: {lvl.upper()} detail capped ({len(rows)}/{c[lvl]}); count left as generated")
+            continue
+        derived = len({r.get(key) for r in rows if r.get(key)})
+        if derived != c[lvl]:
+            fixed.append(f"counts.{lvl} {c[lvl]}->{derived} (distinct {key} of {len(rows)} detail rows)")
+            c[lvl] = derived
+    if not fixed:
+        return text, data, []
+
+    # rewrite the dashboardData literal in place; markers and shell stay byte-identical
+    block = extract_block(text)
+    m = re.search(r"(const\s+dashboardData\s*=\s*)(\{.*\})(\s*;)", block, re.DOTALL)
+    new_block = block[:m.start(2)] + json.dumps(data, ensure_ascii=False) + block[m.end(2):]
+    text = text.replace(START + block + END, START + new_block + END, 1)
+    with open(HTML, "w", encoding="utf-8") as f:
+        f.write(text)
+    for msg in fixed:
+        log(f"RECONCILED: {msg}")
+    return text, data, fixed
+
+
 def ph_filename(ph):
     """abinayaa_leakage.html, tharsiga_nelli_leakage.html, ..."""
     return re.sub(r"[^a-z0-9]+", "_", ph.lower()).strip("_") + "_leakage.html"
@@ -113,9 +157,20 @@ def build_ph_data(data, ph):
         a4 = len([r for r in l4 if r.get("account") == a])
         asum.append({"account": a, "l1": a1, "l2": a2, "l3": a3, "l4": a4, "total": a1 + a2 + a3 + a4})
     asum.sort(key=lambda x: (-x["total"], x["account"]))
+
+    # ph_summary lists only PHs WITH leakage (>=1 L1-L4 row, or L5-declining). A Portfolio Holder
+    # who is clean this week still has margin-trend rows in l5, so they reach this function but
+    # have no ph_summary entry — synthesise a zeroed row from their own filtered detail so the
+    # dashboard renders "no leakage" instead of an empty summary (which fails PH-isolation).
+    psum = [p for p in data["ph_summary"] if p.get("ph") == ph]
+    if not psum:
+        psum = [{"ph": ph, "l1": s["counts"]["l1"], "l2": s["counts"]["l2"], "l3": s["counts"]["l3"],
+                 "l4": s["counts"]["l4"], "l5": s["counts"]["l5"],
+                 "total": sum(s["counts"][k] for k in ("l1", "l2", "l3", "l4"))}]
+
     return {"summary": s, "l1": l1, "l2": l2, "l3": l3, "l4": l4, "l5": l5,
             "account_summary": asum,
-            "ph_summary": [p for p in data["ph_summary"] if p.get("ph") == ph],
+            "ph_summary": psum,
             "verification_summary": data.get("verification_summary", [])}
 
 
@@ -192,6 +247,10 @@ def main():
     missing = [k for k in required if k not in data]
     if missing:
         fail(f"dashboardData missing keys: {missing}")
+
+    # 3b. derive counts from the embedded detail before the guards read them, so a
+    #     grain desync in the LLM's aggregate query is corrected, not fatal (WLSP-VAL-09).
+    text, data, _ = reconcile_counts(text, data)
 
     # 4. counts present and displayed lengths consistent
     c = data["summary"].get("counts", {})
