@@ -413,8 +413,8 @@
 const dashboardData = {
   "summary": {
     "report_title": "PH Weekly Leakage Action Lists",
-    "report_date": "2026-07-19",
-    "generated_at": "2026-07-20",
+    "report_date": "2026-07-26",
+    "generated_at": "2026-07-27",
     "scope": "UK Amazon FBM (Amazon-only)",
     "accounts": "LEDSone + DCVoltage",
     "deadline": "Wednesday EOD",
@@ -422,14 +422,14 @@ const dashboardData = {
     "analyses_count": 5,
     "counts": {
       "l1": 2,
-      "l2": 0,
+      "l2": 2,
       "l3": 1,
       "l4": 0,
       "l5": 0
     },
     "displayed": {
       "l1": 2,
-      "l2": 0,
+      "l2": 2,
       "l3": 1,
       "l4": 0,
       "l5": 1
@@ -438,36 +438,57 @@ const dashboardData = {
   "l1": [
     {
       "ph": "Shanthini",
-      "asin": "B07ZFW1QZD",
-      "sku": "FFCRCE+STHRCE",
+      "asin": "B0GCZJ9XRB",
+      "sku": "CRFF100SN2PK+LHNSE27SN2PK_AMD",
       "account": "DCVoltage UK",
-      "spend": 5.62,
-      "clicks": 15,
-      "impressions": 1079,
+      "spend": 4.33,
+      "clicks": 17,
+      "impressions": 367,
       "conversions": 0
     },
     {
       "ph": "Shanthini",
-      "asin": "B09LMCY4PZ",
-      "sku": "CRFF140GL+LHNSE27YB+SCRN70BM+LSUL220BB",
-      "account": "LEDSone UK",
-      "spend": 4.41,
-      "clicks": 12,
-      "impressions": 1198,
+      "asin": "B0FHPLR9C5",
+      "sku": "CRFF100RO2PK+LHNSE27RO2PK",
+      "account": "DCVoltage UK",
+      "spend": 3.99,
+      "clicks": 14,
+      "impressions": 781,
       "conversions": 0
     }
   ],
-  "l2": [],
+  "l2": [
+    {
+      "asin": "B0CG1VJLT9",
+      "ph": "Shanthini",
+      "sku": "CRFF108CO2PK+LHTKE27CO2PK",
+      "account": "LEDSone UK",
+      "revenue": 15.24,
+      "shipping": 4.35,
+      "orders": 1,
+      "shipping_pct": 28.5
+    },
+    {
+      "asin": "B0CG1VQKJL",
+      "ph": "Shanthini",
+      "sku": "CRFF108CO+LHTKE27CO",
+      "account": "LEDSone UK",
+      "revenue": 9.99,
+      "shipping": 2.72,
+      "orders": 1,
+      "shipping_pct": 27.2
+    }
+  ],
   "l3": [
     {
-      "asin": "B07ZFWR48Y",
+      "asin": "B07ZFWL5T1",
       "ph": "Shanthini",
-      "sku": "CRFF100BM+LHNSE27BM",
+      "sku": "CRSF100GB+LHNSE27GB",
       "account": "DCVoltage UK",
-      "revenue": 13.89,
-      "shipping": 2.72,
-      "ppc": 5.79,
-      "net": -2.26
+      "revenue": 27.78,
+      "shipping": 5.44,
+      "ppc": 10.0,
+      "net": -2.94
     }
   ],
   "l4": [],
@@ -575,48 +596,48 @@ const dashboardData = {
   "account_summary": [
     {
       "account": "DCVoltage UK",
-      "l1": 1,
+      "l1": 2,
       "l2": 0,
       "l3": 1,
       "l4": 0,
-      "total": 2
+      "total": 3
     },
     {
       "account": "LEDSone UK",
-      "l1": 1,
-      "l2": 0,
+      "l1": 0,
+      "l2": 2,
       "l3": 0,
       "l4": 0,
-      "total": 1
+      "total": 2
     }
   ],
   "ph_summary": [
     {
       "ph": "Shanthini",
       "l1": 2,
-      "l2": 0,
+      "l2": 2,
       "l3": 1,
       "l4": 0,
       "l5": 0,
-      "total": 3
+      "total": 5
     }
   ],
   "verification_summary": [
     {
       "metric": "Generated",
-      "value": "2026-07-20"
+      "value": "2026-07-27 (run date)"
     },
     {
-      "metric": "Reporting window (L1-L3)",
-      "value": "2026-07-13 to 2026-07-19 (Mon-Sun)"
+      "metric": "Reporting window (L1/L2/L3)",
+      "value": "2026-07-20 to 2026-07-26 (Mon-Sun, previous complete week)"
     },
     {
       "metric": "L4 window",
-      "value": "30 days ending 2026-07-19"
+      "value": "2026-06-27 to 2026-07-26 (30 days ending previous Sunday)"
     },
     {
       "metric": "L5 window",
-      "value": "last 3 complete calendar months"
+      "value": "2026-04 to 2026-06 (last 3 complete calendar months)"
     },
     {
       "metric": "Source tables used",
@@ -624,38 +645,38 @@ const dashboardData = {
     },
     {
       "metric": "Shipping basis",
-      "value": "carrier_charge (GBP) + shipping_template_price, de-duped per order (MAX), allocated by line-revenue share"
-    },
-    {
-      "metric": "Margin assumptions",
-      "value": "COGS 20%, platform fee 15%, VAT 20% (gross factor 0.45)"
+      "value": "carrier_charge (GBP) + shipping_template_price, de-duped per order (MAX), allocated to ASIN by line-revenue share"
     },
     {
       "metric": "L1 grain",
-      "value": "ASIN + SKU (counts.l1 = distinct ASIN over embedded rows)"
+      "value": "ASIN + SKU (PPC spend > GBP 3 and conversions = 0)"
     },
     {
       "metric": "L2 grain",
-      "value": "ASIN"
+      "value": "ASIN (shipping > 25% of revenue)"
     },
     {
       "metric": "L3 grain",
-      "value": "ASIN (PPC joined at ASIN via ref_id)"
+      "value": "ASIN (revenue x 0.45 - shipping - PPC < GBP 0 and PPC > GBP 5)"
     },
     {
       "metric": "L4 grain",
-      "value": "SKU"
+      "value": "SKU (refund rate > 10%, minimum 2 orders)"
     },
     {
       "metric": "L5 grain",
-      "value": "PH x account x month (plus account=ALL rollup)"
+      "value": "PH x account x month (net margin declining 2 consecutive months)"
     },
     {
-      "metric": "Scope",
-      "value": "UK Amazon FBM, Amazon-only PPC (source_name ILIKE %amazon%)"
+      "metric": "Margin assumptions",
+      "value": "COGS 20%, platform fee 15% (gross factor 0.45), VAT 20%"
     },
     {
-      "metric": "Tables excluded from calc",
+      "metric": "Scope filter",
+      "value": "Amazon-only (source_name ILIKE amazon), UK marketplace, FBM (fba_sales = false)"
+    },
+    {
+      "metric": "Tables excluded from calculation",
       "value": "development.leakage_detection, development.leakage_classification, ph_action_board.*, ph_daily_actions"
     }
   ]

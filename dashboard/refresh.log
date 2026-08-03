@@ -38,3 +38,11 @@
 [2026-07-20T09:49:02] VALIDATION OK (master) — counts L1=97 L2=227 L3=44 L4=37 L5=9; accounts=2; ph_rows=30; generated_at=2026-07-20
 [2026-07-20T09:49:02] PH dashboards OK — 30 regenerated in 0.03s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
 [2026-07-20T09:49:02] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 540.3s total
+[2026-07-27T08:45:01] START refresh — launching Claude CLI headless
+[2026-07-27T09:02:28] Claude exit=0; stdout tail: " specified fails on PostgreSQL** — `ROUND(100.0*SUM(...)/NULLIF(...), 1)` resolves to `round(double precision, integer)`, which doesn't exist. I added the `::numeric` cast the other queries already carry. Semantics unchanged; worth fixing in `dashboard_refresh_prompt.md` so future runs don't hit it."
+[2026-07-27T09:02:28] VALIDATION OK (master) — counts L1=135 L2=255 L3=46 L4=30 L5=9; accounts=2; ph_rows=30; generated_at=2026-07-27
+[2026-07-27T09:02:28] PH dashboards OK — 30 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-07-27T09:02:28] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 1047.4s total
+[2026-08-03T08:45:01] START refresh — launching Claude CLI headless
+[2026-08-03T08:45:35] Claude exit=0; stdout tail: "s are being blocked at the permission layer — I need you to explicitly grant access before I can run any queries. Could you approve the tool (likely via a permission prompt in your client, or by adding it to allowed tools)? I can't proceed with the dashboard refresh until database access is granted."
+[2026-08-03T08:45:35] RESULT: FAIL — leakage_dashboard.html unchanged after run

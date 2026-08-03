@@ -235,3 +235,88 @@ INSERTS                        : 0
 UPDATES                        : 31
 PASS                           : 31
 FAIL                           : 0
+[2026-07-27T08:45:01] START refresh — launching Claude CLI headless
+[2026-07-27T09:02:28] Claude exit=0; stdout tail: " specified fails on PostgreSQL** — `ROUND(100.0*SUM(...)/NULLIF(...), 1)` resolves to `round(double precision, integer)`, which doesn't exist. I added the `::numeric` cast the other queries already carry. Semantics unchanged; worth fixing in `dashboard_refresh_prompt.md` so future runs don't hit it."
+[2026-07-27T09:02:28] VALIDATION OK (master) — counts L1=135 L2=255 L3=46 L4=30 L5=9; accounts=2; ph_rows=30; generated_at=2026-07-27
+[2026-07-27T09:02:28] PH dashboards OK — 30 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-07-27T09:02:28] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 1047.4s total
+scan: master + /home/led-247/AIOS_WEEKLY_LEAKAGE_IDENTIFICATION/AIOS_Weekly_Leakage_Identification/dashboard/portfolio_holders
+ignore override: none | dashboards to process: 31
+
+  PASS  INSERT  id=439  V2   Master              231686 bytes
+  PASS  INSERT  id=440  V2   Abinayaa             64346 bytes
+  PASS  INSERT  id=441  V2   Akalika              62028 bytes
+  PASS  INSERT  id=442  V2   Akanila              63156 bytes
+  PASS  INSERT  id=443  V2   Arudchelvi           63472 bytes
+  PASS  INSERT  id=444  V2   Dilakshiga           62498 bytes
+  PASS  INSERT  id=445  V2   Dilani               66180 bytes
+  PASS  INSERT  id=446  V2   Illakkiya            63368 bytes
+  PASS  INSERT  id=447  V2   Jasmini              74224 bytes
+  PASS  INSERT  id=448  V2   Jathisha             63043 bytes
+  PASS  INSERT  id=449  V2   Jubista              62750 bytes
+  PASS  INSERT  id=450  V2   mothajini            63479 bytes
+  PASS  INSERT  id=451  V2   Nithushana           62761 bytes
+  PASS  INSERT  id=452  V2   paulr                70643 bytes
+  PASS  INSERT  id=453  V2   prasath              66388 bytes
+  PASS  INSERT  id=454  V2   preethi              63966 bytes
+  PASS  INSERT  id=455  V2   Ramsika              62247 bytes
+  PASS  INSERT  id=456  V2   Renuha               63852 bytes
+  PASS  INSERT  id=457  V2   Saranya              62723 bytes
+  PASS  INSERT  id=458  V2   Sarbavi              62021 bytes
+  PASS  INSERT  id=459  V2   Shanthini            62995 bytes
+  PASS  INSERT  id=460  V2   shimee               65224 bytes
+  PASS  INSERT  id=461  V2   thanusha             62455 bytes
+  PASS  INSERT  id=462  V2   Tharshana            63061 bytes
+  PASS  INSERT  id=463  V2   Tharsiga(nelli)      64839 bytes
+  PASS  INSERT  id=464  V2   Tharsika(jaffna)     66266 bytes
+  PASS  INSERT  id=465  V2   Theepana             65171 bytes
+  PASS  INSERT  id=466  V2   Thojika              64816 bytes
+  PASS  INSERT  id=467  V2   thuwaraga            72220 bytes
+  PASS  INSERT  id=468  V2   utharsika            79479 bytes
+  PASS  INSERT  id=469  V2   Vaishnavi            62298 bytes
+
+| Dashboard | Operation | Row ID | Version | HTML Size | version_status | Status |
+|---|---|---|---|---|---|---|
+| Master | INSERT | 439 | V2 | 231686 | released | PASS |
+| Abinayaa | INSERT | 440 | V2 | 64346 | released | PASS |
+| Akalika | INSERT | 441 | V2 | 62028 | released | PASS |
+| Akanila | INSERT | 442 | V2 | 63156 | released | PASS |
+| Arudchelvi | INSERT | 443 | V2 | 63472 | released | PASS |
+| Dilakshiga | INSERT | 444 | V2 | 62498 | released | PASS |
+| Dilani | INSERT | 445 | V2 | 66180 | released | PASS |
+| Illakkiya | INSERT | 446 | V2 | 63368 | released | PASS |
+| Jasmini | INSERT | 447 | V2 | 74224 | released | PASS |
+| Jathisha | INSERT | 448 | V2 | 63043 | released | PASS |
+| Jubista | INSERT | 449 | V2 | 62750 | released | PASS |
+| mothajini | INSERT | 450 | V2 | 63479 | released | PASS |
+| Nithushana | INSERT | 451 | V2 | 62761 | released | PASS |
+| paulr | INSERT | 452 | V2 | 70643 | released | PASS |
+| prasath | INSERT | 453 | V2 | 66388 | released | PASS |
+| preethi | INSERT | 454 | V2 | 63966 | released | PASS |
+| Ramsika | INSERT | 455 | V2 | 62247 | released | PASS |
+| Renuha | INSERT | 456 | V2 | 63852 | released | PASS |
+| Saranya | INSERT | 457 | V2 | 62723 | released | PASS |
+| Sarbavi | INSERT | 458 | V2 | 62021 | released | PASS |
+| Shanthini | INSERT | 459 | V2 | 62995 | released | PASS |
+| shimee | INSERT | 460 | V2 | 65224 | released | PASS |
+| thanusha | INSERT | 461 | V2 | 62455 | released | PASS |
+| Tharshana | INSERT | 462 | V2 | 63061 | released | PASS |
+| Tharsiga(nelli) | INSERT | 463 | V2 | 64839 | released | PASS |
+| Tharsika(jaffna) | INSERT | 464 | V2 | 66266 | released | PASS |
+| Theepana | INSERT | 465 | V2 | 65171 | released | PASS |
+| Thojika | INSERT | 466 | V2 | 64816 | released | PASS |
+| thuwaraga | INSERT | 467 | V2 | 72220 | released | PASS |
+| utharsika | INSERT | 468 | V2 | 79479 | released | PASS |
+| Vaishnavi | INSERT | 469 | V2 | 62298 | released | PASS |
+
+Total dashboards processed     : 31
+Master dashboards processed    : 1
+Portfolio Holder dashboards    : 30
+INSERTS (new weekly versions)  : 31
+UPDATES (same-week refresh)    : 0
+SKIPPED (frozen / stale)       : 0
+PASS                           : 31
+FAIL                           : 0
+[2026-08-03T08:45:01] START refresh — launching Claude CLI headless
+[2026-08-03T08:45:35] Claude exit=0; stdout tail: "s are being blocked at the permission layer — I need you to explicitly grant access before I can run any queries. Could you approve the tool (likely via a permission prompt in your client, or by adding it to allowed tools)? I can't proceed with the dashboard refresh until database access is granted."
+[2026-08-03T08:45:35] RESULT: FAIL — leakage_dashboard.html unchanged after run

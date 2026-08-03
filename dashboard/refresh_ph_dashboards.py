@@ -11,23 +11,26 @@ into tech_team_outputs.ph_task, using ONE code path. The complete HTML file is
 stored as plain UTF-8 text via a BOUND PARAMETER (byte-exact — never executed,
 parsed, compressed, minified, escaped, chunked, or Base64-encoded).
 
-Rules (identical for master and every PH):
-  * The record is located ONLY by task_id (never by a hardcoded row id).
-  * task_id exists  -> UPDATE html_content + version_status + assigned_user_team
-                       + updated_at. Identity/metadata (project, task, developer,
-                       assigned_user, description, phase/version level) is untouched.
-  * task_id missing -> INSERT full metadata; PostgreSQL generates the id (IDENTITY).
-  * Assigned User + Task ID for PH files are DERIVED FROM THE FILENAME (no hardcoding):
-        arudchelvi_leakage.html -> "Arudchelvi" -> WLSP_Arudchelvi_Leakage_Dashboard-V1
-  * The master's identity (Bietrick / WLSP_Bietrick_Leakage_Dashboard-V1) is the one
-    fixed mapping, because its file is named leakage_dashboard.html (not <name>_leakage.html).
-  * By default EVERY Portfolio Holder is processed (no ignores). WLSP_IGNORE is an
-    optional comma-separated env override only.
-  * One failing dashboard never stops the run; failures are reported at the end.
+APPEND-VERSIONED, ONE ROW PER (Portfolio Holder, reporting week):
+  * Each PH has a task_id STEM (WLSP_<Name>_Leakage_Dashboard) derived from the filename.
+    A weekly report is one row: task_id = <stem>-V{n}, version_level = n.
+  * The reporting week = summary.report_date (previous Sunday) embedded in the HTML.
+  * Per PH, compared against the latest existing version's embedded week:
+        file week  >  latest  -> INSERT V(n+1); the previous week's row is FROZEN, untouched.
+        file week  == latest  -> same week: idempotent UPDATE of that row's html
+                                 (SKIP if a reviewer already actioned it — keep it frozen).
+        file week  <  latest  -> stale backfill: SKIP (never create a lower version).
+        no row yet            -> INSERT V1.
+  * A new version is born 'released'; the reviewer later sets 'completed'. A completed
+    (actioned) row is never rewritten — history is immutable. Only the NEW week's row
+    carries the NEW week's html; last week's row keeps last week's html and status.
+  * Assigned User is the ORIGINAL data name; the stem is filename-derived. The master
+    (leakage_dashboard.html) maps to the Bietrick stem.
+  * EVERY Portfolio Holder is processed by default. WLSP_IGNORE is an optional override.
+  * One failing dashboard never stops the run; failures/skips are reported at the end.
 
 New Portfolio Holders are supported automatically: drop a new *_leakage.html into
-portfolio_holders/ and the next run detects it, derives its Task ID, INSERTs it,
-and verifies it — no code changes required.
+portfolio_holders/ and the next run INSERTs their V1 and verifies it — no code changes.
 
 Weekly cron:
     0 6 * * 1 cd <repo> && python3 dashboard/refresh_dashboard.py >> log && \
@@ -45,9 +48,9 @@ MASTER_PATH = os.path.join(HERE, "leakage_dashboard.html")
 PH_DIR      = os.path.join(HERE, "portfolio_holders")
 SUFFIX      = "_leakage.html"
 
-# --- master dashboard mapping (located ONLY by task_id; id=8 is never used) ---
-MASTER_USER    = "Bietrick"
-MASTER_TASK_ID = "WLSP_Bietrick_Leakage_Dashboard-V1"
+# --- master dashboard mapping (located by task_id STEM; the -V{n} suffix is per weekly run) ---
+MASTER_USER = "Bietrick"
+MASTER_STEM = "WLSP_Bietrick_Leakage_Dashboard"
 
 DB_CONFIG = {
     "host":     os.getenv("PGHOST", "149.28.134.54"),
@@ -68,7 +71,11 @@ TASK_NAME      = "Weekly Amazon FBM Leakage Action Results"
 TEAM           = "Technical"
 DEVELOPER      = "Sarujanan"
 PHASE_LEVEL    = 1
-VERSION_LEVEL  = 1
+FIRST_VERSION  = 1               # a PH's very first weekly report is V1; each later week is V(n+1)
+
+# reporting-week key: summary.report_date (previous Sunday) embedded in the HTML. 'YYYY-MM-DD'
+# sorts lexicographically == chronologically, so plain string comparison orders the weeks.
+REPORT_DATE_RE = re.compile(r'"report_date"\s*:\s*"(\d{4}-\d{2}-\d{2})"')
 
 # --- publication state: re-asserted on every run, for INSERT and UPDATE alike ---
 VERSION_STATUS     = "released"      # lowercase is the value the feed reads
@@ -90,8 +97,17 @@ def ph_name_from_filename(fname):
     return base.title()
 
 
-def task_id_for(name):
-    return f"WLSP_{name}_Leakage_Dashboard-V1"
+def task_stem_for(name):
+    """PH filename-name -> task_id STEM (no version suffix). Each weekly run appends -V1, -V2, ...
+       so one Portfolio Holder accumulates one row per reporting week, previous weeks frozen."""
+    return f"WLSP_{name}_Leakage_Dashboard"
+
+
+def report_week_of(text):
+    """The reporting-week key for a dashboard = summary.report_date (the previous Sunday) embedded
+       in the HTML. Returns 'YYYY-MM-DD' or None if absent."""
+    m = REPORT_DATE_RE.search(text)
+    return m.group(1) if m else None
 
 
 # marker block wrapping the embedded dashboardData in every generated HTML
@@ -128,81 +144,127 @@ def build_worklist():
     """[(kind, display, path, assigned_user, task_id), ...] — master first, then every PH file."""
     items = []
     if os.path.isfile(MASTER_PATH):
-        items.append(("Master", "Master", MASTER_PATH, MASTER_USER, MASTER_TASK_ID))
+        items.append(("Master", "Master", MASTER_PATH, MASTER_USER, MASTER_STEM))
     else:
         print(f"WARNING: master not found: {MASTER_PATH}")
     for path in sorted(glob.glob(os.path.join(PH_DIR, "*.html"))):
         if os.path.basename(path) in IGNORE:
             continue
-        # task_id + filename stay filename-derived (UNCHANGED). assigned_user is the ORIGINAL
-        # PH name from the dashboard data (ph_category.user_name), NOT the filename .title().
-        task_id = task_id_for(ph_name_from_filename(path))
-        user    = ph_name_from_data(path) or ph_name_from_filename(path)
-        items.append(("PH", user, path, user, task_id))
+        # task_id STEM stays filename-derived (UNCHANGED). assigned_user is the ORIGINAL PH name
+        # from the dashboard data (ph_category.user_name), NOT the filename .title().
+        stem = task_stem_for(ph_name_from_filename(path))
+        user = ph_name_from_data(path) or ph_name_from_filename(path)
+        items.append(("PH", user, path, user, stem))
     return items
 
 
-def upload_one(cur, kind, display, path, assigned_user, task_id):
-    """ONE upsert path for master and PH alike. Located ONLY by task_id. Returns a result dict."""
+def _result(kind, display, op, rid, size, src, status, ver, vstatus, team, tid, error):
+    return {"kind": kind, "display": display, "op": op, "id": rid, "size": size, "src": src,
+            "status": status, "version": ver, "version_status": vstatus,
+            "assigned_user_team": team, "task_id": tid, "error": error}
+
+
+def upload_one(cur, kind, display, path, assigned_user, task_stem):
+    """Append-versioned publish — ONE row per (Portfolio Holder, reporting week).
+
+    The reporting week is summary.report_date embedded in the HTML. Given the latest existing
+    version for this PH (highest -V{n}) and its embedded week:
+      * no row yet                    -> INSERT V1
+      * file week  >  latest week     -> INSERT V(n+1); the previous week's row is left frozen
+      * file week  == latest week     -> same week: idempotent UPDATE of that row's html
+                                         (but SKIP if a reviewer already actioned it — keep it frozen)
+      * file week  <  latest week     -> stale backfill: SKIP (never create a lower version)
+
+    A brand-new version is INSERTed with version_status='released'; the reviewer later moves it to
+    'completed'. That completed row is never touched again — next week appends a fresh version."""
     with open(path, "rb") as f:
         raw = f.read()
     html      = raw.decode("utf-8")          # bound parameter -> byte-exact plain UTF-8
     src_bytes = len(raw)
     src_md5   = hashlib.md5(raw).hexdigest()
 
-    cur.execute("SELECT id FROM tech_team_outputs.ph_task WHERE task_id=%s", (task_id,))
-    hit = cur.fetchone()
+    file_week = report_week_of(html)
+    if not file_week:
+        return _result(kind, display, "-", "-", src_bytes, src_bytes, "FAIL", None, None, None,
+                       None, "could not read summary.report_date from HTML (cannot key the week)")
 
-    if hit:  # ---- exists: UPDATE html_content + the publication-state columns ----
-        op = "UPDATE"
-        # version_status is the REVIEWER lifecycle field: once action_took_by is set the
-        # holder has actioned this task (completed / rejected / active) and the weekly
-        # refresh must never stomp that back to 'released'. Un-actioned rows are re-asserted.
+    # latest existing version for this PH + its embedded reporting week (substring avoids a blob read)
+    like_pat = task_stem.replace("\\", "\\\\").replace("_", "\\_").replace("%", "\\%") + "-V%"
+    cur.execute("""
+        SELECT id, task_id, version_level, version_status, action_took_by,
+               substring(html_content from '"report_date"\\s*:\\s*"([0-9]{4}-[0-9]{2}-[0-9]{2})"')
+          FROM tech_team_outputs.ph_task
+         WHERE task_id LIKE %s ESCAPE '\\'
+         ORDER BY version_level DESC NULLS LAST, id DESC
+         LIMIT 1""", (like_pat,))
+    latest = cur.fetchone()
+
+    if latest is None:
+        op, new_ver, target_tid = "INSERT", FIRST_VERSION, f"{task_stem}-V{FIRST_VERSION}"
+    else:
+        lid, ltid, lver, lstatus, lactor, lweek = latest
+        lver = lver or 0
+        if lweek is not None and file_week < lweek:
+            return _result(kind, display, "SKIP", lid, 0, src_bytes, "SKIP", lver, lstatus, None,
+                           ltid, f"stale: file week {file_week} < latest V{lver} week {lweek}; not appended")
+        if lweek == file_week:                       # same reporting week -> idempotent re-run
+            if lactor is not None:                   # reviewer already actioned this week -> freeze
+                return _result(kind, display, "SKIP", lid, 0, src_bytes, "SKIP", lver, lstatus, None,
+                               ltid, f"week {file_week} already published as V{lver} and actioned "
+                                     f"({lstatus}); left frozen")
+            op, target_tid = "UPDATE", ltid
+        else:                                        # newer week -> append the next version
+            op, new_ver, target_tid = "INSERT", lver + 1, f"{task_stem}-V{lver + 1}"
+
+    if op == "UPDATE":
+        # same-week refresh: replace only this week's html (+ team stamp). Never touch version_level,
+        # version_status, created_at — the row's identity and any reviewer state stay put.
         cur.execute("""UPDATE tech_team_outputs.ph_task
-                          SET html_content=%s,
-                              version_status = CASE WHEN action_took_by IS NULL
-                                                    THEN %s ELSE version_status END,
-                              assigned_user_team=%s,
-                              updated_at=now()
-                        WHERE task_id=%s""",
-            (html, VERSION_STATUS, ASSIGNED_USER_TEAM, task_id))
-    else:    # ---- missing: INSERT full metadata; id auto-generated by PostgreSQL ----
-        op = "INSERT"
-        cur.execute("""INSERT INTO tech_team_outputs.ph_task
-              (project_name, project_code, task_name, task_id, team, developer,
-               assigned_user, assigned_user_team, html_content, description,
-               phase_level, version_level, version_status, created_at, updated_at)
-              VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,now(),now())""",
-            (PROJECT_NAME, PROJECT_CODE, TASK_NAME, task_id, TEAM, DEVELOPER,
-             assigned_user, ASSIGNED_USER_TEAM, html, DESCRIPTION,
-             PHASE_LEVEL, VERSION_LEVEL, VERSION_STATUS))
+                          SET html_content=%s, assigned_user_team=%s, updated_at=now()
+                        WHERE task_id=%s""", (html, ASSIGNED_USER_TEAM, target_tid))
+    else:                                            # INSERT a new weekly version
+        cols = """(project_name, project_code, task_name, task_id, team, developer,
+                   assigned_user, assigned_user_team, html_content, description,
+                   phase_level, version_level, version_status, created_at, updated_at)"""
+        vals = (PROJECT_NAME, PROJECT_CODE, TASK_NAME, target_tid, TEAM, DEVELOPER,
+                assigned_user, ASSIGNED_USER_TEAM, html, DESCRIPTION,
+                PHASE_LEVEL, new_ver, VERSION_STATUS)
+        cur.execute("SAVEPOINT ins")
+        try:
+            cur.execute(f"""INSERT INTO tech_team_outputs.ph_task {cols}
+                            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,now(),now())""", vals)
+        except psycopg2.errors.UniqueViolation:
+            # ph_task.id is GENERATED BY DEFAULT AS IDENTITY; when another team INSERTs an explicit
+            # id the sequence falls behind max(id) and nextval collides. We lack UPDATE on the
+            # sequence to setval it, so allocate the id ourselves. Weekly INSERTs make this likely.
+            cur.execute("ROLLBACK TO SAVEPOINT ins")
+            cur.execute(f"""INSERT INTO tech_team_outputs.ph_task
+                            (id, {cols[1:]}
+                            VALUES ((SELECT COALESCE(max(id),0)+1 FROM tech_team_outputs.ph_task),
+                                    %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,now(),now())""", vals)
 
-    # ---- verify (read back by task_id; byte-exact html + schema columns) ----
-    cur.execute("""SELECT id, task_id, assigned_user, assigned_user_team, version_status,
-                          action_took_by,
-                          octet_length(html_content) AS html_size,
-                          md5(html_content) AS html_md5, updated_at
-                     FROM tech_team_outputs.ph_task WHERE task_id=%s""", (task_id,))
-    rid, _tid, r_user, r_team, r_status, r_actor, size, r_md5, upd = cur.fetchone()
+    # ---- verify the row we wrote (byte-exact html + schema columns) ----
+    cur.execute("""SELECT id, version_level, assigned_user_team, version_status, action_took_by,
+                          octet_length(html_content), md5(html_content)
+                     FROM tech_team_outputs.ph_task WHERE task_id=%s""", (target_tid,))
+    rid, r_ver, r_team, r_status, r_actor, size, r_md5 = cur.fetchone()
 
-    actioned  = r_actor is not None      # reviewer owns version_status from here on
+    actioned  = r_actor is not None                  # reviewer owns version_status from here on
     html_ok   = bool(size) and size > 0 and size == src_bytes and r_md5 == src_md5
-    status_ok = actioned or r_status == VERSION_STATUS
     team_ok   = r_team == ASSIGNED_USER_TEAM
-    ok = html_ok and status_ok and team_ok
+    status_ok = actioned or r_status == VERSION_STATUS
+    ok = html_ok and team_ok and status_ok
 
     problems = []
     if not html_ok:
         problems.append(f"size {size}/{src_bytes}, md5 {'ok' if r_md5==src_md5 else 'MISMATCH'}")
-    if not status_ok:
-        problems.append(f"version_status {r_status!r} != {VERSION_STATUS!r}")
     if not team_ok:
         problems.append(f"assigned_user_team {r_team!r} != {ASSIGNED_USER_TEAM!r}")
+    if not status_ok:
+        problems.append(f"version_status {r_status!r} != {VERSION_STATUS!r}")
 
-    return {"kind": kind, "display": display, "op": op, "id": rid, "size": size,
-            "src": src_bytes, "status": "PASS" if ok else "FAIL",
-            "version_status": r_status, "assigned_user_team": r_team,
-            "error": None if ok else "; ".join(problems)}
+    return _result(kind, display, op, rid, size, src_bytes, "PASS" if ok else "FAIL",
+                   r_ver, r_status, r_team, target_tid, None if ok else "; ".join(problems))
 
 
 def main():
@@ -217,44 +279,51 @@ def main():
     conn.autocommit = False
 
     results = []
-    for kind, display, path, user, tid in work:
+    for kind, display, path, user, stem in work:
         cur = conn.cursor()
         try:
-            r = upload_one(cur, kind, display, path, user, tid)
+            r = upload_one(cur, kind, display, path, user, stem)
             conn.commit()                       # per-dashboard commit -> one failure can't roll back others
         except Exception as e:
             conn.rollback()
-            r = {"kind": kind, "display": display, "op": "-", "id": "-", "size": 0,
-                 "src": 0, "status": "FAIL", "version_status": None,
-                 "assigned_user_team": None, "error": str(e).splitlines()[0]}
+            r = _result(kind, display, "-", "-", 0, 0, "FAIL", None, None, None,
+                        stem, str(e).splitlines()[0])
         finally:
             cur.close()
         results.append(r)
-        print(f"  {r['status']:4}  {r['op']:6}  id={str(r['id']):<4} "
+        vtag = f"V{r['version']}" if r.get("version") else "-"
+        note = r['error'] if r['status'] in ('FAIL', 'SKIP') else ""
+        print(f"  {r['status']:4}  {r['op']:6}  id={str(r['id']):<4} {vtag:<4} "
               f"{r['display']:<18} {str(r['size']):>7} bytes"
-              + (f"   <- {r['error']}" if r['status'] == 'FAIL' else ""))
+              + (f"   <- {note}" if note else ""))
     conn.close()
 
     # ---- summary table ----
-    print("\n| Dashboard | Operation | Row ID | HTML Size | version_status | assigned_user_team | Status |")
+    print("\n| Dashboard | Operation | Row ID | Version | HTML Size | version_status | Status |")
     print("|---|---|---|---|---|---|---|")
     for r in results:
-        print(f"| {r['display']} | {r['op']} | {r['id']} | {r['size']} "
-              f"| {r.get('version_status') or '-'} | {r.get('assigned_user_team') or '-'} | {r['status']} |")
+        print(f"| {r['display']} | {r['op']} | {r['id']} | {('V'+str(r['version'])) if r.get('version') else '-'} "
+              f"| {r['size']} | {r.get('version_status') or '-'} | {r['status']} |")
 
     masters = [r for r in results if r["kind"] == "Master"]
     phs     = [r for r in results if r["kind"] == "PH"]
     ins     = sum(1 for r in results if r["op"] == "INSERT")
     upd     = sum(1 for r in results if r["op"] == "UPDATE")
+    skip    = [r for r in results if r["status"] == "SKIP"]
     pas     = sum(1 for r in results if r["status"] == "PASS")
     fail    = [r for r in results if r["status"] == "FAIL"]
     print(f"\nTotal dashboards processed     : {len(results)}")
     print(f"Master dashboards processed    : {len(masters)}")
     print(f"Portfolio Holder dashboards    : {len(phs)}")
-    print(f"INSERTS                        : {ins}")
-    print(f"UPDATES                        : {upd}")
+    print(f"INSERTS (new weekly versions)  : {ins}")
+    print(f"UPDATES (same-week refresh)    : {upd}")
+    print(f"SKIPPED (frozen / stale)       : {len(skip)}")
     print(f"PASS                           : {pas}")
     print(f"FAIL                           : {len(fail)}")
+    if skip:
+        print("Skipped dashboards:")
+        for r in skip:
+            print(f"  - {r['display']}: {r['error']}")
     if fail:
         print("Failed dashboards:")
         for r in fail:

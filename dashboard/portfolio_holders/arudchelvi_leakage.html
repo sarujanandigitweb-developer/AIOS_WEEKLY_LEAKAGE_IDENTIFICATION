@@ -413,8 +413,8 @@
 const dashboardData = {
   "summary": {
     "report_title": "PH Weekly Leakage Action Lists",
-    "report_date": "2026-07-19",
-    "generated_at": "2026-07-20",
+    "report_date": "2026-07-26",
+    "generated_at": "2026-07-27",
     "scope": "UK Amazon FBM (Amazon-only)",
     "accounts": "LEDSone + DCVoltage",
     "deadline": "Wednesday EOD",
@@ -422,61 +422,41 @@ const dashboardData = {
     "analyses_count": 5,
     "counts": {
       "l1": 1,
-      "l2": 4,
+      "l2": 3,
       "l3": 0,
-      "l4": 2,
+      "l4": 3,
       "l5": 1
     },
     "displayed": {
       "l1": 1,
-      "l2": 4,
+      "l2": 3,
       "l3": 0,
-      "l4": 2,
+      "l4": 3,
       "l5": 1
     }
   },
   "l1": [
     {
       "ph": "Arudchelvi",
-      "asin": "B09LR6Y4B2",
-      "sku": "CRSF100GB+LHNSE27GB+SCRN70GB+LSTF40GB_AM",
+      "asin": "B09LR6MDYF",
+      "sku": "CRSF100SN+LHNSE27SN+SCRN70BM+LSTF40SN_AM",
       "account": "LEDSone UK",
-      "spend": 3.07,
-      "clicks": 7,
-      "impressions": 867,
+      "spend": 3.93,
+      "clicks": 9,
+      "impressions": 1181,
       "conversions": 0
     }
   ],
   "l2": [
     {
-      "asin": "B0DNJF99S5",
+      "asin": "B0DPMF1BGT",
       "ph": "Arudchelvi",
-      "sku": "PCBSM2FBM",
+      "sku": "PCDO20BM",
       "account": "LEDSone UK",
-      "revenue": 4.07,
+      "revenue": 4.49,
       "shipping": 4.85,
       "orders": 1,
-      "shipping_pct": 119.2
-    },
-    {
-      "asin": "B0DLWVMSJW",
-      "ph": "Arudchelvi",
-      "sku": "PCGZ20MX",
-      "account": "LEDSone UK",
-      "revenue": 4.99,
-      "shipping": 4.85,
-      "orders": 1,
-      "shipping_pct": 97.2
-    },
-    {
-      "asin": "B0H2SC8XF1",
-      "ph": "Arudchelvi",
-      "sku": "PCBISR2PK",
-      "account": "LEDSone UK",
-      "revenue": 4.91,
-      "shipping": 2.44,
-      "orders": 1,
-      "shipping_pct": 49.7
+      "shipping_pct": 108.0
     },
     {
       "asin": "B0DMT5YWLR",
@@ -484,9 +464,19 @@ const dashboardData = {
       "sku": "PCFT90TBM5PK",
       "account": "LEDSone UK",
       "revenue": 16.32,
-      "shipping": 5.12,
-      "orders": 1,
-      "shipping_pct": 31.4
+      "shipping": 10.26,
+      "orders": 2,
+      "shipping_pct": 62.9
+    },
+    {
+      "asin": "B0H2SC8XF1",
+      "ph": "Arudchelvi",
+      "sku": "PCBISR2PK",
+      "account": "LEDSone UK",
+      "revenue": 9.82,
+      "shipping": 4.88,
+      "orders": 2,
+      "shipping_pct": 49.7
     }
   ],
   "l3": [],
@@ -502,13 +492,23 @@ const dashboardData = {
       "revenue_at_risk": 17.41
     },
     {
-      "sku": "ENC7768",
-      "asin": "B0GD5FP27N",
+      "sku": "LHTTAGU10WH+LDGU10WW5",
+      "asin": "B0DQTF5T69",
       "ph": "Arudchelvi",
       "account": "LEDSone UK",
       "total_orders": 3,
       "refunded_orders": 1,
       "refund_rate": 33.3,
+      "revenue_at_risk": 18.16
+    },
+    {
+      "sku": "ENC7768",
+      "asin": "B0GD5FP27N",
+      "ph": "Arudchelvi",
+      "account": "LEDSone UK",
+      "total_orders": 4,
+      "refunded_orders": 1,
+      "refund_rate": 25.0,
       "revenue_at_risk": 26.41
     }
   ],
@@ -617,9 +617,9 @@ const dashboardData = {
     {
       "account": "LEDSone UK",
       "l1": 1,
-      "l2": 4,
+      "l2": 3,
       "l3": 0,
-      "l4": 2,
+      "l4": 3,
       "total": 7
     },
     {
@@ -635,9 +635,9 @@ const dashboardData = {
     {
       "ph": "Arudchelvi",
       "l1": 1,
-      "l2": 4,
+      "l2": 3,
       "l3": 0,
-      "l4": 2,
+      "l4": 3,
       "l5": 1,
       "total": 8
     }
@@ -645,19 +645,19 @@ const dashboardData = {
   "verification_summary": [
     {
       "metric": "Generated",
-      "value": "2026-07-20"
+      "value": "2026-07-27 (run date)"
     },
     {
-      "metric": "Reporting window (L1-L3)",
-      "value": "2026-07-13 to 2026-07-19 (Mon-Sun)"
+      "metric": "Reporting window (L1/L2/L3)",
+      "value": "2026-07-20 to 2026-07-26 (Mon-Sun, previous complete week)"
     },
     {
       "metric": "L4 window",
-      "value": "30 days ending 2026-07-19"
+      "value": "2026-06-27 to 2026-07-26 (30 days ending previous Sunday)"
     },
     {
       "metric": "L5 window",
-      "value": "last 3 complete calendar months"
+      "value": "2026-04 to 2026-06 (last 3 complete calendar months)"
     },
     {
       "metric": "Source tables used",
@@ -665,38 +665,38 @@ const dashboardData = {
     },
     {
       "metric": "Shipping basis",
-      "value": "carrier_charge (GBP) + shipping_template_price, de-duped per order (MAX), allocated by line-revenue share"
-    },
-    {
-      "metric": "Margin assumptions",
-      "value": "COGS 20%, platform fee 15%, VAT 20% (gross factor 0.45)"
+      "value": "carrier_charge (GBP) + shipping_template_price, de-duped per order (MAX), allocated to ASIN by line-revenue share"
     },
     {
       "metric": "L1 grain",
-      "value": "ASIN + SKU (counts.l1 = distinct ASIN over embedded rows)"
+      "value": "ASIN + SKU (PPC spend > GBP 3 and conversions = 0)"
     },
     {
       "metric": "L2 grain",
-      "value": "ASIN"
+      "value": "ASIN (shipping > 25% of revenue)"
     },
     {
       "metric": "L3 grain",
-      "value": "ASIN (PPC joined at ASIN via ref_id)"
+      "value": "ASIN (revenue x 0.45 - shipping - PPC < GBP 0 and PPC > GBP 5)"
     },
     {
       "metric": "L4 grain",
-      "value": "SKU"
+      "value": "SKU (refund rate > 10%, minimum 2 orders)"
     },
     {
       "metric": "L5 grain",
-      "value": "PH x account x month (plus account=ALL rollup)"
+      "value": "PH x account x month (net margin declining 2 consecutive months)"
     },
     {
-      "metric": "Scope",
-      "value": "UK Amazon FBM, Amazon-only PPC (source_name ILIKE %amazon%)"
+      "metric": "Margin assumptions",
+      "value": "COGS 20%, platform fee 15% (gross factor 0.45), VAT 20%"
     },
     {
-      "metric": "Tables excluded from calc",
+      "metric": "Scope filter",
+      "value": "Amazon-only (source_name ILIKE amazon), UK marketplace, FBM (fba_sales = false)"
+    },
+    {
+      "metric": "Tables excluded from calculation",
       "value": "development.leakage_detection, development.leakage_classification, ph_action_board.*, ph_daily_actions"
     }
   ]

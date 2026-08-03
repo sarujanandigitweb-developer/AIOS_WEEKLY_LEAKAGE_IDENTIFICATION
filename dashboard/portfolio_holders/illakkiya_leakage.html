@@ -413,51 +413,92 @@
 const dashboardData = {
   "summary": {
     "report_title": "PH Weekly Leakage Action Lists",
-    "report_date": "2026-07-19",
-    "generated_at": "2026-07-20",
+    "report_date": "2026-07-26",
+    "generated_at": "2026-07-27",
     "scope": "UK Amazon FBM (Amazon-only)",
     "accounts": "LEDSone + DCVoltage",
     "deadline": "Wednesday EOD",
     "ph_count": 1,
     "analyses_count": 5,
     "counts": {
-      "l1": 0,
-      "l2": 1,
-      "l3": 1,
+      "l1": 2,
+      "l2": 2,
+      "l3": 2,
       "l4": 1,
       "l5": 0
     },
     "displayed": {
-      "l1": 0,
-      "l2": 1,
-      "l3": 1,
+      "l1": 2,
+      "l2": 2,
+      "l3": 2,
       "l4": 1,
       "l5": 1
     }
   },
-  "l1": [],
+  "l1": [
+    {
+      "ph": "Illakkiya",
+      "asin": "B0CZXHLR1Q",
+      "sku": "TPOSBDBM2PK",
+      "account": "LEDSone UK",
+      "spend": 3.14,
+      "clicks": 11,
+      "impressions": 2468,
+      "conversions": 0
+    },
+    {
+      "ph": "Illakkiya",
+      "asin": "B0CNGGP2YF",
+      "sku": "TPHTTN2PBRBM",
+      "account": "DCVoltage UK",
+      "spend": 3.11,
+      "clicks": 6,
+      "impressions": 902,
+      "conversions": 0
+    }
+  ],
   "l2": [
     {
-      "asin": "B0CSYVLDV9",
+      "asin": "B0G1TG1W65",
       "ph": "Illakkiya",
-      "sku": "CKVOBC",
+      "sku": "CKKLYB",
       "account": "LEDSone UK",
-      "revenue": 9.57,
+      "revenue": 26.97,
+      "shipping": 12.33,
+      "orders": 3,
+      "shipping_pct": 45.7
+    },
+    {
+      "asin": "B0G1TGXFF7",
+      "ph": "Illakkiya",
+      "sku": "CKKLBY",
+      "account": "LEDSone UK",
+      "revenue": 9.32,
       "shipping": 2.72,
       "orders": 1,
-      "shipping_pct": 28.4
+      "shipping_pct": 29.2
     }
   ],
   "l3": [
+    {
+      "asin": "B0G1TG1W65",
+      "ph": "Illakkiya",
+      "sku": "CKKLYB",
+      "account": "LEDSone UK",
+      "revenue": 26.97,
+      "shipping": 12.33,
+      "ppc": 33.21,
+      "net": -33.4
+    },
     {
       "asin": "B0CGRJ1V8L",
       "ph": "Illakkiya",
       "sku": "TPOSBDBM",
       "account": "DCVoltage UK",
-      "revenue": 23.69,
-      "shipping": 4.0,
-      "ppc": 14.33,
-      "net": -7.67
+      "revenue": 73.07,
+      "shipping": 12.0,
+      "ppc": 29.1,
+      "net": -8.22
     }
   ],
   "l4": [
@@ -576,48 +617,48 @@ const dashboardData = {
   "account_summary": [
     {
       "account": "LEDSone UK",
-      "l1": 0,
-      "l2": 1,
-      "l3": 0,
+      "l1": 1,
+      "l2": 2,
+      "l3": 1,
       "l4": 1,
-      "total": 2
+      "total": 5
     },
     {
       "account": "DCVoltage UK",
-      "l1": 0,
+      "l1": 1,
       "l2": 0,
       "l3": 1,
       "l4": 0,
-      "total": 1
+      "total": 2
     }
   ],
   "ph_summary": [
     {
       "ph": "Illakkiya",
-      "l1": 0,
-      "l2": 1,
-      "l3": 1,
+      "l1": 2,
+      "l2": 2,
+      "l3": 2,
       "l4": 1,
       "l5": 0,
-      "total": 3
+      "total": 7
     }
   ],
   "verification_summary": [
     {
       "metric": "Generated",
-      "value": "2026-07-20"
+      "value": "2026-07-27 (run date)"
     },
     {
-      "metric": "Reporting window (L1-L3)",
-      "value": "2026-07-13 to 2026-07-19 (Mon-Sun)"
+      "metric": "Reporting window (L1/L2/L3)",
+      "value": "2026-07-20 to 2026-07-26 (Mon-Sun, previous complete week)"
     },
     {
       "metric": "L4 window",
-      "value": "30 days ending 2026-07-19"
+      "value": "2026-06-27 to 2026-07-26 (30 days ending previous Sunday)"
     },
     {
       "metric": "L5 window",
-      "value": "last 3 complete calendar months"
+      "value": "2026-04 to 2026-06 (last 3 complete calendar months)"
     },
     {
       "metric": "Source tables used",
@@ -625,38 +666,38 @@ const dashboardData = {
     },
     {
       "metric": "Shipping basis",
-      "value": "carrier_charge (GBP) + shipping_template_price, de-duped per order (MAX), allocated by line-revenue share"
-    },
-    {
-      "metric": "Margin assumptions",
-      "value": "COGS 20%, platform fee 15%, VAT 20% (gross factor 0.45)"
+      "value": "carrier_charge (GBP) + shipping_template_price, de-duped per order (MAX), allocated to ASIN by line-revenue share"
     },
     {
       "metric": "L1 grain",
-      "value": "ASIN + SKU (counts.l1 = distinct ASIN over embedded rows)"
+      "value": "ASIN + SKU (PPC spend > GBP 3 and conversions = 0)"
     },
     {
       "metric": "L2 grain",
-      "value": "ASIN"
+      "value": "ASIN (shipping > 25% of revenue)"
     },
     {
       "metric": "L3 grain",
-      "value": "ASIN (PPC joined at ASIN via ref_id)"
+      "value": "ASIN (revenue x 0.45 - shipping - PPC < GBP 0 and PPC > GBP 5)"
     },
     {
       "metric": "L4 grain",
-      "value": "SKU"
+      "value": "SKU (refund rate > 10%, minimum 2 orders)"
     },
     {
       "metric": "L5 grain",
-      "value": "PH x account x month (plus account=ALL rollup)"
+      "value": "PH x account x month (net margin declining 2 consecutive months)"
     },
     {
-      "metric": "Scope",
-      "value": "UK Amazon FBM, Amazon-only PPC (source_name ILIKE %amazon%)"
+      "metric": "Margin assumptions",
+      "value": "COGS 20%, platform fee 15% (gross factor 0.45), VAT 20%"
     },
     {
-      "metric": "Tables excluded from calc",
+      "metric": "Scope filter",
+      "value": "Amazon-only (source_name ILIKE amazon), UK marketplace, FBM (fba_sales = false)"
+    },
+    {
+      "metric": "Tables excluded from calculation",
       "value": "development.leakage_detection, development.leakage_classification, ph_action_board.*, ph_daily_actions"
     }
   ]
