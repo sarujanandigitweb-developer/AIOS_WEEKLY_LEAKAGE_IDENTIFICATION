@@ -14,7 +14,13 @@ self-contained dashboard file. Work autonomously; do not ask questions.
   Do not create new files. Do not touch `index.html`, `data.js`, or `refresh_dashboard.py`.
 - Replace ONLY the text between `<!-- WLSP_DATA_START -->` and `<!-- WLSP_DATA_END -->`.
   Leave every other byte of HTML/CSS/JS unchanged.
-- Run all SQL via the tool `mcp__claude_ai_postgres__execute_sql`.
+- Run all SQL via the postgres MCP tool connected to the **`order_management_copy`** database — the
+  one that exposes `public.ppc_performance`, `public.order_transaction`, and `tech_team_outputs.ph_task`.
+  Several `mcp__claude_ai_*postgres*__execute_sql` tools may be available for DIFFERENT databases;
+  use the one where these tables resolve. As of 2026-08-03 that is `mcp__claude_ai_postgres_2__execute_sql`.
+  If a query fails with "relation ... does not exist" or a permission error, the connectors were
+  renumbered — retry the SAME query on another available `..._postgres..._execute_sql` tool until the
+  WLSP tables resolve, then use that tool for the rest of the run.
 
 ## Assumptions baked into the approved WLSP formulas
 COGS 20% (gross factor 0.45 after platform fee), platform fee 15%, VAT 20%.
@@ -42,7 +48,7 @@ window to that week using ISO-week truncation (robust even if a run slips to ano
 
 ---
 
-## STEP 1 — Run these exact queries (in order) via `mcp__claude_ai_postgres__execute_sql`
+## STEP 1 — Run these exact queries (in order) via the `order_management_copy` postgres tool (see above; currently `mcp__claude_ai_postgres_2__execute_sql`)
 
 ### Q_L1 — zero-conversion PPC (spend>£3 AND conversions=0, 7d)
 ```sql

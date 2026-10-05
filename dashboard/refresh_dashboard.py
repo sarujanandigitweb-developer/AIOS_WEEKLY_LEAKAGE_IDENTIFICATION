@@ -39,7 +39,16 @@ TIMEOUT_SEC = int(os.environ.get("WLSP_REFRESH_TIMEOUT", "5400"))     # 90 min h
 # Raised to 5400 s (90 min) — still well inside the 4-hour cron interval. Override per-run with
 # WLSP_REFRESH_TIMEOUT. If runs still time out, switch to the single-consolidated-query design.
 START, END  = "<!-- WLSP_DATA_START -->", "<!-- WLSP_DATA_END -->"
-ALLOWED     = "mcp__claude_ai_postgres__execute_sql Read Edit Write Bash"
+# DB access is via a hosted claude.ai postgres MCP connector. The account has SEVERAL postgres
+# connectors and they get RENUMBERED (claude.ai postgres / postgres (2) / ...), which silently
+# breaks a single hardcoded name — that is exactly what failed the 2026-08-03 run ("blocked at the
+# permission layer"). Allow ALL known postgres execute_sql tools so permission never blocks; the
+# prompt tells Claude to use whichever one resolves order_management_copy's tables.
+# As of 2026-08-03 the WLSP DB (order_management_copy) is on mcp__claude_ai_postgres_2.
+ALLOWED     = ("mcp__claude_ai_postgres_2__execute_sql "
+               "mcp__claude_ai_postgres__execute_sql "
+               "mcp__claude_ai_Ledsone_postgres__execute_sql "
+               "Read Edit Write Bash")
 # Bash is REQUIRED: the embedded data block is ~108 KB, so the headless run generates it with
 # one SQL query (result overflows to a file) and splices it in with a short Python script — that
 # needs Bash. Without it every Bash call returns "This command requires approval" and, being

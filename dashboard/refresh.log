@@ -46,3 +46,40 @@
 [2026-08-03T08:45:01] START refresh — launching Claude CLI headless
 [2026-08-03T08:45:35] Claude exit=0; stdout tail: "s are being blocked at the permission layer — I need you to explicitly grant access before I can run any queries. Could you approve the tool (likely via a permission prompt in your client, or by adding it to allowed tools)? I can't proceed with the dashboard refresh until database access is granted."
 [2026-08-03T08:45:35] RESULT: FAIL — leakage_dashboard.html unchanged after run
+[2026-08-03T09:07:37] START refresh — launching Claude CLI headless
+[2026-08-03T09:20:27] Claude exit=0; stdout tail: '3=24, l4=11, total=219; LEDSone UK → l1=82, l2=160, l3=31, l4=21, total=294. (L1–L4 sums reconcile exactly to `counts`.)\n\n**ph_summary:** 30 PHs (UNATTRIBUTED excluded per spec).\n\n29 UNATTRIBUTED detail rows across L1–L4 were tagged: 15 `RECOVERABLE`, 14 `MISSING_SOURCE`, based on the SKU→PH lookup.'
+[2026-08-03T09:20:27] VALIDATION OK (master) — counts L1=175 L2=251 L3=55 L4=32 L5=20; accounts=2; ph_rows=30; generated_at=2026-08-03
+[2026-08-03T09:20:27] PH dashboards OK — 30 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-08-03T09:20:27] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 770.4s total
+[2026-08-12T10:30:41] START refresh — launching Claude CLI headless
+[2026-08-12T10:37:13] Claude exit=0; stdout tail: "prompt's stored SQL should be patched so the next headless run doesn't error out.\n2. Full result sets exceeded the MCP inline output limit, so each query spilled to a tool-results file; I parsed those files and assembled the JSON with a script in the scratchpad rather than transcribing rows by hand."
+[2026-08-12T10:37:13] VALIDATION OK (master) — counts L1=147 L2=328 L3=54 L4=39 L5=19; accounts=2; ph_rows=30; generated_at=2026-08-12
+[2026-08-12T10:37:13] PH dashboards OK — 30 regenerated in 0.03s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-08-12T10:37:13] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 392.2s total
+[2026-08-17T08:45:01] START refresh — launching Claude CLI headless
+[2026-08-17T09:05:59] Claude exit=0; stdout tail: 'DATA_START` and from `WLSP_DATA_END` onward are byte-identical to the previous file; markers still appear exactly once; no `data.js` created (the 2 `data.js` string hits are pre-existing comment text, count unchanged); forbidden tables appear only in the `verification_summary` "Excluded tables" row.'
+[2026-08-17T09:05:59] VALIDATION OK (master) — counts L1=100 L2=235 L3=33 L4=25 L5=19; accounts=2; ph_rows=29; generated_at=2026-08-17
+[2026-08-17T09:05:59] PH dashboards OK — 30 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-08-17T09:05:59] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 1258.6s total
+[2026-08-24T08:45:01] START refresh — launching Claude CLI headless
+[2026-08-24T08:45:59] Claude exit=0; stdout tail: "week.\n\nOne thing worth checking while you're in there: if the connectors were renumbered rather than de-authorized, the new connector may carry a different display name, in which case the `dashboard_refresh_prompt.md` line pinning `mcp__claude_ai_postgres_2__execute_sql` will need updating to match."
+[2026-08-24T08:45:59] RESULT: FAIL — leakage_dashboard.html unchanged after run
+[2026-08-31T08:45:01] START refresh — launching Claude CLI headless
+[2026-08-31T08:57:46] Claude exit=0; stdout tail: "I've launched a background agent to run the full WLSP dashboard refresh — it will query Postgres for L1–L5, build the `dashboardData` JSON, and splice it into `leakage_dashboard.html` between the markers, exactly per spec. I'll report back with the row counts and verification once it completes."
+[2026-08-31T08:57:46] VALIDATION OK (master) — counts L1=176 L2=344 L3=57 L4=40 L5=9; accounts=2; ph_rows=30; generated_at=2026-08-31
+[2026-08-31T08:57:46] PH dashboards OK — 30 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-08-31T08:57:46] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 765.2s total
+[2026-09-07T08:45:01] START refresh — launching Claude CLI headless
+[2026-09-07T08:49:42] Claude exit=0; stdout tail: 'ntact; JSON parses. `data.js` and `index.html` untouched, no new files created in the repo (working files went to `/tmp/wlsp/`).\n\nOne note: `refresh_dashboard.py` shows as modified in `git status`, but that predates this run — it was already dirty in the starting working tree and I did not touch it.'
+[2026-09-07T08:49:42] VALIDATION OK (master) — counts L1=125 L2=344 L3=30 L4=38 L5=8; accounts=2; ph_rows=29; generated_at=2026-09-07
+[2026-09-07T08:49:42] PH dashboards OK — 30 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-09-07T08:49:42] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 281.5s total
+[2026-09-14T08:45:01] START refresh — launching Claude CLI headless
+[2026-09-14T09:00:44] Claude exit=0; stdout tail: ' re-parses as JSON, all keys present, every L5 row carries an `account`, and no forbidden table names appear anywhere outside `verification_summary`. No `data.js` created; `index.html` and `refresh_dashboard.py` untouched (the other modified files in `git status` were already dirty before this run).'
+[2026-09-14T09:00:44] VALIDATION OK (master) — counts L1=135 L2=318 L3=46 L4=33 L5=8; accounts=2; ph_rows=28; generated_at=2026-09-14
+[2026-09-14T09:00:44] PH dashboards OK — 30 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-09-14T09:00:44] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 942.5s total
+[2026-09-21T08:45:01] START refresh — launching Claude CLI headless
+[2026-09-21T08:45:01] RESULT: FAIL — Claude CLI not found (CLAUDE_BIN=/home/led-247/.local/bin/claude)
+[2026-10-05T08:45:02] START refresh — launching Claude CLI headless
+[2026-10-05T08:45:02] RESULT: FAIL — Claude CLI not found (CLAUDE_BIN=/home/led-247/.local/bin/claude)

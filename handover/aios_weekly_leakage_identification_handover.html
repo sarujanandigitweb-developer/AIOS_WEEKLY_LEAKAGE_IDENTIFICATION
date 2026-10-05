@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AIOS Weekly Leakage Identification (WLSP) - Handover</title><style>*{box-sizing:border-box}body{margin:0;font:15px/1.55 system-ui,Segoe UI,Arial,sans-serif;color:#1d2433;background:#f6f8fb}
+header{background:#15243D;color:#fff;padding:22px 28px}header h1{margin:0;font-size:24px}header .b{margin-top:8px}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600;margin-right:6px;color:#fff}
+.warn{background:#b45309}.ok{background:#2e7d32}.info{background:#3b5b92}
+nav{position:sticky;top:0;background:#fff;border-bottom:2px solid #15243D;padding:8px 20px;z-index:5;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px}
+nav a{color:#15243D;text-decoration:none;font-weight:600}nav a:hover{text-decoration:underline}
+main{max-width:1100px;margin:0 auto;padding:18px 22px 60px;background:#fff}
+h2{color:#15243D;border-bottom:2px solid #15243D;padding-bottom:4px;margin-top:34px}
+.tw{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{background:#15243D;color:#fff;text-align:left;padding:7px 9px}td{border:1px solid #d5dbe6;padding:6px 9px;vertical-align:top}tr:nth-child(even) td{background:#f3f6fb}
+pre{background:#0f1a2e;color:#e8eef9;padding:12px 14px;border-radius:6px;overflow-x:auto;font-size:12.5px}
+code{font-family:Consolas,Menlo,monospace;font-size:.92em;background:#eef1f7;padding:1px 4px;border-radius:3px;word-break:break-word}pre code{background:none;padding:0}
+@media print{nav{display:none}header{-webkit-print-color-adjust:exact;print-color-adjust:exact}main{max-width:none;padding:0}pre{white-space:pre-wrap}}
+@media(max-width:600px){main{padding:12px}header{padding:16px}}</style></head><body>
+<header><h1>AIOS Weekly Leakage Identification (WLSP) - Handover</h1><div class="b"><span class="badge warn">Cron broken since 2026-09-21</span><span class="badge ok">Last good run 2026-09-14</span><span class="badge info">Newly Created handover</span></div></header>
+<nav><a href="#s1">1. Project Overview</a><a href="#s2">2. Final Status</a><a href="#s3">3. Latest Updates</a><a href="#s4">4. Project Structure / Important Files</a><a href="#s5">5. Data Sources / Database Tables</a><a href="#s6">6. Current Workflow / Architecture</a><a href="#s7">7. How to Run</a><a href="#s8">8. Refresh / Deployment Process</a><a href="#s9">9. Validation Completed</a><a href="#s10">10. Known Issues / Dependencies</a><a href="#s11">11. Backup Person / Owner</a><a href="#s12">12. Troubleshooting</a><a href="#s13">13. Final Handover Notes</a></nav><main><div class="tw"><table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Project name</td><td><code>aios_weekly_leakage_identification</code> - "Weekly Leakage Identification &amp; Stop-Loss Protocol", project code <code>WLSP</code></td></tr><tr><td>Project folder</td><td><code>/home/led-247/AIOS_WEEKLY_LEAKAGE_IDENTIFICATION/</code> (workspace = <code>AIOS_Weekly_Leakage_Identification/</code>, its own git repo, branch history 2026-06-22 to 2026-08-03)</td></tr><tr><td>Developer / author</td><td>Sarujanan (git author <code>sarujanandigitweb-developer</code>; daily logs <code>*__sarujanan__wlsp__*</code>; activity table <code>daily_task.tbl_wlsp_sarujanan</code>). Authorship confirmed from commits, file headers and daily logs.</td></tr><tr><td>Protocol owner / reviewer</td><td>Bietrick (TL) - documented in README, REQ-001 and the daily logs</td></tr><tr><td>Handover written</td><td>2026-10-05, from the current code, git history, logs and crontab</td></tr></tbody></table></div>
+<h2 id="s1">1. Project Overview</h2>
+<p><strong>Purpose.</strong> A weekly report that finds money leaking from UK Amazon FBM (own-fulfilled) trading for LEDSone UK and DCVoltage UK and gives every Portfolio Holder (PH) an action list. Source requirement: <code>Bietrick_Weekly_Leakage_Protocol_v2.pdf</code> (summarised in <code>requirements/REQ-001_WEEKLY_LEAKAGE_PROTOCOL.md</code>).</p>
+<p><strong>The five analyses (final, as implemented in <code>dashboard/dashboard_refresh_prompt.md</code>):</strong></p>
+<div class="tw"><table><thead><tr><th>ID</th><th>Analysis</th><th>Window</th><th>Rule</th></tr></thead><tbody><tr><td>L1</td><td>Zero-conversion PPC</td><td>previous Mon-Sun week</td><td>ASIN+SKU spend &gt; GBP 3 AND orders = 0</td></tr><tr><td>L2</td><td>Shipping &gt; 25% of revenue</td><td>previous Mon-Sun week</td><td>shipping / revenue &gt; 25%, ASIN grain</td></tr><tr><td>L3</td><td>Net-negative ASIN still on PPC</td><td>previous Mon-Sun week</td><td>(revenue x 0.45) - shipping - PPC &lt; 0 AND PPC &gt; GBP 5, ASIN grain</td></tr><tr><td>L4</td><td>High refund rate</td><td>30 days ending the previous Sunday</td><td>distinct refunded orders / distinct orders &gt; 10%, min 2 orders, SKU grain</td></tr><tr><td>L5</td><td>PH net-margin decline</td><td>last 3 complete calendar months</td><td>margin % falls two consecutive months, per PH and per account (plus an <code>ALL</code> slice)</td></tr></tbody></table></div>
+<p><strong>Deliverables:</strong> one master dashboard (<code>dashboard/leakage_dashboard.html</code>, for Bietrick) and one standalone dashboard per Portfolio Holder (<code>dashboard/portfolio_holders/&lt;name&gt;_leakage.html</code>, 30 files), published weekly into <code>tech_team_outputs.ph_task</code> (the Varman/PH task feed).</p>
+<h2 id="s2">2. Final Status</h2>
+<div class="tw"><table><thead><tr><th>Item</th><th>Status</th></tr></thead><tbody><tr><td>Discovery, architecture decision (OPTION B), calculation design, validation</td><td>Complete (June 2026)</td></tr><tr><td>L1-L5 dashboard, per-PH dashboards, weekly publish to <code>ph_task</code></td><td>Built and in production use</td></tr><tr><td>Last fully successful weekly run</td><td>Monday <strong>2026-09-14</strong> (data week ending 2026-09-13, V8 rows inserted for 31 dashboards)</td></tr><tr><td>Weekly automation today</td><td><strong>BROKEN since 2026-09-21</strong> - see section 10. Overall: <strong>Known Limitation / External Dependency</strong> (needs the <code>claude</code> CLI path fixed in cron).</td></tr></tbody></table></div>
+<p>Cron-run history (<code>logs/wlsp_refresh.log</code>): PASS 07-06, 07-13 (second attempt), 07-20 (second attempt), 07-27, 08-03 (second attempt), 08-12 (manual), 08-17, 08-31, 09-07, 09-14. FAIL: 07-13 (L1 count mismatch, later fixed), 07-20 and 08-03 and 08-24 ("dashboard unchanged after run" - headless run wrote nothing), 09-21 and 10-05 ("Claude CLI not found"). No log entry exists for 08-10 or 09-28 (cron did not run or logged nothing - not verified).</p>
+<h2 id="s3">3. Latest Updates</h2>
+<p>Git history (all by the developer; 22 commits). Key dated changes:</p>
+<div class="tw"><table><thead><tr><th>Date</th><th>Change</th></tr></thead><tbody><tr><td>2026-06-22/23</td><td>Discovery of existing leakage engine in <code>development</code> schema, validation audit, ETL trace, <code>CALCULATION_DESIGN.md</code> (L1-L5 source-query design). Decision: OPTION B (extend).</td></tr><tr><td>2026-06-24/25</td><td>First dashboard (<code>index.html</code> reading <code>data.js</code>), then <code>refresh_dashboard.py</code> automation; Amazon-only filters and regression guards (D04).</td></tr><tr><td>2026-06-29</td><td>Real live data; Mon-Sun reporting window via <code>date_trunc('week',CURRENT_DATE)</code>; <code>report_date</code> = previous Sunday; L5 account split with <code>GROUPING SETS</code>; <code>Bash</code> added to the headless allowed tools; timeout raised to 5400 s.</td></tr><tr><td>2026-06-30</td><td>Per-Portfolio-Holder dashboards generated from the one master <code>dashboardData</code>.</td></tr><tr><td>2026-07-01/02</td><td><code>INCIDENT.md</code>: large HTML cannot go through MCP <code>execute_sql</code> (truncation). Fixed by a direct psycopg2 uploader with a bound parameter. One unified uploader <code>refresh_ph_dashboards.py</code> (master + all PHs). Weekly cron installed (D09).</td></tr><tr><td>2026-07-21</td><td>Added <code>skills/</code> (TABLE_*.md / SKILL_*.md table definitions) and moved the uploader to <strong>append-versioned</strong> weekly rows.</td></tr><tr><td>2026-08-03 (last commit <code>809cd36</code>)</td><td>PH dashboards and <code>refresh_ph_dashboards.py</code> updated; prompt/allowed-tools changed because the Postgres connector is now <code>mcp__claude_ai_postgres_2</code> (renumbered connectors had caused the 08-03 "blocked at permission layer" failure).</td></tr><tr><td>after 2026-08-03 (UNCOMMITTED)</td><td>Weekly runs through 2026-09-14 rewrote <code>dashboard/leakage_dashboard.html</code>, all 30 PH dashboards, <code>dashboard/refresh.log</code>, <code>logs/wlsp_refresh.log</code>; <code>refresh_dashboard.py</code> and <code>dashboard_refresh_prompt.md</code> have uncommitted edits (the connector-renumbering fix above). These are the <strong>latest working implementation</strong>; they are not in git.</td></tr></tbody></table></div>
+<p><strong>Latest working implementation (what to continue from):</strong></p>
+<ol>
+<li><code>dashboard/refresh_dashboard.py</code> launches headless <code>claude -p</code> with <code>dashboard_refresh_prompt.md</code>. Claude runs the approved SQL through a Postgres MCP connector, builds <code>dashboardData</code> JSON and replaces only the text between <code>&lt;!-- WLSP_DATA_START --&gt;</code> and <code>&lt;!-- WLSP_DATA_END --&gt;</code> in <code>leakage_dashboard.html</code>.</li>
+<li>The script validates the master (markers, JSON keys, count reconciliation, forbidden tables, Amazon-only guard), then regenerates the 30 PH files by filtering that same data (no extra SQL) and validates shell byte-identity and PH isolation.</li>
+<li><code>dashboard/refresh_ph_dashboards.py</code> publishes master + PH files to <code>tech_team_outputs.ph_task</code> using direct psycopg2.</li>
+</ol>
+<h2 id="s4">4. Project Structure / Important Files</h2>
+<pre><code>/home/led-247/AIOS_WEEKLY_LEAKAGE_IDENTIFICATION/
+  WLSP_Theepana_Leakage_Dashboard.html   stale single-PH copy (week 2026-06-28, saved 2026-07-01); not used by code
+  scratchpad/ph_task_all_103.csv         one-off export of ph_task (2026-07-06); reference only
+  AIOS_Weekly_Leakage_Identification/    the git repo
+    README.md, START_HERE.md             discovery-phase entry points (dated 2026-06-22/23; status line &quot;Implementation NOT STARTED&quot; is OUTDATED)
+    CALCULATION_DESIGN.md                L1-L5 source-query design (2026-06-23)
+    INCIDENT.md                          why MCP cannot upload big HTML (resolved by direct DB upload)
+    POSTGRES_DATA_GAP_ANALYSIS.md, ETL_TRACE_DQ1.md, HIGH_RISK_ROOT_CAUSE_ANALYSIS.md, VALIDATION_AUDIT.md, CORRECTION_SUMMARY.md
+    requirements/ discovery/ architecture_review/ validation/ closure/ evidence/   June 2026 discovery record
+    skills/                              TABLE_*.md and SKILL_*.md reference for source tables (added 2026-07-21)
+    context/                             day contexts 2026-06-22 to 06-29
+    daily_work_logs/                     D01-D09 skill files + 25-column CSVs (2026-06-22 to 2026-07-02)
+    prompt_output/                       CSV outputs of 2026-06-29 manual runs
+    logs/wlsp_refresh.log                cron output (append)
+    dashboard/
+      dashboard_refresh_prompt.md        THE SQL + assembly rules (source of truth for business logic)
+      refresh_dashboard.py               orchestrator + validator + PH generator
+      refresh_ph_dashboards.py           uploader to tech_team_outputs.ph_task
+      leakage_dashboard.html             master dashboard (self-contained, data between markers)
+      portfolio_holders/*_leakage.html   30 per-PH dashboards (regenerated every run; stale ones deleted)
+      refresh.log                        orchestrator log
+      index.html + data.js               OLD June prototype reading data.js; not used by the pipeline
+      _wlsp_build.py, _wlsp_l2.py, _wlsp_l345.py, _wlsp_inject.js   June one-off helper scripts with embedded sample data (legacy)
+      *.bak, __pycache__                 backups/caches (leakage_dashboard.html.bak, .prefix-20260713-090120.bak)
+    handover/                            this handover</code></pre>
+<h2 id="s5">5. Data Sources / Database Tables</h2>
+<p>All in the <code>order_management_copy</code> PostgreSQL database (read access for calculations; the same DB holds the output table).</p>
+<div class="tw"><table><thead><tr><th>Table</th><th>Use</th></tr></thead><tbody><tr><td><code>public.ppc_performance</code></td><td>L1, L3 (PPC by ASIN), L5. Columns: date, record_type (<code>'ad'</code>), ref_id (=ASIN), sku, ss_name, user_name, spend, orders, clicks, impressions, marketplace, source_name. Large (~24M rows): always window-scope.</td></tr><tr><td><code>public.order_transaction</code></td><td>L2, L3, L4, L5 and SKU-to-PH map. Filters: Amazon, market_place UK, <code>fba_sales=false</code>; <code>order_status='Completed'</code> (L2/L3), <code>'Refunded'</code> for L4 numerator, Completed+Refunded for L5.</td></tr><tr><td><code>public.order_shipping_billing_detail</code></td><td>Shipping per order = MAX GBP <code>carrier_charge</code> + MAX <code>shipping_template_price</code>, counted once per order, allocated to ASINs by revenue share.</td></tr><tr><td><code>public.amazon_returns</code></td><td>Named as an allowed source in the prompt; the current queries do not use it (refunds come from <code>order_transaction.order_status</code>).</td></tr><tr><td><code>tech_team_outputs.ph_task</code></td><td>OUTPUT. Weekly rows: <code>task_id = WLSP_&lt;Name&gt;_Leakage_Dashboard-V{n}</code>, <code>project_code='WLSP'</code>, <code>html_content</code>, <code>version_level</code>, <code>version_status</code> (<code>released</code> then reviewer sets <code>completed</code>), <code>assigned_user_team='ph_priors'</code>, <code>action_took_by</code> (reviewer).</td></tr><tr><td><code>daily_task.tbl_wlsp_sarujanan</code></td><td>Developer activity log (PK project_code + activity_id). Not used by the pipeline.</td></tr></tbody></table></div>
+<p><strong>Forbidden in calculations</strong> (validator fails if they appear in data): <code>development.leakage_detection</code>, <code>development.leakage_classification</code>, <code>ph_action_board.*</code>, <code>ph_daily_actions</code> (existing engine - OPTION B chose to build a separate weekly layer on top of the profitability data, not read these).</p>
+<p><strong>Assumptions baked into formulas:</strong> COGS 20%, platform fee 15% (gross factor 0.45), VAT 20%. Account normalisation from <code>ss_name</code>: contains <code>dcvoltage</code> = "DCVoltage UK"; contains <code>ledsone</code>/<code>led_sone</code>/<code>electricalsone</code>/<code>ledsonede</code>/<code>srm</code> = "LEDSone UK".</p>
+<p>External services: claude.ai hosted Postgres MCP connector(s) (calculation step); direct network access to the old order_management_copy DB host (upload step). Connection settings are environment variables only (see section 7).</p>
+<h2 id="s6">6. Current Workflow / Architecture</h2>
+<pre><code>cron Mon 08:45 -&gt; refresh_dashboard.py
+   -&gt; claude -p (headless) + Postgres MCP -&gt; SQL L1..L5, summaries
+   -&gt; splice dashboardData into leakage_dashboard.html (markers only)
+   -&gt; validate master -&gt; generate 30 PH files from same data -&gt; validate
+-&gt; refresh_ph_dashboards.py
+   -&gt; psycopg2 INSERT/UPDATE into tech_team_outputs.ph_task, verify size + md5</code></pre>
+<p><strong>Business rules to preserve:</strong></p>
+<ul>
+<li>Reporting week = previous Monday-Sunday: <code>date &gt;= date_trunc('week',CURRENT_DATE)-7d AND date &lt; date_trunc('week',CURRENT_DATE)</code>. <code>summary.report_date</code> = previous Sunday (header shows report_date-6 to report_date). <code>generated_at</code> = run date.</li>
+<li>Amazon-only (D04 fix): <code>source_name ILIKE '%amazon%'</code> on PPC and orders (excludes eBay/Shopify/<code>so_926407</code>).</li>
+<li><code>ph_summary</code> excludes <code>UNATTRIBUTED</code>; L1-L4 detail keeps UNATTRIBUTED rows tagged <code>ph_status</code> RECOVERABLE (SKU exists in the SKU-to-PH map) or MISSING_SOURCE.</li>
+<li><code>counts.l1</code> = COUNT(DISTINCT asin) of the embedded L1 detail (never an ASIN-rollup HAVING; this caused the 2026-07-13 failure 124 vs 125). The orchestrator also re-derives counts from the embedded detail (<code>reconcile_counts</code>).</li>
+<li>A PH with no leakage still gets a dashboard (zeroed <code>ph_summary</code> synthesised).</li>
+</ul>
+<p><strong>Publish versioning (<code>refresh_ph_dashboards.py</code>):</strong> per PH, compare the file's <code>report_date</code> with the latest stored version: newer week = INSERT V(n+1); same week = idempotent UPDATE unless a reviewer has actioned it (then SKIP/frozen); older week = SKIP. Assigned User is the original PH name from the data; the task_id stem is derived from the filename. Master maps to <code>WLSP_Bietrick_Leakage_Dashboard</code>. A UniqueViolation on the identity column is handled by allocating <code>max(id)+1</code>.</p>
+<h2 id="s7">7. How to Run</h2>
+<p>Prerequisites: python3, <code>psycopg2-binary</code>, the <code>claude</code> CLI (currently <code>/usr/bin/claude</code>), a valid claude.ai login for the user (<code>~/.claude/.credentials.json</code>) so the hosted Postgres connector loads, and network access to the DB host.</p>
+<pre><code>cd /home/led-247/AIOS_WEEKLY_LEAKAGE_IDENTIFICATION/AIOS_Weekly_Leakage_Identification
+# 1) calculate + refresh dashboards (takes about 5-20 min; WRITES the HTML files)
+CLAUDE_BIN=/usr/bin/claude python3 dashboard/refresh_dashboard.py
+# 2) publish to ph_task (WRITES to the database)
+python3 dashboard/refresh_ph_dashboards.py</code></pre>
+<p>Environment variables (not stored in this document): <code>CLAUDE_BIN</code>, <code>WLSP_REFRESH_TIMEOUT</code> (default 5400 s), <code>WLSP_IGNORE</code> (comma list of PH files to skip), and for the uploader <code>PGHOST</code>, <code>PGPORT</code>, <code>PGDATABASE</code>, <code>PGUSER</code>, <code>PGPASSWORD</code>. <strong>No <code>.env</code> exists in the project</strong>; the uploader falls back to defaults hardcoded in <code>refresh_ph_dashboards.py</code> (see section 10).</p>
+<h2 id="s8">8. Refresh / Deployment Process</h2>
+<ul>
+<li><strong>Schedule:</strong> user crontab (user <code>led-247</code>), Mondays 08:45 server time (a later <code>CRON_TZ=Asia/Colombo</code> line exists in the same crontab; system timezone documented elsewhere as Asia/Colombo):</li>
+</ul>
+<p>  <code>45 8 * * 1 cd &lt;workspace&gt; &amp;&amp; /usr/bin/python3 dashboard/refresh_dashboard.py &gt;&gt; logs/wlsp_refresh.log 2&gt;&amp;1 &amp;&amp; /usr/bin/python3 dashboard/refresh_ph_dashboards.py &gt;&gt; logs/wlsp_refresh.log 2&gt;&amp;1</code></p>
+<p>  with <code>PATH=/home/led-247/.local/bin:/usr/local/bin:/usr/bin:/bin</code> and <code>CLAUDE_BIN=/home/led-247/.local/bin/claude</code> set above it. The uploader runs only if the refresh succeeds (<code>&amp;&amp;</code>).</p>
+<ul>
+<li><strong>Deployment:</strong> there is no separate deploy. "Published" = rows inserted in <code>tech_team_outputs.ph_task</code> with <code>version_status='released'</code>; reviewers (PHs) mark them completed. Nothing is pushed to the Varman hub through a different script for this project.</li>
+<li>The docstring in <code>refresh_dashboard.py</code> says "every 4 hours" and the uploader docstring says <code>0 6 * * 1</code>; both are outdated. The real schedule is the crontab line above.</li>
+<li>Re-running in the same week is safe (idempotent UPDATE unless actioned).</li>
+</ul>
+<h2 id="s9">9. Validation Completed</h2>
+<ul>
+<li>Discovery/design validation (June 2026): <code>validation/VALIDATION_RESULT.md</code> (GREEN/PASS), <code>COVERAGE_MATRIX.md</code>, <code>QUERYABILITY_CHECK.md</code>, <code>VALIDATION_AUDIT.md</code> and corrections C-1..C-7 (<code>CORRECTION_SUMMARY.md</code>).</li>
+<li>Data validation (daily logs D04-D06): HTML figures matched the DB to the penny; the L1 audit confirmed all 149 records satisfy every rule; Amazon-only contamination removed; L5 account split fixed.</li>
+<li>Automated on every run (<code>refresh_dashboard.py</code>): file changed, one marker pair, JSON keys, counts reconciled, L2 not capped, no forbidden tables, no eBay/Shopify tokens, no <code>UNATTRIBUTED</code> in <code>ph_summary</code>, L1 distinct-ASIN guard, per-PH shell byte-identity and PH isolation.</li>
+<li>Upload verification (<code>refresh_ph_dashboards.py</code>): stored <code>octet_length</code> and <code>md5</code> equal to the source file, team and status asserted. Last run 2026-09-14: 31 processed, 31 INSERT, 31 PASS, 0 FAIL.</li>
+<li>Latest counts (2026-09-14 run): L1=135, L2=318, L3=46, L4=33, L5=8.</li>
+</ul>
+<h2 id="s10">10. Known Issues / Dependencies</h2>
+<ol>
+<li><strong>Cron is broken (highest priority).</strong> <code>CLAUDE_BIN=/home/led-247/.local/bin/claude</code> no longer exists (the CLI is <code>/usr/bin/claude</code>), so runs on 2026-09-21 and 2026-10-05 failed immediately. No data refresh/publish has occurred since 2026-09-14. Fix: change <code>CLAUDE_BIN</code> in the crontab to <code>/usr/bin/claude</code> (not changed by this handover). Also check why nothing was logged for 2026-09-28.</li>
+<li><strong>Hardcoded DB credentials in code.</strong> <code>dashboard/refresh_ph_dashboards.py</code> contains default host/user/password values for the order_management_copy DB (committed to git). Move to environment variables / a git-ignored <code>.env</code> and rotate the password. Value intentionally not reproduced here.</li>
+<li><strong>Uncommitted work.</strong> See section 3: regenerated dashboards, logs, and edits to <code>refresh_dashboard.py</code> and <code>dashboard_refresh_prompt.md</code> are not committed. Review and commit.</li>
+<li><strong>Fragile LLM-in-the-loop.</strong> The calculation is executed by a headless Claude session through a hosted MCP connector. Observed failures: connector renumbering (<code>mcp__claude_ai_postgres</code> vs <code>_postgres_2</code> vs <code>Ledsone_postgres</code>; the current allowed list covers all three), "unchanged after run" (07-20, 08-03, 08-24), and a count mismatch (07-13, since fixed). It requires a valid claude.ai login for the cron user. A deterministic Python/psycopg2 implementation of the prompt SQL (the uploader already reaches the same DB) would remove this dependency; the prompt itself already suggests a single-query design as the fallback.</li>
+<li><strong>Documentation drift.</strong> <code>README.md</code>/<code>START_HERE.md</code> still say implementation not started and recommend OPTION B pending sign-off; <code>refresh_dashboard.py</code>/uploader docstrings give wrong cron timing; INCIDENT.md describes a pre-fix state (id=8 upload) that is resolved.</li>
+<li><strong>Legacy files:</strong> <code>dashboard/index.html</code>, <code>data.js</code>, <code>_wlsp_*</code> helper scripts, <code>.bak</code> files and the root-level <code>WLSP_Theepana_Leakage_Dashboard.html</code> are not used by the pipeline.</li>
+<li><strong>Data limits:</strong> PPC <code>user_name</code> was ~40% null at discovery (rows become UNATTRIBUTED); PPC joined to orders at ASIN grain; L2/L3 rely on a fixed 0.45 margin factor.</li>
+<li><code>ph_task.id</code> identity sequence can fall behind; handled in code but the DB role cannot reset the sequence.</li>
+<li>Whether Bietrick signed off OPTION B formally is "Not documented / could not verify" (work proceeded and was delivered regardless).</li>
+</ol>
+<h2 id="s11">11. Backup Person / Owner</h2>
+<ul>
+<li>Backup developer: <strong>Not documented.</strong></li>
+<li>Documented owners: Bietrick (TL) - protocol owner, reviewer and recipient of the master dashboard; Sarujanan - developer/worker (leaving). Data/DB owner for <code>order_management_copy</code>: Not documented. Portfolio Holders (30, listed by file in <code>dashboard/portfolio_holders/</code>) consume their own dashboards and action the <code>ph_task</code> rows.</li>
+</ul>
+<h2 id="s12">12. Troubleshooting</h2>
+<div class="tw"><table><thead><tr><th>Symptom</th><th>Check / action</th></tr></thead><tbody><tr><td>"Claude CLI not found"</td><td>Fix <code>CLAUDE_BIN</code> (use <code>/usr/bin/claude</code>); confirm <code>claude -p "hi"</code> works as the cron user.</td></tr><tr><td>"unchanged after run", "blocked at permission layer"</td><td>Headless run could not query/write. Confirm the claude.ai Postgres connector for <code>order_management_copy</code> is authorised; read the tail of <code>logs/wlsp_refresh.log</code> and <code>dashboard/refresh.log</code>; check which <code>mcp__claude_ai_*postgres*</code> name resolves <code>public.ppc_performance</code> and put it in <code>ALLOWED</code> and the prompt.</td></tr><tr><td>"counts.l1 != distinct ASIN"</td><td>L1 must be counted at ASIN+SKU grain then distinct ASIN (prompt "D04 FIX D").</td></tr><tr><td>"forbidden tables"/"marketplace contamination"</td><td>A query used a non-approved table or missed <code>source_name ILIKE '%amazon%'</code>.</td></tr><tr><td>Uploader SKIP "stale"/"already actioned"</td><td>Expected: file week older than stored, or reviewer already actioned that week.</td></tr><tr><td>Uploader FAIL md5/size</td><td>Re-run; ensure file is read as UTF-8 and the bound parameter path was not altered.</td></tr><tr><td>Cannot connect to DB</td><td>Verify network access and the <code>PG*</code> environment variables; credentials are not in this document.</td></tr><tr><td>New PH missing</td><td>PH appears only if present in L1-L5 data for the week; a new <code>*_leakage.html</code> is auto-inserted as V1.</td></tr></tbody></table></div>
+<h2 id="s13">13. Final Handover Notes</h2>
+<ul>
+<li>Authorship confirmed as Sarujanan's work (commits, <code>*__sarujanan__wlsp__*</code> logs, <code>daily_task.tbl_wlsp_sarujanan</code>).</li>
+<li>First actions for the backup: (1) fix <code>CLAUDE_BIN</code> in crontab and run the two commands in section 7 manually for the week ending the most recent Sunday, (2) move DB credentials out of the code, (3) commit the pending changes, (4) update README/START_HERE status.</li>
+<li>The prompt file <code>dashboard/dashboard_refresh_prompt.md</code> is the single source of truth for SQL and rules; the orchestrator and uploader are mechanical wrappers around it.</li>
+<li>Do not read the <code>development.leakage_*</code> tables or <code>ph_action_board.*</code> in calculations; keep DB access read-only except for the single <code>ph_task</code> upload.</li>
+<li>Status of this handover document: Newly Created (no prior handover existed in the project).</li>
+</ul></main></body></html>

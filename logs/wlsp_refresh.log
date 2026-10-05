@@ -320,3 +320,506 @@ FAIL                           : 0
 [2026-08-03T08:45:01] START refresh — launching Claude CLI headless
 [2026-08-03T08:45:35] Claude exit=0; stdout tail: "s are being blocked at the permission layer — I need you to explicitly grant access before I can run any queries. Could you approve the tool (likely via a permission prompt in your client, or by adding it to allowed tools)? I can't proceed with the dashboard refresh until database access is granted."
 [2026-08-03T08:45:35] RESULT: FAIL — leakage_dashboard.html unchanged after run
+[MANUAL VERIFY RUN 2026-08-03T03:37:37Z] fix test — postgres_2 connector
+[2026-08-03T09:07:37] START refresh — launching Claude CLI headless
+[2026-08-03T09:20:27] Claude exit=0; stdout tail: '3=24, l4=11, total=219; LEDSone UK → l1=82, l2=160, l3=31, l4=21, total=294. (L1–L4 sums reconcile exactly to `counts`.)\n\n**ph_summary:** 30 PHs (UNATTRIBUTED excluded per spec).\n\n29 UNATTRIBUTED detail rows across L1–L4 were tagged: 15 `RECOVERABLE`, 14 `MISSING_SOURCE`, based on the SKU→PH lookup.'
+[2026-08-03T09:20:27] VALIDATION OK (master) — counts L1=175 L2=251 L3=55 L4=32 L5=20; accounts=2; ph_rows=30; generated_at=2026-08-03
+[2026-08-03T09:20:27] PH dashboards OK — 30 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-08-03T09:20:27] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 770.4s total
+scan: master + /home/led-247/AIOS_WEEKLY_LEAKAGE_IDENTIFICATION/AIOS_Weekly_Leakage_Identification/dashboard/portfolio_holders
+ignore override: none | dashboards to process: 31
+
+  PASS  INSERT  id=544  V3   Master              242090 bytes
+  PASS  INSERT  id=545  V3   Abinayaa             64086 bytes
+  PASS  INSERT  id=546  V3   Akalika              61874 bytes
+  PASS  INSERT  id=547  V3   Akanila              62605 bytes
+  PASS  INSERT  id=548  V3   Arudchelvi           63345 bytes
+  PASS  INSERT  id=549  V3   Dilakshiga           61254 bytes
+  PASS  INSERT  id=550  V3   Dilani               65257 bytes
+  PASS  INSERT  id=551  V3   Illakkiya            62354 bytes
+  PASS  INSERT  id=552  V3   Jasmini              73859 bytes
+  PASS  INSERT  id=553  V3   Jathisha             62433 bytes
+  PASS  INSERT  id=554  V3   Jubista              62580 bytes
+  PASS  INSERT  id=555  V3   mothajini            64136 bytes
+  PASS  INSERT  id=556  V3   Nithushana           61518 bytes
+  PASS  INSERT  id=557  V3   paulr                73800 bytes
+  PASS  INSERT  id=558  V3   prasath              67253 bytes
+  PASS  INSERT  id=559  V3   preethi              64022 bytes
+  PASS  INSERT  id=560  V3   Ramsika              61232 bytes
+  PASS  INSERT  id=561  V3   Renuha               64890 bytes
+  PASS  INSERT  id=562  V3   Saranya              63119 bytes
+  PASS  INSERT  id=563  V3   Sarbavi              61686 bytes
+  PASS  INSERT  id=564  V3   Shanthini            62156 bytes
+  PASS  INSERT  id=565  V3   shimee               63270 bytes
+  PASS  INSERT  id=566  V3   thanusha             61465 bytes
+  PASS  INSERT  id=567  V3   Tharshana            63890 bytes
+  PASS  INSERT  id=568  V3   Tharsiga(nelli)      66291 bytes
+  PASS  INSERT  id=569  V3   Tharsika(jaffna)     66583 bytes
+  PASS  INSERT  id=570  V3   Theepana             65183 bytes
+  PASS  INSERT  id=571  V3   Thojika              65079 bytes
+  PASS  INSERT  id=572  V3   thuwaraga            71014 bytes
+  PASS  INSERT  id=573  V3   utharsika            78685 bytes
+  PASS  INSERT  id=574  V3   Vaishnavi            61502 bytes
+
+| Dashboard | Operation | Row ID | Version | HTML Size | version_status | Status |
+|---|---|---|---|---|---|---|
+| Master | INSERT | 544 | V3 | 242090 | released | PASS |
+| Abinayaa | INSERT | 545 | V3 | 64086 | released | PASS |
+| Akalika | INSERT | 546 | V3 | 61874 | released | PASS |
+| Akanila | INSERT | 547 | V3 | 62605 | released | PASS |
+| Arudchelvi | INSERT | 548 | V3 | 63345 | released | PASS |
+| Dilakshiga | INSERT | 549 | V3 | 61254 | released | PASS |
+| Dilani | INSERT | 550 | V3 | 65257 | released | PASS |
+| Illakkiya | INSERT | 551 | V3 | 62354 | released | PASS |
+| Jasmini | INSERT | 552 | V3 | 73859 | released | PASS |
+| Jathisha | INSERT | 553 | V3 | 62433 | released | PASS |
+| Jubista | INSERT | 554 | V3 | 62580 | released | PASS |
+| mothajini | INSERT | 555 | V3 | 64136 | released | PASS |
+| Nithushana | INSERT | 556 | V3 | 61518 | released | PASS |
+| paulr | INSERT | 557 | V3 | 73800 | released | PASS |
+| prasath | INSERT | 558 | V3 | 67253 | released | PASS |
+| preethi | INSERT | 559 | V3 | 64022 | released | PASS |
+| Ramsika | INSERT | 560 | V3 | 61232 | released | PASS |
+| Renuha | INSERT | 561 | V3 | 64890 | released | PASS |
+| Saranya | INSERT | 562 | V3 | 63119 | released | PASS |
+| Sarbavi | INSERT | 563 | V3 | 61686 | released | PASS |
+| Shanthini | INSERT | 564 | V3 | 62156 | released | PASS |
+| shimee | INSERT | 565 | V3 | 63270 | released | PASS |
+| thanusha | INSERT | 566 | V3 | 61465 | released | PASS |
+| Tharshana | INSERT | 567 | V3 | 63890 | released | PASS |
+| Tharsiga(nelli) | INSERT | 568 | V3 | 66291 | released | PASS |
+| Tharsika(jaffna) | INSERT | 569 | V3 | 66583 | released | PASS |
+| Theepana | INSERT | 570 | V3 | 65183 | released | PASS |
+| Thojika | INSERT | 571 | V3 | 65079 | released | PASS |
+| thuwaraga | INSERT | 572 | V3 | 71014 | released | PASS |
+| utharsika | INSERT | 573 | V3 | 78685 | released | PASS |
+| Vaishnavi | INSERT | 574 | V3 | 61502 | released | PASS |
+
+Total dashboards processed     : 31
+Master dashboards processed    : 1
+Portfolio Holder dashboards    : 30
+INSERTS (new weekly versions)  : 31
+UPDATES (same-week refresh)    : 0
+SKIPPED (frozen / stale)       : 0
+PASS                           : 31
+FAIL                           : 0
+PIPELINE_EXIT=0
+[MANUAL CATCH-UP RUN 2026-08-12T05:00:41Z] covering last week (report_date should be 2026-08-09); Monday 08-10 cron missed (leave)
+[2026-08-12T10:30:41] START refresh — launching Claude CLI headless
+[2026-08-12T10:37:13] Claude exit=0; stdout tail: "prompt's stored SQL should be patched so the next headless run doesn't error out.\n2. Full result sets exceeded the MCP inline output limit, so each query spilled to a tool-results file; I parsed those files and assembled the JSON with a script in the scratchpad rather than transcribing rows by hand."
+[2026-08-12T10:37:13] VALIDATION OK (master) — counts L1=147 L2=328 L3=54 L4=39 L5=19; accounts=2; ph_rows=30; generated_at=2026-08-12
+[2026-08-12T10:37:13] PH dashboards OK — 30 regenerated in 0.03s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-08-12T10:37:13] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 392.2s total
+scan: master + /home/led-247/AIOS_WEEKLY_LEAKAGE_IDENTIFICATION/AIOS_Weekly_Leakage_Identification/dashboard/portfolio_holders
+ignore override: none | dashboards to process: 31
+
+  PASS  INSERT  id=822  V4   Master              254766 bytes
+  PASS  INSERT  id=823  V4   Abinayaa             64708 bytes
+  PASS  INSERT  id=824  V4   Akalika              61231 bytes
+  PASS  INSERT  id=825  V4   Akanila              62205 bytes
+  PASS  INSERT  id=826  V4   Arudchelvi           63120 bytes
+  PASS  INSERT  id=827  V4   Dilakshiga           61477 bytes
+  PASS  INSERT  id=828  V4   Dilani               65827 bytes
+  PASS  INSERT  id=829  V4   Illakkiya            62580 bytes
+  PASS  INSERT  id=830  V4   Jasmini              76487 bytes
+  PASS  INSERT  id=831  V4   Jathisha             63172 bytes
+  PASS  INSERT  id=832  V4   Jubista              62122 bytes
+  PASS  INSERT  id=833  V4   mothajini            63385 bytes
+  PASS  INSERT  id=834  V4   Nithushana           61761 bytes
+  PASS  INSERT  id=835  V4   paulr                76886 bytes
+  PASS  INSERT  id=836  V4   prasath              68839 bytes
+  PASS  INSERT  id=837  V4   preethi              62950 bytes
+  PASS  INSERT  id=838  V4   Ramsika              61231 bytes
+  PASS  INSERT  id=839  V4   Renuha               63704 bytes
+  PASS  INSERT  id=840  V4   Saranya              62583 bytes
+  PASS  INSERT  id=841  V4   Sarbavi              62113 bytes
+  PASS  INSERT  id=842  V4   Shanthini            61734 bytes
+  PASS  INSERT  id=843  V4   shimee               65670 bytes
+  PASS  INSERT  id=844  V4   thanusha             62334 bytes
+  PASS  INSERT  id=845  V4   Tharshana            62469 bytes
+  PASS  INSERT  id=846  V4   Tharsiga(nelli)      66063 bytes
+  PASS  INSERT  id=847  V4   Tharsika(jaffna)     66120 bytes
+  PASS  INSERT  id=848  V4   Theepana             66055 bytes
+  PASS  INSERT  id=849  V4   Thojika              62990 bytes
+  PASS  INSERT  id=850  V4   thuwaraga            71702 bytes
+  PASS  INSERT  id=851  V4   utharsika            82193 bytes
+  PASS  INSERT  id=852  V4   Vaishnavi            61979 bytes
+
+| Dashboard | Operation | Row ID | Version | HTML Size | version_status | Status |
+|---|---|---|---|---|---|---|
+| Master | INSERT | 822 | V4 | 254766 | released | PASS |
+| Abinayaa | INSERT | 823 | V4 | 64708 | released | PASS |
+| Akalika | INSERT | 824 | V4 | 61231 | released | PASS |
+| Akanila | INSERT | 825 | V4 | 62205 | released | PASS |
+| Arudchelvi | INSERT | 826 | V4 | 63120 | released | PASS |
+| Dilakshiga | INSERT | 827 | V4 | 61477 | released | PASS |
+| Dilani | INSERT | 828 | V4 | 65827 | released | PASS |
+| Illakkiya | INSERT | 829 | V4 | 62580 | released | PASS |
+| Jasmini | INSERT | 830 | V4 | 76487 | released | PASS |
+| Jathisha | INSERT | 831 | V4 | 63172 | released | PASS |
+| Jubista | INSERT | 832 | V4 | 62122 | released | PASS |
+| mothajini | INSERT | 833 | V4 | 63385 | released | PASS |
+| Nithushana | INSERT | 834 | V4 | 61761 | released | PASS |
+| paulr | INSERT | 835 | V4 | 76886 | released | PASS |
+| prasath | INSERT | 836 | V4 | 68839 | released | PASS |
+| preethi | INSERT | 837 | V4 | 62950 | released | PASS |
+| Ramsika | INSERT | 838 | V4 | 61231 | released | PASS |
+| Renuha | INSERT | 839 | V4 | 63704 | released | PASS |
+| Saranya | INSERT | 840 | V4 | 62583 | released | PASS |
+| Sarbavi | INSERT | 841 | V4 | 62113 | released | PASS |
+| Shanthini | INSERT | 842 | V4 | 61734 | released | PASS |
+| shimee | INSERT | 843 | V4 | 65670 | released | PASS |
+| thanusha | INSERT | 844 | V4 | 62334 | released | PASS |
+| Tharshana | INSERT | 845 | V4 | 62469 | released | PASS |
+| Tharsiga(nelli) | INSERT | 846 | V4 | 66063 | released | PASS |
+| Tharsika(jaffna) | INSERT | 847 | V4 | 66120 | released | PASS |
+| Theepana | INSERT | 848 | V4 | 66055 | released | PASS |
+| Thojika | INSERT | 849 | V4 | 62990 | released | PASS |
+| thuwaraga | INSERT | 850 | V4 | 71702 | released | PASS |
+| utharsika | INSERT | 851 | V4 | 82193 | released | PASS |
+| Vaishnavi | INSERT | 852 | V4 | 61979 | released | PASS |
+
+Total dashboards processed     : 31
+Master dashboards processed    : 1
+Portfolio Holder dashboards    : 30
+INSERTS (new weekly versions)  : 31
+UPDATES (same-week refresh)    : 0
+SKIPPED (frozen / stale)       : 0
+PASS                           : 31
+FAIL                           : 0
+PIPELINE_EXIT=0
+[2026-08-17T08:45:01] START refresh — launching Claude CLI headless
+[2026-08-17T09:05:59] Claude exit=0; stdout tail: 'DATA_START` and from `WLSP_DATA_END` onward are byte-identical to the previous file; markers still appear exactly once; no `data.js` created (the 2 `data.js` string hits are pre-existing comment text, count unchanged); forbidden tables appear only in the `verification_summary` "Excluded tables" row.'
+[2026-08-17T09:05:59] VALIDATION OK (master) — counts L1=100 L2=235 L3=33 L4=25 L5=19; accounts=2; ph_rows=29; generated_at=2026-08-17
+[2026-08-17T09:05:59] PH dashboards OK — 30 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-08-17T09:05:59] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 1258.6s total
+scan: master + /home/led-247/AIOS_WEEKLY_LEAKAGE_IDENTIFICATION/AIOS_Weekly_Leakage_Identification/dashboard/portfolio_holders
+ignore override: none | dashboards to process: 31
+
+  PASS  INSERT  id=906  V5   Master              214866 bytes
+  PASS  INSERT  id=907  V5   Abinayaa             63343 bytes
+  PASS  INSERT  id=908  V5   Akalika              61231 bytes
+  PASS  INSERT  id=909  V5   Akanila              62853 bytes
+  PASS  INSERT  id=910  V5   Arudchelvi           61944 bytes
+  PASS  INSERT  id=911  V5   Dilakshiga           61481 bytes
+  PASS  INSERT  id=912  V5   Dilani               63694 bytes
+  PASS  INSERT  id=913  V5   Illakkiya            63240 bytes
+  PASS  INSERT  id=914  V5   Jasmini              71894 bytes
+  PASS  INSERT  id=915  V5   Jathisha             61970 bytes
+  PASS  INSERT  id=916  V5   Jubista              61895 bytes
+  PASS  INSERT  id=917  V5   mothajini            62857 bytes
+  PASS  INSERT  id=918  V5   Nithushana           61747 bytes
+  PASS  INSERT  id=919  V5   paulr                72090 bytes
+  PASS  INSERT  id=920  V5   prasath              65221 bytes
+  PASS  INSERT  id=921  V5   preethi              61685 bytes
+  PASS  INSERT  id=922  V5   Ramsika              61679 bytes
+  PASS  INSERT  id=923  V5   Renuha               64165 bytes
+  PASS  INSERT  id=924  V5   Saranya              61935 bytes
+  PASS  INSERT  id=925  V5   Sarbavi              61911 bytes
+  PASS  INSERT  id=926  V5   Shanthini            61271 bytes
+  PASS  INSERT  id=927  V5   shimee               64560 bytes
+  PASS  INSERT  id=928  V5   thanusha             61462 bytes
+  PASS  INSERT  id=929  V5   Tharshana            61741 bytes
+  PASS  INSERT  id=930  V5   Tharsiga(nelli)      63397 bytes
+  PASS  INSERT  id=931  V5   Tharsika(jaffna)     62719 bytes
+  PASS  INSERT  id=932  V5   Theepana             65345 bytes
+  PASS  INSERT  id=933  V5   Thojika              62560 bytes
+  PASS  INSERT  id=934  V5   thuwaraga            68574 bytes
+  PASS  INSERT  id=935  V5   utharsika            77331 bytes
+  PASS  INSERT  id=936  V5   Vaishnavi            62173 bytes
+
+| Dashboard | Operation | Row ID | Version | HTML Size | version_status | Status |
+|---|---|---|---|---|---|---|
+| Master | INSERT | 906 | V5 | 214866 | released | PASS |
+| Abinayaa | INSERT | 907 | V5 | 63343 | released | PASS |
+| Akalika | INSERT | 908 | V5 | 61231 | released | PASS |
+| Akanila | INSERT | 909 | V5 | 62853 | released | PASS |
+| Arudchelvi | INSERT | 910 | V5 | 61944 | released | PASS |
+| Dilakshiga | INSERT | 911 | V5 | 61481 | released | PASS |
+| Dilani | INSERT | 912 | V5 | 63694 | released | PASS |
+| Illakkiya | INSERT | 913 | V5 | 63240 | released | PASS |
+| Jasmini | INSERT | 914 | V5 | 71894 | released | PASS |
+| Jathisha | INSERT | 915 | V5 | 61970 | released | PASS |
+| Jubista | INSERT | 916 | V5 | 61895 | released | PASS |
+| mothajini | INSERT | 917 | V5 | 62857 | released | PASS |
+| Nithushana | INSERT | 918 | V5 | 61747 | released | PASS |
+| paulr | INSERT | 919 | V5 | 72090 | released | PASS |
+| prasath | INSERT | 920 | V5 | 65221 | released | PASS |
+| preethi | INSERT | 921 | V5 | 61685 | released | PASS |
+| Ramsika | INSERT | 922 | V5 | 61679 | released | PASS |
+| Renuha | INSERT | 923 | V5 | 64165 | released | PASS |
+| Saranya | INSERT | 924 | V5 | 61935 | released | PASS |
+| Sarbavi | INSERT | 925 | V5 | 61911 | released | PASS |
+| Shanthini | INSERT | 926 | V5 | 61271 | released | PASS |
+| shimee | INSERT | 927 | V5 | 64560 | released | PASS |
+| thanusha | INSERT | 928 | V5 | 61462 | released | PASS |
+| Tharshana | INSERT | 929 | V5 | 61741 | released | PASS |
+| Tharsiga(nelli) | INSERT | 930 | V5 | 63397 | released | PASS |
+| Tharsika(jaffna) | INSERT | 931 | V5 | 62719 | released | PASS |
+| Theepana | INSERT | 932 | V5 | 65345 | released | PASS |
+| Thojika | INSERT | 933 | V5 | 62560 | released | PASS |
+| thuwaraga | INSERT | 934 | V5 | 68574 | released | PASS |
+| utharsika | INSERT | 935 | V5 | 77331 | released | PASS |
+| Vaishnavi | INSERT | 936 | V5 | 62173 | released | PASS |
+
+Total dashboards processed     : 31
+Master dashboards processed    : 1
+Portfolio Holder dashboards    : 30
+INSERTS (new weekly versions)  : 31
+UPDATES (same-week refresh)    : 0
+SKIPPED (frozen / stale)       : 0
+PASS                           : 31
+FAIL                           : 0
+[2026-08-24T08:45:01] START refresh — launching Claude CLI headless
+[2026-08-24T08:45:59] Claude exit=0; stdout tail: "week.\n\nOne thing worth checking while you're in there: if the connectors were renumbered rather than de-authorized, the new connector may carry a different display name, in which case the `dashboard_refresh_prompt.md` line pinning `mcp__claude_ai_postgres_2__execute_sql` will need updating to match."
+[2026-08-24T08:45:59] RESULT: FAIL — leakage_dashboard.html unchanged after run
+[2026-08-31T08:45:01] START refresh — launching Claude CLI headless
+[2026-08-31T08:57:46] Claude exit=0; stdout tail: "I've launched a background agent to run the full WLSP dashboard refresh — it will query Postgres for L1–L5, build the `dashboardData` JSON, and splice it into `leakage_dashboard.html` between the markers, exactly per spec. I'll report back with the row counts and verification once it completes."
+[2026-08-31T08:57:46] VALIDATION OK (master) — counts L1=176 L2=344 L3=57 L4=40 L5=9; accounts=2; ph_rows=30; generated_at=2026-08-31
+[2026-08-31T08:57:46] PH dashboards OK — 30 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-08-31T08:57:46] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 765.2s total
+scan: master + /home/led-247/AIOS_WEEKLY_LEAKAGE_IDENTIFICATION/AIOS_Weekly_Leakage_Identification/dashboard/portfolio_holders
+ignore override: none | dashboards to process: 31
+
+  PASS  INSERT  id=1076 V6   Master              265798 bytes
+  PASS  INSERT  id=1077 V6   Abinayaa             64238 bytes
+  PASS  INSERT  id=1078 V6   Akalika              61633 bytes
+  PASS  INSERT  id=1079 V6   Akanila              61886 bytes
+  PASS  INSERT  id=1080 V6   Arudchelvi           62109 bytes
+  PASS  INSERT  id=1081 V6   Dilakshiga           61007 bytes
+  PASS  INSERT  id=1082 V6   Dilani               64056 bytes
+  PASS  INSERT  id=1083 V6   Illakkiya            62363 bytes
+  PASS  INSERT  id=1084 V6   Jasmini              77222 bytes
+  PASS  INSERT  id=1085 V6   Jathisha             62441 bytes
+  PASS  INSERT  id=1086 V6   Jubista              62088 bytes
+  PASS  INSERT  id=1087 V6   mothajini            64788 bytes
+  PASS  INSERT  id=1088 V6   Nithushana           62375 bytes
+  PASS  INSERT  id=1089 V6   paulr                76729 bytes
+  PASS  INSERT  id=1090 V6   prasath              65845 bytes
+  PASS  INSERT  id=1091 V6   preethi              62312 bytes
+  PASS  INSERT  id=1092 V6   Ramsika              60985 bytes
+  PASS  INSERT  id=1093 V6   Renuha               63776 bytes
+  PASS  INSERT  id=1094 V6   Saranya              62361 bytes
+  PASS  INSERT  id=1095 V6   Sarbavi              61934 bytes
+  PASS  INSERT  id=1096 V6   Shanthini            61723 bytes
+  PASS  INSERT  id=1097 V6   shimee               68467 bytes
+  PASS  INSERT  id=1098 V6   thanusha             62083 bytes
+  PASS  INSERT  id=1099 V6   Tharshana            65302 bytes
+  PASS  INSERT  id=1100 V6   Tharsiga(nelli)      64900 bytes
+  PASS  INSERT  id=1101 V6   Tharsika(jaffna)     64781 bytes
+  PASS  INSERT  id=1102 V6   Theepana             66553 bytes
+  PASS  INSERT  id=1103 V6   Thojika              62958 bytes
+  PASS  INSERT  id=1104 V6   thuwaraga            76713 bytes
+  PASS  INSERT  id=1105 V6   utharsika            85010 bytes
+  PASS  INSERT  id=1106 V6   Vaishnavi            62457 bytes
+
+| Dashboard | Operation | Row ID | Version | HTML Size | version_status | Status |
+|---|---|---|---|---|---|---|
+| Master | INSERT | 1076 | V6 | 265798 | released | PASS |
+| Abinayaa | INSERT | 1077 | V6 | 64238 | released | PASS |
+| Akalika | INSERT | 1078 | V6 | 61633 | released | PASS |
+| Akanila | INSERT | 1079 | V6 | 61886 | released | PASS |
+| Arudchelvi | INSERT | 1080 | V6 | 62109 | released | PASS |
+| Dilakshiga | INSERT | 1081 | V6 | 61007 | released | PASS |
+| Dilani | INSERT | 1082 | V6 | 64056 | released | PASS |
+| Illakkiya | INSERT | 1083 | V6 | 62363 | released | PASS |
+| Jasmini | INSERT | 1084 | V6 | 77222 | released | PASS |
+| Jathisha | INSERT | 1085 | V6 | 62441 | released | PASS |
+| Jubista | INSERT | 1086 | V6 | 62088 | released | PASS |
+| mothajini | INSERT | 1087 | V6 | 64788 | released | PASS |
+| Nithushana | INSERT | 1088 | V6 | 62375 | released | PASS |
+| paulr | INSERT | 1089 | V6 | 76729 | released | PASS |
+| prasath | INSERT | 1090 | V6 | 65845 | released | PASS |
+| preethi | INSERT | 1091 | V6 | 62312 | released | PASS |
+| Ramsika | INSERT | 1092 | V6 | 60985 | released | PASS |
+| Renuha | INSERT | 1093 | V6 | 63776 | released | PASS |
+| Saranya | INSERT | 1094 | V6 | 62361 | released | PASS |
+| Sarbavi | INSERT | 1095 | V6 | 61934 | released | PASS |
+| Shanthini | INSERT | 1096 | V6 | 61723 | released | PASS |
+| shimee | INSERT | 1097 | V6 | 68467 | released | PASS |
+| thanusha | INSERT | 1098 | V6 | 62083 | released | PASS |
+| Tharshana | INSERT | 1099 | V6 | 65302 | released | PASS |
+| Tharsiga(nelli) | INSERT | 1100 | V6 | 64900 | released | PASS |
+| Tharsika(jaffna) | INSERT | 1101 | V6 | 64781 | released | PASS |
+| Theepana | INSERT | 1102 | V6 | 66553 | released | PASS |
+| Thojika | INSERT | 1103 | V6 | 62958 | released | PASS |
+| thuwaraga | INSERT | 1104 | V6 | 76713 | released | PASS |
+| utharsika | INSERT | 1105 | V6 | 85010 | released | PASS |
+| Vaishnavi | INSERT | 1106 | V6 | 62457 | released | PASS |
+
+Total dashboards processed     : 31
+Master dashboards processed    : 1
+Portfolio Holder dashboards    : 30
+INSERTS (new weekly versions)  : 31
+UPDATES (same-week refresh)    : 0
+SKIPPED (frozen / stale)       : 0
+PASS                           : 31
+FAIL                           : 0
+[2026-09-07T08:45:01] START refresh — launching Claude CLI headless
+[2026-09-07T08:49:42] Claude exit=0; stdout tail: 'ntact; JSON parses. `data.js` and `index.html` untouched, no new files created in the repo (working files went to `/tmp/wlsp/`).\n\nOne note: `refresh_dashboard.py` shows as modified in `git status`, but that predates this run — it was already dirty in the starting working tree and I did not touch it.'
+[2026-09-07T08:49:42] VALIDATION OK (master) — counts L1=125 L2=344 L3=30 L4=38 L5=8; accounts=2; ph_rows=29; generated_at=2026-09-07
+[2026-09-07T08:49:42] PH dashboards OK — 30 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-09-07T08:49:42] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 281.5s total
+scan: master + /home/led-247/AIOS_WEEKLY_LEAKAGE_IDENTIFICATION/AIOS_Weekly_Leakage_Identification/dashboard/portfolio_holders
+ignore override: none | dashboards to process: 31
+
+  PASS  INSERT  id=1315 V7   Master              247074 bytes
+  PASS  INSERT  id=1316 V7   Abinayaa             63969 bytes
+  PASS  INSERT  id=1317 V7   Akalika              61414 bytes
+  PASS  INSERT  id=1318 V7   Akanila              61691 bytes
+  PASS  INSERT  id=1319 V7   Arudchelvi           62342 bytes
+  PASS  INSERT  id=1320 V7   Dilakshiga           61008 bytes
+  PASS  INSERT  id=1321 V7   Dilani               64757 bytes
+  PASS  INSERT  id=1322 V7   Illakkiya            62770 bytes
+  PASS  INSERT  id=1323 V7   Jasmini              75625 bytes
+  PASS  INSERT  id=1324 V7   Jathisha             62141 bytes
+  PASS  INSERT  id=1325 V7   Jubista              61642 bytes
+  PASS  INSERT  id=1326 V7   mothajini            62710 bytes
+  PASS  INSERT  id=1327 V7   Nithushana           61936 bytes
+  PASS  INSERT  id=1328 V7   paulr                75651 bytes
+  PASS  INSERT  id=1329 V7   prasath              65785 bytes
+  PASS  INSERT  id=1330 V7   preethi              62094 bytes
+  PASS  INSERT  id=1331 V7   Ramsika              61207 bytes
+  PASS  INSERT  id=1332 V7   Renuha               64185 bytes
+  PASS  INSERT  id=1333 V7   Saranya              61873 bytes
+  PASS  INSERT  id=1334 V7   Sarbavi              61639 bytes
+  PASS  INSERT  id=1335 V7   Shanthini            61744 bytes
+  PASS  INSERT  id=1336 V7   shimee               66574 bytes
+  PASS  INSERT  id=1337 V7   thanusha             61887 bytes
+  PASS  INSERT  id=1338 V7   Tharshana            62691 bytes
+  PASS  INSERT  id=1339 V7   Tharsiga(nelli)      63793 bytes
+  PASS  INSERT  id=1340 V7   Tharsika(jaffna)     63874 bytes
+  PASS  INSERT  id=1341 V7   Theepana             65525 bytes
+  PASS  INSERT  id=1342 V7   Thojika              64969 bytes
+  PASS  INSERT  id=1343 V7   thuwaraga            75821 bytes
+  PASS  INSERT  id=1344 V7   utharsika            78138 bytes
+  PASS  INSERT  id=1345 V7   Vaishnavi            61699 bytes
+
+| Dashboard | Operation | Row ID | Version | HTML Size | version_status | Status |
+|---|---|---|---|---|---|---|
+| Master | INSERT | 1315 | V7 | 247074 | released | PASS |
+| Abinayaa | INSERT | 1316 | V7 | 63969 | released | PASS |
+| Akalika | INSERT | 1317 | V7 | 61414 | released | PASS |
+| Akanila | INSERT | 1318 | V7 | 61691 | released | PASS |
+| Arudchelvi | INSERT | 1319 | V7 | 62342 | released | PASS |
+| Dilakshiga | INSERT | 1320 | V7 | 61008 | released | PASS |
+| Dilani | INSERT | 1321 | V7 | 64757 | released | PASS |
+| Illakkiya | INSERT | 1322 | V7 | 62770 | released | PASS |
+| Jasmini | INSERT | 1323 | V7 | 75625 | released | PASS |
+| Jathisha | INSERT | 1324 | V7 | 62141 | released | PASS |
+| Jubista | INSERT | 1325 | V7 | 61642 | released | PASS |
+| mothajini | INSERT | 1326 | V7 | 62710 | released | PASS |
+| Nithushana | INSERT | 1327 | V7 | 61936 | released | PASS |
+| paulr | INSERT | 1328 | V7 | 75651 | released | PASS |
+| prasath | INSERT | 1329 | V7 | 65785 | released | PASS |
+| preethi | INSERT | 1330 | V7 | 62094 | released | PASS |
+| Ramsika | INSERT | 1331 | V7 | 61207 | released | PASS |
+| Renuha | INSERT | 1332 | V7 | 64185 | released | PASS |
+| Saranya | INSERT | 1333 | V7 | 61873 | released | PASS |
+| Sarbavi | INSERT | 1334 | V7 | 61639 | released | PASS |
+| Shanthini | INSERT | 1335 | V7 | 61744 | released | PASS |
+| shimee | INSERT | 1336 | V7 | 66574 | released | PASS |
+| thanusha | INSERT | 1337 | V7 | 61887 | released | PASS |
+| Tharshana | INSERT | 1338 | V7 | 62691 | released | PASS |
+| Tharsiga(nelli) | INSERT | 1339 | V7 | 63793 | released | PASS |
+| Tharsika(jaffna) | INSERT | 1340 | V7 | 63874 | released | PASS |
+| Theepana | INSERT | 1341 | V7 | 65525 | released | PASS |
+| Thojika | INSERT | 1342 | V7 | 64969 | released | PASS |
+| thuwaraga | INSERT | 1343 | V7 | 75821 | released | PASS |
+| utharsika | INSERT | 1344 | V7 | 78138 | released | PASS |
+| Vaishnavi | INSERT | 1345 | V7 | 61699 | released | PASS |
+
+Total dashboards processed     : 31
+Master dashboards processed    : 1
+Portfolio Holder dashboards    : 30
+INSERTS (new weekly versions)  : 31
+UPDATES (same-week refresh)    : 0
+SKIPPED (frozen / stale)       : 0
+PASS                           : 31
+FAIL                           : 0
+[2026-09-14T08:45:01] START refresh — launching Claude CLI headless
+[2026-09-14T09:00:44] Claude exit=0; stdout tail: ' re-parses as JSON, all keys present, every L5 row carries an `account`, and no forbidden table names appear anywhere outside `verification_summary`. No `data.js` created; `index.html` and `refresh_dashboard.py` untouched (the other modified files in `git status` were already dirty before this run).'
+[2026-09-14T09:00:44] VALIDATION OK (master) — counts L1=135 L2=318 L3=46 L4=33 L5=8; accounts=2; ph_rows=28; generated_at=2026-09-14
+[2026-09-14T09:00:44] PH dashboards OK — 30 regenerated in 0.02s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-09-14T09:00:44] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 942.5s total
+scan: master + /home/led-247/AIOS_WEEKLY_LEAKAGE_IDENTIFICATION/AIOS_Weekly_Leakage_Identification/dashboard/portfolio_holders
+ignore override: none | dashboards to process: 31
+
+  PASS  INSERT  id=1514 V8   Master              245364 bytes
+  PASS  INSERT  id=1515 V8   Abinayaa             63079 bytes
+  PASS  INSERT  id=1516 V8   Akalika              61640 bytes
+  PASS  INSERT  id=1517 V8   Akanila              63495 bytes
+  PASS  INSERT  id=1518 V8   Arudchelvi           62135 bytes
+  PASS  INSERT  id=1519 V8   Dilakshiga           61008 bytes
+  PASS  INSERT  id=1520 V8   Dilani               63404 bytes
+  PASS  INSERT  id=1521 V8   Illakkiya            61682 bytes
+  PASS  INSERT  id=1522 V8   Jasmini              74930 bytes
+  PASS  INSERT  id=1524 V8   Jathisha             62600 bytes
+  PASS  INSERT  id=1525 V8   Jubista              61662 bytes
+  PASS  INSERT  id=1526 V8   mothajini            61991 bytes
+  PASS  INSERT  id=1527 V8   Nithushana           63547 bytes
+  PASS  INSERT  id=1528 V8   paulr                75626 bytes
+  PASS  INSERT  id=1529 V8   prasath              65623 bytes
+  PASS  INSERT  id=1530 V8   preethi              62706 bytes
+  PASS  INSERT  id=1531 V8   Ramsika              60982 bytes
+  PASS  INSERT  id=1532 V8   Renuha               62868 bytes
+  PASS  INSERT  id=1533 V8   Saranya              61454 bytes
+  PASS  INSERT  id=1534 V8   Sarbavi              60987 bytes
+  PASS  INSERT  id=1535 V8   Shanthini            61463 bytes
+  PASS  INSERT  id=1536 V8   shimee               66724 bytes
+  PASS  INSERT  id=1537 V8   thanusha             61673 bytes
+  PASS  INSERT  id=1538 V8   Tharshana            63156 bytes
+  PASS  INSERT  id=1539 V8   Tharsiga(nelli)      66902 bytes
+  PASS  INSERT  id=1540 V8   Tharsika(jaffna)     64319 bytes
+  PASS  INSERT  id=1541 V8   Theepana             65073 bytes
+  PASS  INSERT  id=1542 V8   Thojika              62547 bytes
+  PASS  INSERT  id=1543 V8   thuwaraga            74941 bytes
+  PASS  INSERT  id=1544 V8   utharsika            81973 bytes
+  PASS  INSERT  id=1545 V8   Vaishnavi            61465 bytes
+
+| Dashboard | Operation | Row ID | Version | HTML Size | version_status | Status |
+|---|---|---|---|---|---|---|
+| Master | INSERT | 1514 | V8 | 245364 | released | PASS |
+| Abinayaa | INSERT | 1515 | V8 | 63079 | released | PASS |
+| Akalika | INSERT | 1516 | V8 | 61640 | released | PASS |
+| Akanila | INSERT | 1517 | V8 | 63495 | released | PASS |
+| Arudchelvi | INSERT | 1518 | V8 | 62135 | released | PASS |
+| Dilakshiga | INSERT | 1519 | V8 | 61008 | released | PASS |
+| Dilani | INSERT | 1520 | V8 | 63404 | released | PASS |
+| Illakkiya | INSERT | 1521 | V8 | 61682 | released | PASS |
+| Jasmini | INSERT | 1522 | V8 | 74930 | released | PASS |
+| Jathisha | INSERT | 1524 | V8 | 62600 | released | PASS |
+| Jubista | INSERT | 1525 | V8 | 61662 | released | PASS |
+| mothajini | INSERT | 1526 | V8 | 61991 | released | PASS |
+| Nithushana | INSERT | 1527 | V8 | 63547 | released | PASS |
+| paulr | INSERT | 1528 | V8 | 75626 | released | PASS |
+| prasath | INSERT | 1529 | V8 | 65623 | released | PASS |
+| preethi | INSERT | 1530 | V8 | 62706 | released | PASS |
+| Ramsika | INSERT | 1531 | V8 | 60982 | released | PASS |
+| Renuha | INSERT | 1532 | V8 | 62868 | released | PASS |
+| Saranya | INSERT | 1533 | V8 | 61454 | released | PASS |
+| Sarbavi | INSERT | 1534 | V8 | 60987 | released | PASS |
+| Shanthini | INSERT | 1535 | V8 | 61463 | released | PASS |
+| shimee | INSERT | 1536 | V8 | 66724 | released | PASS |
+| thanusha | INSERT | 1537 | V8 | 61673 | released | PASS |
+| Tharshana | INSERT | 1538 | V8 | 63156 | released | PASS |
+| Tharsiga(nelli) | INSERT | 1539 | V8 | 66902 | released | PASS |
+| Tharsika(jaffna) | INSERT | 1540 | V8 | 64319 | released | PASS |
+| Theepana | INSERT | 1541 | V8 | 65073 | released | PASS |
+| Thojika | INSERT | 1542 | V8 | 62547 | released | PASS |
+| thuwaraga | INSERT | 1543 | V8 | 74941 | released | PASS |
+| utharsika | INSERT | 1544 | V8 | 81973 | released | PASS |
+| Vaishnavi | INSERT | 1545 | V8 | 61465 | released | PASS |
+
+Total dashboards processed     : 31
+Master dashboards processed    : 1
+Portfolio Holder dashboards    : 30
+INSERTS (new weekly versions)  : 31
+UPDATES (same-week refresh)    : 0
+SKIPPED (frozen / stale)       : 0
+PASS                           : 31
+FAIL                           : 0
+[2026-09-21T08:45:01] START refresh — launching Claude CLI headless
+[2026-09-21T08:45:01] RESULT: FAIL — Claude CLI not found (CLAUDE_BIN=/home/led-247/.local/bin/claude)
+[2026-10-05T08:45:02] START refresh — launching Claude CLI headless
+[2026-10-05T08:45:02] RESULT: FAIL — Claude CLI not found (CLAUDE_BIN=/home/led-247/.local/bin/claude)
