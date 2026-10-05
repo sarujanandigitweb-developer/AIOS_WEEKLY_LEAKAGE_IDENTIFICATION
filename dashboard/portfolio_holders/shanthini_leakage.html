@@ -413,66 +413,65 @@
 const dashboardData = {
   "summary": {
     "report_title": "PH Weekly Leakage Action Lists",
-    "report_date": "2026-09-13",
-    "generated_at": "2026-09-14",
+    "report_date": "2026-10-04",
+    "generated_at": "2026-10-05",
     "scope": "UK Amazon FBM (Amazon-only)",
     "accounts": "LEDSone + DCVoltage",
     "deadline": "Wednesday EOD",
     "ph_count": 1,
     "analyses_count": 5,
     "counts": {
-      "l1": 1,
-      "l2": 1,
+      "l1": 2,
+      "l2": 0,
       "l3": 0,
-      "l4": 0,
+      "l4": 1,
       "l5": 0
     },
     "displayed": {
-      "l1": 1,
-      "l2": 1,
+      "l1": 2,
+      "l2": 0,
       "l3": 0,
-      "l4": 0,
+      "l4": 1,
       "l5": 1
     }
   },
   "l1": [
     {
       "ph": "Shanthini",
-      "sku": "ENC5170",
-      "asin": "B0C7KWQ15H",
-      "spend": 3.47,
-      "clicks": 10,
-      "account": "LEDSone UK",
-      "conversions": 0,
-      "impressions": 623
-    }
-  ],
-  "l2": [
-    {
-      "asin": "B08XBXZG93",
-      "ph": "Shanthini",
-      "sku": "CRSF100GR+LHTTE27GR",
+      "asin": "B0FHPLR9C5",
+      "sku": "CRFF100RO2PK+LHNSE27RO2PK",
       "account": "DCVoltage UK",
-      "revenue": 9.07,
-      "shipping": 2.72,
-      "orders": 1,
-      "shipping_pct": 30.0
-    }
-  ],
-  "l3": [],
-  "l4": [],
-  "l5": [
+      "spend": 8.46,
+      "clicks": 23,
+      "impressions": 2854,
+      "conversions": 0
+    },
     {
       "ph": "Shanthini",
-      "account": "ALL",
-      "month": "2026-06",
-      "revenue": 1573.04,
-      "shipping": 286.52,
-      "ppc": 353.21,
-      "net": 68.14,
-      "margin_pct": 4.3,
-      "declining": null
-    },
+      "asin": "B0C7GKYFRW",
+      "sku": "ENC5166",
+      "account": "DCVoltage UK",
+      "spend": 3.44,
+      "clicks": 12,
+      "impressions": 845,
+      "conversions": 0
+    }
+  ],
+  "l2": [],
+  "l3": [],
+  "l4": [
+    {
+      "sku": "CRFF100YB+LHNSE27YB+ICST64E27",
+      "asin": "B0GCZKJQQL",
+      "ph": "Shanthini",
+      "account": "LEDSone UK",
+      "total_orders": 3,
+      "refunded_orders": 1,
+      "refund_rate": 33.3,
+      "revenue_at_risk": 16.89
+    }
+  ],
+  "l5": [
     {
       "ph": "Shanthini",
       "account": "ALL",
@@ -493,18 +492,18 @@ const dashboardData = {
       "ppc": 198.89,
       "net": -50.52,
       "margin_pct": -9.4,
-      "declining": false
+      "declining": null
     },
     {
       "ph": "Shanthini",
-      "account": "DCVoltage UK",
-      "month": "2026-06",
-      "revenue": 1245.61,
-      "shipping": 218.0,
-      "ppc": 283.25,
-      "net": 59.27,
-      "margin_pct": 4.8,
-      "declining": null
+      "account": "ALL",
+      "month": "2026-09",
+      "revenue": 529.99,
+      "shipping": 71.45,
+      "ppc": 95.1,
+      "net": 71.95,
+      "margin_pct": 13.6,
+      "declining": false
     },
     {
       "ph": "Shanthini",
@@ -526,18 +525,18 @@ const dashboardData = {
       "ppc": 182.79,
       "net": -79.21,
       "margin_pct": -23.2,
-      "declining": false
+      "declining": null
     },
     {
       "ph": "Shanthini",
-      "account": "LEDSone UK",
-      "month": "2026-06",
-      "revenue": 327.43,
-      "shipping": 68.52,
-      "ppc": 69.96,
-      "net": 8.87,
-      "margin_pct": 2.7,
-      "declining": null
+      "account": "DCVoltage UK",
+      "month": "2026-09",
+      "revenue": 373.51,
+      "shipping": 48.66,
+      "ppc": 76.37,
+      "net": 43.05,
+      "margin_pct": 11.5,
+      "declining": false
     },
     {
       "ph": "Shanthini",
@@ -559,50 +558,61 @@ const dashboardData = {
       "ppc": 16.1,
       "net": 28.7,
       "margin_pct": 14.5,
+      "declining": null
+    },
+    {
+      "ph": "Shanthini",
+      "account": "LEDSone UK",
+      "month": "2026-09",
+      "revenue": 156.48,
+      "shipping": 22.79,
+      "ppc": 18.73,
+      "net": 28.9,
+      "margin_pct": 18.5,
       "declining": false
     }
   ],
   "account_summary": [
     {
       "account": "DCVoltage UK",
-      "l1": 0,
-      "l2": 1,
-      "l3": 0,
-      "l4": 0,
-      "total": 1
-    },
-    {
-      "account": "LEDSone UK",
-      "l1": 1,
+      "l1": 2,
       "l2": 0,
       "l3": 0,
       "l4": 0,
+      "total": 2
+    },
+    {
+      "account": "LEDSone UK",
+      "l1": 0,
+      "l2": 0,
+      "l3": 0,
+      "l4": 1,
       "total": 1
     }
   ],
   "ph_summary": [
     {
       "ph": "Shanthini",
-      "l1": 1,
-      "l2": 1,
+      "l1": 2,
+      "l2": 0,
       "l3": 0,
-      "l4": 0,
+      "l4": 1,
       "l5": 0,
-      "total": 2
+      "total": 3
     }
   ],
   "verification_summary": [
     {
-      "metric": "generated_date",
-      "value": "2026-09-14"
+      "metric": "generated_at",
+      "value": "2026-10-05"
     },
     {
-      "metric": "report_date (week ending)",
-      "value": "2026-09-13"
+      "metric": "report_date",
+      "value": "2026-10-04"
     },
     {
       "metric": "week_start",
-      "value": "2026-09-07"
+      "value": "2026-09-28"
     },
     {
       "metric": "source_tables",
@@ -610,7 +620,7 @@ const dashboardData = {
     },
     {
       "metric": "shipping_basis",
-      "value": "carrier_charge (GBP) + shipping_template_price, deduped per order, allocated by revenue share"
+      "value": "carrier_charge (GBP, >0) + shipping_template_price, de-duped per order, allocated by line-revenue share"
     },
     {
       "metric": "l3_grain",
@@ -621,12 +631,56 @@ const dashboardData = {
       "value": "SKU"
     },
     {
-      "metric": "excluded_tables",
+      "metric": "cogs_factor",
+      "value": "0.45 (after 15% platform fee + 20% COGS)"
+    },
+    {
+      "metric": "vat",
+      "value": "20% (not deducted from displayed revenue; net formula: rev*0.45 - shipping - ppc)"
+    },
+    {
+      "metric": "excluded_from_calc",
       "value": "development.leakage_detection, development.leakage_classification, ph_action_board.*, ph_daily_actions"
     },
     {
-      "metric": "assumptions",
-      "value": "COGS 20%, platform fee 15%, VAT 20%, gross factor 0.45"
+      "metric": "l1_filter",
+      "value": "Amazon-only (source_name ILIKE '%amazon%'), UK, spend>3, conversions=0, record_type=ad"
+    },
+    {
+      "metric": "l2_filter",
+      "value": "Completed orders, shipping_pct > 25%"
+    },
+    {
+      "metric": "l3_filter",
+      "value": "Completed orders, net = rev*0.45 - shipping - ppc < 0, ppc > 5"
+    },
+    {
+      "metric": "l4_filter",
+      "value": "All statuses, 30d, refund_rate > 10%, min 2 orders"
+    },
+    {
+      "metric": "l5_filter",
+      "value": "3 full calendar months, margin declining >= 2 consecutive months (account=ALL + per-account slices)"
+    },
+    {
+      "metric": "l1_count",
+      "value": "208 distinct ASINs (209 ASIN+SKU rows)"
+    },
+    {
+      "metric": "l2_count",
+      "value": "382 distinct ASINs"
+    },
+    {
+      "metric": "l3_count",
+      "value": "84 distinct ASINs"
+    },
+    {
+      "metric": "l4_count",
+      "value": "42 distinct SKUs"
+    },
+    {
+      "metric": "l5_count",
+      "value": "4 declining PHs (ALL slice): ['Tharshana', 'paulr', 'preethi', 'thuwaraga']"
     }
   ]
 };

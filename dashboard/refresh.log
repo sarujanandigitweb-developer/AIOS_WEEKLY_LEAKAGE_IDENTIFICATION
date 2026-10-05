@@ -83,3 +83,13 @@
 [2026-09-21T08:45:01] RESULT: FAIL — Claude CLI not found (CLAUDE_BIN=/home/led-247/.local/bin/claude)
 [2026-10-05T08:45:02] START refresh — launching Claude CLI headless
 [2026-10-05T08:45:02] RESULT: FAIL — Claude CLI not found (CLAUDE_BIN=/home/led-247/.local/bin/claude)
+[2026-10-05T14:45:58] START refresh — launching Claude CLI headless
+[2026-10-05T14:47:51] Claude exit=0; stdout tail: 'board.\n\nThis is the same authentication blocker that caused the 2026-08-24 failure in the refresh log. The `ledsone` database (the only one currently accessible) is the LEDSone application DB — it has no `ppc_performance`, `order_transaction`, or `order_shipping_billing_detail` tables in any schema.'
+[2026-10-05T14:47:51] RESULT: FAIL — leakage_dashboard.html unchanged after run
+[2026-10-05T15:15:38] START refresh — launching Claude CLI headless
+[2026-10-05 AUTO] WLSP dashboard refresh complete. Week: 2026-09-28→2026-10-04. L1=209 rows (208 ASINs), L2=382 ASINs, L3=84 ASINs, L4=42 SKUs, L5=270 rows (4 declining PHs). File: leakage_dashboard.html updated.
+[2026-10-05T15:31:12] Claude exit=0; stdout tail: '*ph_status enrichment:** L2 has 17 RECOVERABLE + 38 MISSING_SOURCE UNATTRIBUTED rows; L1/L3/L4 UNATTRIBUTED rows all MISSING_SOURCE.\n\n**File write:** `leakage_dashboard.html` data block replaced (lines 411→11017). Only that file was modified. Markers preserved. No forbidden tables in data section. ✓'
+[2026-10-05T15:31:12] VALIDATION OK (master) — counts L1=208 L2=382 L3=84 L4=42 L5=4; accounts=2; ph_rows=29; generated_at=2026-10-05
+[2026-10-05T15:31:12] PH dashboards OK — 30 regenerated in 0.03s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-10-05T15:31:12] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 934.2s total
+[2026-10-05T15:50:27] START refresh — launching Claude CLI headless

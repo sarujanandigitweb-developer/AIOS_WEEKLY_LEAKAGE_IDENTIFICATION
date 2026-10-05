@@ -413,66 +413,86 @@
 const dashboardData = {
   "summary": {
     "report_title": "PH Weekly Leakage Action Lists",
-    "report_date": "2026-09-13",
-    "generated_at": "2026-09-14",
+    "report_date": "2026-10-04",
+    "generated_at": "2026-10-05",
     "scope": "UK Amazon FBM (Amazon-only)",
     "accounts": "LEDSone + DCVoltage",
     "deadline": "Wednesday EOD",
     "ph_count": 1,
     "analyses_count": 5,
     "counts": {
-      "l1": 0,
-      "l2": 1,
-      "l3": 1,
-      "l4": 0,
-      "l5": 1
+      "l1": 2,
+      "l2": 2,
+      "l3": 0,
+      "l4": 1,
+      "l5": 0
     },
     "displayed": {
-      "l1": 0,
-      "l2": 1,
-      "l3": 1,
-      "l4": 0,
+      "l1": 2,
+      "l2": 2,
+      "l3": 0,
+      "l4": 1,
       "l5": 1
     }
   },
-  "l1": [],
+  "l1": [
+    {
+      "ph": "Saranya",
+      "asin": "B09SHZZB35",
+      "sku": "CRSF2003CO+PHCN1PBRCO3PK+LSFT220CO3PK",
+      "account": "LEDSone UK",
+      "spend": 7.32,
+      "clicks": 14,
+      "impressions": 839,
+      "conversions": 0
+    },
+    {
+      "ph": "Saranya",
+      "asin": "B08YFJ5WY4",
+      "sku": "CRSF2003CO+PHCHPCRYB3PK+LSCY210BG3PK",
+      "account": "DCVoltage UK",
+      "spend": 6.68,
+      "clicks": 15,
+      "impressions": 2055,
+      "conversions": 0
+    }
+  ],
   "l2": [
     {
-      "asin": "B0DJPDYGKH",
+      "asin": "B07RQL8NWH",
       "ph": "Saranya",
-      "sku": "HLHG120CH",
+      "sku": "HLRK35BM",
       "account": "LEDSone UK",
-      "revenue": 4.98,
+      "revenue": 2.57,
       "shipping": 2.44,
       "orders": 1,
-      "shipping_pct": 49.0
-    }
-  ],
-  "l3": [
-    {
-      "asin": "B09KNQV7L7",
-      "ph": "Saranya",
-      "sku": "CRSF2003BM+PHRB1PBR40BM3PK+LSBS160GY3PK",
-      "account": "LEDSone UK",
-      "revenue": 28.24,
-      "shipping": 5.63,
-      "ppc": 31.07,
-      "net": -23.99
-    }
-  ],
-  "l4": [],
-  "l5": [
-    {
-      "ph": "Saranya",
-      "account": "ALL",
-      "month": "2026-06",
-      "revenue": 1585.15,
-      "shipping": 173.92,
-      "ppc": 122.54,
-      "net": 416.86,
-      "margin_pct": 26.3,
-      "declining": null
+      "shipping_pct": 94.9
     },
+    {
+      "asin": "B0DFHHJHZ6",
+      "ph": "Saranya",
+      "sku": "HLCH96BM2PK",
+      "account": "DCVoltage UK",
+      "revenue": 4.82,
+      "shipping": 2.44,
+      "orders": 1,
+      "shipping_pct": 50.6
+    }
+  ],
+  "l3": [],
+  "l4": [
+    {
+      "sku": "ENC2968",
+      "asin": "B09VC6BJG7",
+      "ph": "Saranya",
+      "account": "LEDSone UK",
+      "total_orders": 2,
+      "refunded_orders": 1,
+      "refund_rate": 50.0,
+      "revenue_at_risk": 31.74
+    }
+  ],
+  "l5": [
     {
       "ph": "Saranya",
       "account": "ALL",
@@ -493,18 +513,18 @@ const dashboardData = {
       "ppc": 215.97,
       "net": 24.93,
       "margin_pct": 3.1,
-      "declining": true
+      "declining": null
     },
     {
       "ph": "Saranya",
-      "account": "DCVoltage UK",
-      "month": "2026-06",
-      "revenue": 1043.8,
-      "shipping": 99.79,
-      "ppc": 81.99,
-      "net": 287.93,
-      "margin_pct": 27.6,
-      "declining": null
+      "account": "ALL",
+      "month": "2026-09",
+      "revenue": 1103.39,
+      "shipping": 171.22,
+      "ppc": 231.25,
+      "net": 94.05,
+      "margin_pct": 8.5,
+      "declining": false
     },
     {
       "ph": "Saranya",
@@ -526,18 +546,18 @@ const dashboardData = {
       "ppc": 41.56,
       "net": 84.69,
       "margin_pct": 20.1,
-      "declining": false
+      "declining": null
     },
     {
       "ph": "Saranya",
-      "account": "LEDSone UK",
-      "month": "2026-06",
-      "revenue": 541.35,
-      "shipping": 74.13,
-      "ppc": 40.55,
-      "net": 128.93,
-      "margin_pct": 23.8,
-      "declining": null
+      "account": "DCVoltage UK",
+      "month": "2026-09",
+      "revenue": 216.26,
+      "shipping": 26.92,
+      "ppc": 27.78,
+      "net": 42.62,
+      "margin_pct": 19.7,
+      "declining": false
     },
     {
       "ph": "Saranya",
@@ -559,50 +579,61 @@ const dashboardData = {
       "ppc": 174.41,
       "net": -59.76,
       "margin_pct": -15.6,
-      "declining": true
+      "declining": null
+    },
+    {
+      "ph": "Saranya",
+      "account": "LEDSone UK",
+      "month": "2026-09",
+      "revenue": 887.13,
+      "shipping": 144.3,
+      "ppc": 203.47,
+      "net": 51.44,
+      "margin_pct": 5.8,
+      "declining": false
     }
   ],
   "account_summary": [
     {
       "account": "LEDSone UK",
-      "l1": 0,
+      "l1": 1,
       "l2": 1,
-      "l3": 1,
-      "l4": 0,
-      "total": 2
+      "l3": 0,
+      "l4": 1,
+      "total": 3
     },
     {
       "account": "DCVoltage UK",
-      "l1": 0,
-      "l2": 0,
+      "l1": 1,
+      "l2": 1,
       "l3": 0,
       "l4": 0,
-      "total": 0
+      "total": 2
     }
   ],
   "ph_summary": [
     {
       "ph": "Saranya",
-      "l1": 0,
-      "l2": 1,
-      "l3": 1,
-      "l4": 0,
-      "l5": 1,
-      "total": 3
+      "l1": 2,
+      "l2": 2,
+      "l3": 0,
+      "l4": 1,
+      "l5": 0,
+      "total": 5
     }
   ],
   "verification_summary": [
     {
-      "metric": "generated_date",
-      "value": "2026-09-14"
+      "metric": "generated_at",
+      "value": "2026-10-05"
     },
     {
-      "metric": "report_date (week ending)",
-      "value": "2026-09-13"
+      "metric": "report_date",
+      "value": "2026-10-04"
     },
     {
       "metric": "week_start",
-      "value": "2026-09-07"
+      "value": "2026-09-28"
     },
     {
       "metric": "source_tables",
@@ -610,7 +641,7 @@ const dashboardData = {
     },
     {
       "metric": "shipping_basis",
-      "value": "carrier_charge (GBP) + shipping_template_price, deduped per order, allocated by revenue share"
+      "value": "carrier_charge (GBP, >0) + shipping_template_price, de-duped per order, allocated by line-revenue share"
     },
     {
       "metric": "l3_grain",
@@ -621,12 +652,56 @@ const dashboardData = {
       "value": "SKU"
     },
     {
-      "metric": "excluded_tables",
+      "metric": "cogs_factor",
+      "value": "0.45 (after 15% platform fee + 20% COGS)"
+    },
+    {
+      "metric": "vat",
+      "value": "20% (not deducted from displayed revenue; net formula: rev*0.45 - shipping - ppc)"
+    },
+    {
+      "metric": "excluded_from_calc",
       "value": "development.leakage_detection, development.leakage_classification, ph_action_board.*, ph_daily_actions"
     },
     {
-      "metric": "assumptions",
-      "value": "COGS 20%, platform fee 15%, VAT 20%, gross factor 0.45"
+      "metric": "l1_filter",
+      "value": "Amazon-only (source_name ILIKE '%amazon%'), UK, spend>3, conversions=0, record_type=ad"
+    },
+    {
+      "metric": "l2_filter",
+      "value": "Completed orders, shipping_pct > 25%"
+    },
+    {
+      "metric": "l3_filter",
+      "value": "Completed orders, net = rev*0.45 - shipping - ppc < 0, ppc > 5"
+    },
+    {
+      "metric": "l4_filter",
+      "value": "All statuses, 30d, refund_rate > 10%, min 2 orders"
+    },
+    {
+      "metric": "l5_filter",
+      "value": "3 full calendar months, margin declining >= 2 consecutive months (account=ALL + per-account slices)"
+    },
+    {
+      "metric": "l1_count",
+      "value": "208 distinct ASINs (209 ASIN+SKU rows)"
+    },
+    {
+      "metric": "l2_count",
+      "value": "382 distinct ASINs"
+    },
+    {
+      "metric": "l3_count",
+      "value": "84 distinct ASINs"
+    },
+    {
+      "metric": "l4_count",
+      "value": "42 distinct SKUs"
+    },
+    {
+      "metric": "l5_count",
+      "value": "4 declining PHs (ALL slice): ['Tharshana', 'paulr', 'preethi', 'thuwaraga']"
     }
   ]
 };

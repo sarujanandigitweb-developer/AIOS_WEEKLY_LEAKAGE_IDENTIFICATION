@@ -1,67 +1,26 @@
 # WLSP Dashboard Refresh — Headless Prompt
 
 You are running non-interactively (`claude -p`). Refresh the WLSP leakage dashboard
-by querying live PostgreSQL (Ledsone postgres) through MCP and rewriting ONLY the data block of the
+by querying live PostgreSQL through MCP and rewriting ONLY the data block of the
 self-contained dashboard file. Work autonomously; do not ask questions.
 
 ## Absolute rules
 - **DB is READ-ONLY.** Only `SELECT`. Never INSERT/UPDATE/DELETE/ALTER/CREATE. Do not modify PostgreSQL.
-- **Source tables ONLY (Ledsone postgres, `ledsone` database):** `order_management.orders`,
-  `order_management.order_item_info`, `order_management.sub_source`, `order_management.shipment`,
-  `order_management.carrier_service`, `amazon_campaigns.performance_data`, `amazon_campaigns.campaigns`,
-  `staff.ph_category_products`, `staff.ph_categories`, `staff.users`, `customer_service.amazon_returns`.
-  These are exposed to the queries below through the BASE CTEs (see next section), which give them the
-  names `order_transaction`, `order_shipping_billing_detail` and `ppc_performance` so every approved
-  formula stays byte-for-byte the same.
+- **Source tables ONLY:** `public.ppc_performance`, `public.order_transaction`,
+  `public.order_shipping_billing_detail`, `public.amazon_returns`.
 - **NEVER read:** `development.leakage_detection`, `development.leakage_classification`,
   `ph_action_board.*`, `ph_daily_actions`. (They must not appear in any query.)
 - **Only one file may change:** `leakage_dashboard.html`. Do not create `data.js`.
   Do not create new files. Do not touch `index.html`, `data.js`, or `refresh_dashboard.py`.
 - Replace ONLY the text between `<!-- WLSP_DATA_START -->` and `<!-- WLSP_DATA_END -->`.
   Leave every other byte of HTML/CSS/JS unchanged.
-- Run ALL SQL via the **Ledsone postgres** MCP tool: `mcp__claude_ai_Ledsone_postgres__execute_sql`
-  (database `ledsone`). Do NOT use any other postgres tool. It is read-only: SELECT only.
-
-## BASE CTEs — prepend to EVERY query below
-The old `order_transaction / order_shipping_billing_detail / ppc_performance` tables do not exist in the
-Ledsone database. These three CTEs rebuild them from the normalized Ledsone tables with the SAME column names.
-Every query below is written against those names. **Put the BASE block first; if a query starts with its own
-`WITH`, replace that `WITH` with a `,` so all CTEs sit in one `WITH` list. A query with no `WITH` just gets
-`SELECT ...` placed after the BASE block.**
-```sql
-WITH phm AS (   -- Portfolio Holder per ASIN (latest assignment)
-  SELECT DISTINCT ON (cp.ref_id) cp.ref_id, u.username AS user_name
-  FROM staff.ph_category_products cp
-  JOIN staff.ph_categories pc ON pc.id = cp.ph_category_id
-  JOIN staff.users u ON u.id = pc.user_id
-  WHERE cp.source_id = 1
-  ORDER BY cp.ref_id, cp.assign_date DESC, cp.id DESC),
-order_transaction AS (   -- Amazon UK FBM order lines (FBA orders live in separate amazon_fba_* tables)
-  SELECT o.order_id, i.item_asin AS asin, i.item_sku AS sku,
-         NULLIF(i.item_price,'')::numeric AS item_price, NULLIF(i.item_quantity,'')::numeric AS quantity,
-         o.status AS order_status, o.order_date, ss.name AS ss_name,
-         'AMAZON'::text AS source_name, 'UK'::text AS market_place, false AS fba_sales, phm.user_name
-  FROM order_management.orders o
-  JOIN order_management.order_item_info i ON i.order_id = o.id
-  JOIN order_management.sub_source ss ON ss.id = o.sub_source_id
-  LEFT JOIN phm ON phm.ref_id = i.item_asin
-  WHERE ss.source_id = 1 AND o.market_place = '23'),   -- source 1 = AMAZON, market_place 23 = UK
-order_shipping_billing_detail AS (   -- carrier charge (GBP) + templated shipping surcharge, per order
-  SELECT o.order_id, cs.charge AS carrier_charge, cs.charge_currency AS carrier_charge_currency,
-         o.shipping_cost AS shipping_template_price
-  FROM order_management.orders o
-  LEFT JOIN order_management.shipment s ON s.order_id = o.id
-  LEFT JOIN order_management.carrier_service cs ON cs.id = s.carrier_service_id),
-ppc_performance AS (   -- Amazon UK ad-level PPC (campaign -> sub_source gives the account)
-  SELECT p.date, p.asin AS ref_id, p.listing_sku AS sku, p.spend, p.clicks, p.impressions,
-         p.total_orders AS orders, ss.name AS ss_name, 'UK'::text AS marketplace,
-         'AMAZON'::text AS source_name, 'ad'::text AS record_type, phm.user_name
-  FROM amazon_campaigns.performance_data p
-  JOIN amazon_campaigns.campaigns c ON c.campaign_id = p.campaign_id
-  JOIN order_management.sub_source ss ON ss.id = c.sub_source
-  LEFT JOIN phm ON phm.ref_id = p.asin
-  WHERE c.market_place = 23 AND ss.source_id = 1)
-```
+- Run all SQL via the postgres MCP tool connected to the **`order_management_copy`** database — the
+  one that exposes `public.ppc_performance`, `public.order_transaction`, and `tech_team_outputs.ph_task`.
+  Several `mcp__claude_ai_*postgres*__execute_sql` tools may be available for DIFFERENT databases;
+  use the one where these tables resolve. As of 2026-08-03 that is `mcp__claude_ai_postgres_2__execute_sql`.
+  If a query fails with "relation ... does not exist" or a permission error, the connectors were
+  renumbered — retry the SAME query on another available `..._postgres..._execute_sql` tool until the
+  WLSP tables resolve, then use that tool for the rest of the run.
 
 ## Assumptions baked into the approved WLSP formulas
 COGS 20% (gross factor 0.45 after platform fee), platform fee 15%, VAT 20%.
@@ -89,7 +48,7 @@ window to that week using ISO-week truncation (robust even if a run slips to ano
 
 ---
 
-## STEP 1 — Run these exact queries (in order) via the **Ledsone postgres** tool (`mcp__claude_ai_Ledsone_postgres__execute_sql`), each prefixed with the BASE CTEs
+## STEP 1 — Run these exact queries (in order) via the `order_management_copy` postgres tool (see above; currently `mcp__claude_ai_postgres_2__execute_sql`)
 
 ### Q_L1 — zero-conversion PPC (spend>£3 AND conversions=0, 7d)
 ```sql
@@ -100,7 +59,7 @@ SELECT COALESCE(NULLIF(pp.user_name,''),'UNATTRIBUTED') AS ph, pp.ref_id AS asin
               OR pp.ss_name ILIKE '%srm%' THEN 'LEDSone UK' ELSE pp.ss_name END AS account,
        ROUND(SUM(pp.spend)::numeric,2) AS spend, SUM(pp.clicks)::int AS clicks,
        SUM(pp.impressions)::int AS impressions, SUM(pp.orders)::int AS conversions
-FROM ppc_performance pp
+FROM public.ppc_performance pp
 WHERE (pp.ss_name ILIKE '%UK%' OR pp.marketplace ILIKE '%UK%')
   AND pp.source_name ILIKE '%amazon%'   -- D04 FIX A: Amazon-only (excludes eBay/Shopify/so_926407)
   AND pp.date >= date_trunc('week',CURRENT_DATE)::date - INTERVAL '7 days'
@@ -120,7 +79,7 @@ allocated to each ASIN by its share of order revenue. PPC for L3 is joined at **
 WITH lines AS (
   SELECT ot.order_id, ot.asin, ot.sku, MAX(ot.user_name) AS user_name, MAX(ot.ss_name) AS ss_name,
          SUM(ot.item_price*ot.quantity) AS line_rev
-  FROM order_transaction ot
+  FROM public.order_transaction ot
   WHERE ot.source_name ILIKE '%amazon%' AND ot.market_place ILIKE '%UK%' AND ot.fba_sales=false
     AND ot.order_status='Completed'
     AND ot.order_date >= date_trunc('week',CURRENT_DATE)::date - INTERVAL '7 days'
@@ -130,8 +89,8 @@ orev AS (SELECT order_id, SUM(line_rev) ord_rev FROM lines GROUP BY order_id),
 ship AS (SELECT order_id,
                 COALESCE(MAX(carrier_charge) FILTER (WHERE carrier_charge_currency='GBP' AND carrier_charge>0),0)
               + COALESCE(MAX(shipping_template_price) FILTER (WHERE shipping_template_price>0),0) AS cc
-         FROM order_shipping_billing_detail GROUP BY order_id),   -- carrier + template, per order
-ppc AS (SELECT ref_id AS asin, SUM(spend) ppc FROM ppc_performance
+         FROM public.order_shipping_billing_detail GROUP BY order_id),   -- carrier + template, per order
+ppc AS (SELECT ref_id AS asin, SUM(spend) ppc FROM public.ppc_performance
         WHERE (ss_name ILIKE '%UK%' OR marketplace ILIKE '%UK%')
           AND date >= date_trunc('week',CURRENT_DATE)::date - INTERVAL '7 days'
           AND date <  date_trunc('week',CURRENT_DATE)::date
@@ -187,7 +146,7 @@ SELECT ot.sku, MAX(ot.asin) AS asin, COALESCE(NULLIF(MAX(ot.user_name),''),'UNAT
        ROUND((100.0*COUNT(DISTINCT ot.order_id) FILTER (WHERE ot.order_status='Refunded')
               /NULLIF(COUNT(DISTINCT ot.order_id),0))::numeric,1) AS refund_rate,
        ROUND(SUM(ot.item_price*ot.quantity) FILTER (WHERE ot.order_status='Refunded')::numeric,2) AS revenue_at_risk
-FROM order_transaction ot
+FROM public.order_transaction ot
 WHERE ot.source_name ILIKE '%amazon%' AND ot.market_place ILIKE '%UK%' AND ot.fba_sales=false
   AND ot.order_date >= date_trunc('week',CURRENT_DATE)::date - INTERVAL '30 days'
   AND ot.order_date <  date_trunc('week',CURRENT_DATE)::date AND ot.sku IS NOT NULL AND ot.sku<>''
@@ -210,14 +169,14 @@ WITH lines AS (
               WHEN ot.ss_name ILIKE '%ledsone%' OR ot.ss_name ILIKE '%led_sone%' OR ot.ss_name ILIKE '%srm%' THEN 'LEDSone UK'
               ELSE ot.ss_name END AS account,
          DATE_TRUNC('month',ot.order_date)::date AS mth, SUM(ot.item_price*ot.quantity) AS line_rev
-  FROM order_transaction ot
+  FROM public.order_transaction ot
   WHERE ot.source_name ILIKE '%amazon%' AND ot.market_place ILIKE '%UK%' AND ot.fba_sales=false
     AND ot.order_status IN ('Completed','Refunded')
     AND ot.order_date >= (DATE_TRUNC('month',CURRENT_DATE)-INTERVAL '3 months')
     AND ot.order_date <  DATE_TRUNC('month',CURRENT_DATE)
     AND ot.user_name IS NOT NULL AND ot.user_name<>'' GROUP BY ot.order_id, ot.user_name, account, mth),
 orev AS (SELECT ot.order_id, SUM(ot.item_price*ot.quantity) ord_rev
-         FROM order_transaction ot
+         FROM public.order_transaction ot
          WHERE ot.source_name ILIKE '%amazon%' AND ot.market_place ILIKE '%UK%' AND ot.fba_sales=false
            AND ot.order_status IN ('Completed','Refunded')
            AND ot.order_date >= (DATE_TRUNC('month',CURRENT_DATE)-INTERVAL '3 months')
@@ -225,7 +184,7 @@ orev AS (SELECT ot.order_id, SUM(ot.item_price*ot.quantity) ord_rev
 ship AS (SELECT order_id,
                 COALESCE(MAX(carrier_charge) FILTER (WHERE carrier_charge_currency='GBP' AND carrier_charge>0),0)
               + COALESCE(MAX(shipping_template_price) FILTER (WHERE shipping_template_price>0),0) AS cc
-         FROM order_shipping_billing_detail GROUP BY order_id),   -- carrier + template, per order
+         FROM public.order_shipping_billing_detail GROUP BY order_id),   -- carrier + template, per order
 rev AS (SELECT l.ph, COALESCE(l.account,'ALL') AS account, l.mth, SUM(l.line_rev) revenue,
                SUM(COALESCE(s.cc,0)*l.line_rev/NULLIF(o.ord_rev,0)) shipping
         FROM lines l JOIN orev o ON l.order_id=o.order_id LEFT JOIN ship s ON l.order_id=s.order_id
@@ -234,7 +193,7 @@ ppc AS (SELECT q.ph, COALESCE(q.acct,'ALL') AS account, q.mth, SUM(q.spend) ppc 
           SELECT user_name AS ph, DATE_TRUNC('month',date)::date AS mth, spend,
                  CASE WHEN ss_name ILIKE '%dcvoltage%' THEN 'DCVoltage UK'
                       WHEN ss_name ILIKE '%ledsone%' OR ss_name ILIKE '%led_sone%' OR ss_name ILIKE '%srm%' THEN 'LEDSone UK' ELSE ss_name END AS acct
-          FROM ppc_performance
+          FROM public.ppc_performance
           WHERE (ss_name ILIKE '%UK%' OR marketplace ILIKE '%UK%') AND source_name ILIKE '%amazon%'
             AND date >= (DATE_TRUNC('month',CURRENT_DATE)-INTERVAL '3 months') AND date < DATE_TRUNC('month',CURRENT_DATE)
             AND user_name IS NOT NULL AND user_name<>'') q
@@ -271,7 +230,7 @@ UNATTRIBUTED rows for investigation (tagged via `ph_status`).
 
 ### Q_SKU_PH_MAP — for `ph_status` (recoverability of UNATTRIBUTED rows)
 ```sql
-SELECT sku, MAX(user_name) ph FROM order_transaction
+SELECT sku, MAX(user_name) ph FROM public.order_transaction
 WHERE source_name ILIKE '%amazon%' AND user_name IS NOT NULL AND user_name<>'' GROUP BY sku;
 ```
 
@@ -310,7 +269,7 @@ Build one object with EXACTLY these keys:
     ASIN+SKU set**, then de-duplicates to ASIN; the HAVING stays at ASIN+SKU grain):
     ```sql
     SELECT COUNT(DISTINCT asin) FROM (
-      SELECT ref_id AS asin FROM ppc_performance
+      SELECT ref_id AS asin FROM public.ppc_performance
       WHERE (ss_name ILIKE '%UK%' OR marketplace ILIKE '%UK%') AND source_name ILIKE '%amazon%'
         AND date >= date_trunc('week',CURRENT_DATE)::date - INTERVAL '7 days'
         AND date <  date_trunc('week',CURRENT_DATE)::date

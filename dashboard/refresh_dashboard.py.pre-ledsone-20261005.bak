@@ -5,7 +5,7 @@ AIOS Weekly Leakage Identification · UK Amazon FBM · LEDSone + DCVoltage
 
 Runs every 4 hours (cron). Each run:
   1. Launches Claude CLI non-interactively (`claude -p`) with dashboard_refresh_prompt.md.
-  2. Claude queries live PostgreSQL via the MCP tool mcp__claude_ai_Ledsone_postgres__execute_sql ONCE,
+  2. Claude queries live PostgreSQL via the MCP tool mcp__claude_ai_postgres__execute_sql ONCE,
      runs the approved WLSP L1-L5 calculations, builds dashboardData, and replaces ONLY the
      content between <!-- WLSP_DATA_START --> and <!-- WLSP_DATA_END --> in leakage_dashboard.html.
   3. This script WAITS for completion, then VALIDATES the master file was updated correctly.
@@ -21,7 +21,7 @@ Exit code 0 on success, non-zero on failure.
 
 Prereqs (proven working in this environment):
   - `claude` CLI on PATH (or set CLAUDE_BIN).
-  - A valid claude.ai credential (~/.claude/.credentials.json) so the claude.ai Ledsone postgres MCP loads.
+  - A valid claude.ai credential (~/.claude/.credentials.json) so the claude.ai postgres MCP loads.
 """
 
 import os, re, sys, json, hashlib, subprocess, datetime, time, glob
@@ -39,10 +39,15 @@ TIMEOUT_SEC = int(os.environ.get("WLSP_REFRESH_TIMEOUT", "5400"))     # 90 min h
 # Raised to 5400 s (90 min) — still well inside the 4-hour cron interval. Override per-run with
 # WLSP_REFRESH_TIMEOUT. If runs still time out, switch to the single-consolidated-query design.
 START, END  = "<!-- WLSP_DATA_START -->", "<!-- WLSP_DATA_END -->"
-# DB access is via the hosted claude.ai "Ledsone postgres" MCP connector (database `ledsone`, the live
-# source of truth). The prompt rebuilds the old order_transaction / order_shipping_billing_detail /
-# ppc_performance shapes from the Ledsone tables via BASE CTEs, so only this one tool is allowed.
-ALLOWED     = ("mcp__claude_ai_Ledsone_postgres__execute_sql "
+# DB access is via a hosted claude.ai postgres MCP connector. The account has SEVERAL postgres
+# connectors and they get RENUMBERED (claude.ai postgres / postgres (2) / ...), which silently
+# breaks a single hardcoded name — that is exactly what failed the 2026-08-03 run ("blocked at the
+# permission layer"). Allow ALL known postgres execute_sql tools so permission never blocks; the
+# prompt tells Claude to use whichever one resolves order_management_copy's tables.
+# As of 2026-08-03 the WLSP DB (order_management_copy) is on mcp__claude_ai_postgres_2.
+ALLOWED     = ("mcp__claude_ai_postgres_2__execute_sql "
+               "mcp__claude_ai_postgres__execute_sql "
+               "mcp__claude_ai_Ledsone_postgres__execute_sql "
                "Read Edit Write Bash")
 # Bash is REQUIRED: the embedded data block is ~108 KB, so the headless run generates it with
 # one SQL query (result overflows to a file) and splices it in with a short Python script — that

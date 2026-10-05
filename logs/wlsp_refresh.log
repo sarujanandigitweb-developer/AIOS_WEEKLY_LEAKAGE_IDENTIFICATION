@@ -823,3 +823,88 @@ FAIL                           : 0
 [2026-09-21T08:45:01] RESULT: FAIL — Claude CLI not found (CLAUDE_BIN=/home/led-247/.local/bin/claude)
 [2026-10-05T08:45:02] START refresh — launching Claude CLI headless
 [2026-10-05T08:45:02] RESULT: FAIL — Claude CLI not found (CLAUDE_BIN=/home/led-247/.local/bin/claude)
+[2026-10-05T14:45:58] START refresh — launching Claude CLI headless
+[2026-10-05T14:47:51] Claude exit=0; stdout tail: 'board.\n\nThis is the same authentication blocker that caused the 2026-08-24 failure in the refresh log. The `ledsone` database (the only one currently accessible) is the LEDSone application DB — it has no `ppc_performance`, `order_transaction`, or `order_shipping_billing_detail` tables in any schema.'
+[2026-10-05T14:47:51] RESULT: FAIL — leakage_dashboard.html unchanged after run
+[2026-10-05T15:15:38] START refresh — launching Claude CLI headless
+[2026-10-05T15:31:12] Claude exit=0; stdout tail: '*ph_status enrichment:** L2 has 17 RECOVERABLE + 38 MISSING_SOURCE UNATTRIBUTED rows; L1/L3/L4 UNATTRIBUTED rows all MISSING_SOURCE.\n\n**File write:** `leakage_dashboard.html` data block replaced (lines 411→11017). Only that file was modified. Markers preserved. No forbidden tables in data section. ✓'
+[2026-10-05T15:31:12] VALIDATION OK (master) — counts L1=208 L2=382 L3=84 L4=42 L5=4; accounts=2; ph_rows=29; generated_at=2026-10-05
+[2026-10-05T15:31:12] PH dashboards OK — 30 regenerated in 0.03s into portfolio_holders/ (one dashboardData reused for all; shell byte-identical; each PH-isolated)
+[2026-10-05T15:31:12] RESULT: PASS — leakage_dashboard.html + 30 PH dashboards refreshed in 934.2s total
+scan: master + /home/led-247/AIOS_WEEKLY_LEAKAGE_IDENTIFICATION/AIOS_Weekly_Leakage_Identification/dashboard/portfolio_holders
+ignore override: none | dashboards to process: 31
+
+  PASS  INSERT  id=2152 V9   Master              289402 bytes
+  PASS  INSERT  id=2153 V9   Abinayaa             66999 bytes
+  PASS  INSERT  id=2154 V9   Akalika              62630 bytes
+  PASS  INSERT  id=2155 V9   Akanila              63836 bytes
+  PASS  INSERT  id=2156 V9   Arudchelvi           63572 bytes
+  PASS  INSERT  id=2157 V9   Dilakshiga           62214 bytes
+  PASS  INSERT  id=2158 V9   Dilani               65884 bytes
+  PASS  INSERT  id=2159 V9   Illakkiya            62899 bytes
+  PASS  INSERT  id=2160 V9   Jasmini              80838 bytes
+  PASS  INSERT  id=2161 V9   Jathisha             64262 bytes
+  PASS  INSERT  id=2162 V9   Jubista              63284 bytes
+  PASS  INSERT  id=2163 V9   mothajini            67312 bytes
+  PASS  INSERT  id=2164 V9   Nithushana           63796 bytes
+  PASS  INSERT  id=2165 V9   paulr                76594 bytes
+  PASS  INSERT  id=2166 V9   prasath              69592 bytes
+  PASS  INSERT  id=2167 V9   preethi              63704 bytes
+  PASS  INSERT  id=2168 V9   Ramsika              62637 bytes
+  PASS  INSERT  id=2169 V9   Renuha               67382 bytes
+  PASS  INSERT  id=2170 V9   Saranya              63352 bytes
+  PASS  INSERT  id=2171 V9   Sarbavi              62656 bytes
+  PASS  INSERT  id=2172 V9   Shanthini            62930 bytes
+  PASS  INSERT  id=2173 V9   shimee               69609 bytes
+  PASS  INSERT  id=2174 V9   thanusha             63308 bytes
+  PASS  INSERT  id=2175 V9   Tharshana            64160 bytes
+  PASS  INSERT  id=2176 V9   Tharsiga(nelli)      65445 bytes
+  PASS  INSERT  id=2177 V9   Tharsika(jaffna)     66637 bytes
+  PASS  INSERT  id=2178 V9   Theepana             69090 bytes
+  PASS  INSERT  id=2179 V9   Thojika              63765 bytes
+  PASS  INSERT  id=2180 V9   thuwaraga            81203 bytes
+  PASS  INSERT  id=2181 V9   utharsika            90294 bytes
+  PASS  INSERT  id=2182 V9   Vaishnavi            62925 bytes
+
+| Dashboard | Operation | Row ID | Version | HTML Size | version_status | Status |
+|---|---|---|---|---|---|---|
+| Master | INSERT | 2152 | V9 | 289402 | released | PASS |
+| Abinayaa | INSERT | 2153 | V9 | 66999 | released | PASS |
+| Akalika | INSERT | 2154 | V9 | 62630 | released | PASS |
+| Akanila | INSERT | 2155 | V9 | 63836 | released | PASS |
+| Arudchelvi | INSERT | 2156 | V9 | 63572 | released | PASS |
+| Dilakshiga | INSERT | 2157 | V9 | 62214 | released | PASS |
+| Dilani | INSERT | 2158 | V9 | 65884 | released | PASS |
+| Illakkiya | INSERT | 2159 | V9 | 62899 | released | PASS |
+| Jasmini | INSERT | 2160 | V9 | 80838 | released | PASS |
+| Jathisha | INSERT | 2161 | V9 | 64262 | released | PASS |
+| Jubista | INSERT | 2162 | V9 | 63284 | released | PASS |
+| mothajini | INSERT | 2163 | V9 | 67312 | released | PASS |
+| Nithushana | INSERT | 2164 | V9 | 63796 | released | PASS |
+| paulr | INSERT | 2165 | V9 | 76594 | released | PASS |
+| prasath | INSERT | 2166 | V9 | 69592 | released | PASS |
+| preethi | INSERT | 2167 | V9 | 63704 | released | PASS |
+| Ramsika | INSERT | 2168 | V9 | 62637 | released | PASS |
+| Renuha | INSERT | 2169 | V9 | 67382 | released | PASS |
+| Saranya | INSERT | 2170 | V9 | 63352 | released | PASS |
+| Sarbavi | INSERT | 2171 | V9 | 62656 | released | PASS |
+| Shanthini | INSERT | 2172 | V9 | 62930 | released | PASS |
+| shimee | INSERT | 2173 | V9 | 69609 | released | PASS |
+| thanusha | INSERT | 2174 | V9 | 63308 | released | PASS |
+| Tharshana | INSERT | 2175 | V9 | 64160 | released | PASS |
+| Tharsiga(nelli) | INSERT | 2176 | V9 | 65445 | released | PASS |
+| Tharsika(jaffna) | INSERT | 2177 | V9 | 66637 | released | PASS |
+| Theepana | INSERT | 2178 | V9 | 69090 | released | PASS |
+| Thojika | INSERT | 2179 | V9 | 63765 | released | PASS |
+| thuwaraga | INSERT | 2180 | V9 | 81203 | released | PASS |
+| utharsika | INSERT | 2181 | V9 | 90294 | released | PASS |
+| Vaishnavi | INSERT | 2182 | V9 | 62925 | released | PASS |
+
+Total dashboards processed     : 31
+Master dashboards processed    : 1
+Portfolio Holder dashboards    : 30
+INSERTS (new weekly versions)  : 31
+UPDATES (same-week refresh)    : 0
+SKIPPED (frozen / stale)       : 0
+PASS                           : 31
+FAIL                           : 0
